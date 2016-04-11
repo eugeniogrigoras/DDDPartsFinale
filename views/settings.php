@@ -65,8 +65,8 @@
 <?php require_once 'secondo.php'; ?>
 <main>
     <div class="container main-content row" style="margin-bottom:24px!important">
-        <h4 id="status"></h4>
-        <p id="loaded_n_total"></p>
+        <!-- <h4 id="status"></h4>
+        <p id="loaded_n_total"></p> -->
         <div class="progress" style="margin:0!important; border-radius:0!important; background-color:#fe9da0">
             <div id="progressBar" class="determinate" style="width:0%; background-color:#e44a3e"></div>
         </div>
@@ -90,9 +90,7 @@
                     <label data-error="Letters & numbers!" for="password">New Password</label>
                     <i id="passwordIcon" onclick="showPassword();" style="cursor:pointer; color: #444; position:inherit; z-index:24; left:30px; top:-50px; background-color:white" class="material-icons right">visibility</i>
                 </div>
-                <div class=" col l12 m12 s12">
-                    <br><br>
-                </div>
+
                 <div class=" col l12 m12 s12">
                     <button id="submit" type="submit" class="deep-orange accent-2 white-text right waves-effect waves-light btn-flat" name="submit">Submit
                         <i class="material-icons right">send</i>

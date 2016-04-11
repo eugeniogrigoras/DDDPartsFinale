@@ -2,8 +2,8 @@
 <title>Account</title>
 <style>
 	div.main-content {
-        padding-top: 24px;
-        padding-bottom: 24px;
+        margin-top: 24px;
+        margin-bottom: 24px;
     }
 
     div.main-content form {
@@ -107,8 +107,7 @@
 </style>
 <?php require_once 'secondo.php'; ?>
 <main>
-    <div class="container main-content row ">
-    	<div class="z-depth-1 row" >
+    <div class="container main-content row z-depth-1">
     	<div class="card col s12" style="padding:0!important">
 	        <div class="title truncate"><i style="margin:0!important; cursor:pointer" class="activator material-icons right">info_outline</i><?php echo $_SESSION["NOME"]." ".$_SESSION["COGNOME"]; ?></div>
 	        <div class="" style="padding:24px; background-image:url('/img/bg2.jpg'); background-size:cover">
@@ -178,7 +177,6 @@
                 </div>
                 <div class="subtitle truncate">FOLLOWED COLLECTIONS</div>
             </div>
-        </div>
         </div>
     </div>
 </main>
