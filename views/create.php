@@ -31,7 +31,7 @@
     }
 	$('#tag-input').keypress(function (e) {
   		if (e.which == 13) {
-  			$('#tags').append("<div class='chip'>"+this.value+"<i class='material-icons'>close</i><input type='hidden' name='tags[]' value='"+this.value+"'></div>");
+  			$('#tags').append("<div class='chip'>#"+this.value+"<i class='material-icons'>close</i><input type='hidden' name='tags[]' value='"+this.value+"'></div>");
     		this.value='';
     		return false;
   		}
