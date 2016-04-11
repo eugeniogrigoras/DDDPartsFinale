@@ -1,0 +1,52 @@
+</head>
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        <!-- Add your site or application content here -->
+        <nav>
+            <ul id="slide-out" class="side-nav fixed">
+                <?php if (isset($_SESSION["ID"])): ?>
+                    <li id="account" class="row">
+                        <div class="col s3 profile-image">
+                            <img src="<?php echo requestPath()."/profile.jpg";?>" alt="" class="z-depth-1 circle">
+                        </div>
+                        <div class="col s9 profile-menu">
+                            <a data-beloworigin="true" class='truncate dropdown-button waves-effect waves-light' data-activates='profile-option'>
+                                <i style="margin:0!important" class="material-icons right">arrow_drop_down</i><?php echo $_SESSION["NOME"]." ".$_SESSION["COGNOME"]; ?>
+                            </a>
+
+                            <ul id='profile-option' class='dropdown-content'>
+                                <li><a class="waves-effect" href="/account"><i class="material-icons">face</i>Profile</a></li>
+                                <li><a class="waves-effect" href="/settings"><i class="material-icons">settings</i>Settings</a></li>
+                                <li class="divider"></li>
+                                <form action="/form.php" method="post" enctype="multipart/form-data">
+                                    <input type="hidden" value="logout" name="getpage">
+                                    <li><a class="waves-effect" onclick="document.getElementById('logout').click();"><i class="material-icons">keyboard_tab</i>Logout</a></li>
+                                    <button type="submit" id="logout" name="submit" style="display:none"></button>
+                                </form>
+                            </ul>
+                        </div>  
+                    </li>
+                    <li class="search hoverable" style="margin:15px;">
+                        <div class="input-field" style="height:45px!important; box-shadow:0 2px 2px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);">
+                            <input style="color:#444; height:45px!important; width:180px; margin:0; padding:0 15px;" type="text" placeholder="Search...">
+                        </div>
+                    </li>
+                <?php else: ?>
+                    <li class="search" style="margin:15px;">
+                        <div class="input-field" style="height:45px!important; box-shadow:0 2px 2px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);">
+                            <input style="color:#444; height:45px!important; width:180px; margin:0; padding:0 15px;" type="text" placeholder="Search...">
+                        </div>
+                    </li>
+                    <li><a class="waves-effect" href="/login"><i class="material-icons">account_circle</i>Account</a></li>
+                <?php endif; ?>
+                
+                <li><a class="waves-effect" href="/"><i class="material-icons">dashboard</i>Dashboard</a></li>
+                <li><a class="waves-effect" href="#!"><i class="material-icons">explore</i>Explore</a></li>
+                <li><a class="waves-effect" href="#!"><i class="material-icons">book</i>Learn</a></li>
+                <li><a class="waves-effect" href="/create"><i class="material-icons">create</i>Create</a></li>
+            </ul>
+            <a id="open-slide-out" href="#" data-activates="slide-out" class="valign-wrapper button-collapse"><i class="valign material-icons">menu</i></a>
+        </nav>

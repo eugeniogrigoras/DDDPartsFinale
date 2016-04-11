@@ -1,0 +1,137 @@
+header, main, footer, nav {
+  	padding-left: 240px!important;
+  	moz-transition: padding-left 0.5s;
+	transition: padding-left 0.5s;
+	webkit-transition : padding-left 0.5s;
+}
+
+nav {
+	background-color: #444!important;
+	box-shadow: 0 0 0 white!important;
+	height: 101.55px!important;
+	moz-transition: height 0.5s;
+	transition: height 0.5s;
+	webkit-transition : height 0.5s;
+}
+
+ul#slide-out {
+	moz-transition: left 0.5s;
+	transition: left 0.5s;
+	webkit-transition : left 0.5s;
+}
+
+a#open-slide-out {
+	height: 101.55px!important;
+	moz-transition: height 0.5s;
+	transition: height 0.5s;
+	webkit-transition : height 0.5s;
+}
+
+li#account {
+	padding:25px 15px!important; 
+	background-image:url('/img/bg2.jpg'); 
+	background-size:cover;
+}
+
+.dropdown-content a{
+	line-height: 50px!important;
+	height: 50px!important;
+}
+
+li#account div.profile-image {
+	padding:0!important;
+}
+
+li#account div.profile-image img{
+	width:50px; height:50px;
+}
+
+li#account div.profile-menu {
+	line-height:50px; 
+	height:50px; 
+	padding:0!important; 
+	padding-left:15px!important
+}
+
+li#account div.profile-menu {
+	line-height:51.55px!important; 
+	height:51.55px!important;
+}
+
+li#account div.profile-menu a.dropdown-button {
+	text-shadow: 1px 1px 1px #444; 
+	color:white; 
+	font-weight:300!important; 
+	line-height:51.55px!important; 
+	height:51.55px!important; 
+	margin:0!important; 
+	padding:0!important;
+}
+
+nav a#open-slide-out {
+	margin-left: 13.1px!important;
+	color:white!important;
+}
+
+nav ul li:hover {
+	background-color: transparent!important;
+}
+
+nav ul li {
+	line-height: 50px!important;
+	padding:0!important;
+}
+
+nav ul li a {
+	line-height: 50px!important;
+	height:50px!important;
+	font-size: 13px!important;
+	font-weight: 500!important;
+}
+
+nav ul li a:hover {
+	background-color: transparent!important;
+}
+
+nav ul li a i {
+	width: 2rem!important;
+	line-height: inherit!important;
+	height: inherit!important;
+	font-size: 1.6rem!important;
+	text-align: center!important;
+	margin-right: 1rem!important;
+	display: block!important;
+	float:left!important;
+}
+
+@media only screen and (max-width : 992px) {
+  	header, main, footer, nav {
+    	padding-left: 0!important;
+  	}
+  	nav {
+		line-height: 51.55px!important;
+		height: 51.55px!important;
+	}
+
+	a#open-slide-out {
+		height: 51.55px!important;
+	}
+}
+
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color:    #9e9e9e;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   color:    #9e9e9e;
+   opacity:  1;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color:    #9e9e9e;
+   opacity:  1;
+}
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+   color:    #9e9e9e;
+}
+:placeholder-shown { /* Standard (https://drafts.csswg.org/selectors-4/#placeholder) */
+  color:    #9e9e9e;
+}
