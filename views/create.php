@@ -5,7 +5,7 @@
     <div class="container main-content row">
         <h1>Create</h1>
         <form id="create" action="/form.php" method="post" enctype="multipart/form-data" class="col s12 z-depth-1">
-        	<input type="hidden" value="create" name="getpage" pattern="[a-zA-Z0-9!@#$%^*_|]{6,25}">
+        	<input type="hidden" value="create" name="getpage">
         	<div class="input-field col s12">
 	          	<input id="tag-input" type="text" class="validate">
 	          	<label for="tag-input">Tag</label>
