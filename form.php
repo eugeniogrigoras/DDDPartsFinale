@@ -41,7 +41,7 @@ if(isset($_POST['submit'])) {
 				break;
 
 			case 'create':
-				print_r($_POST['tags']);
+				print_r($_POST);
 				exit();
 				break;
 

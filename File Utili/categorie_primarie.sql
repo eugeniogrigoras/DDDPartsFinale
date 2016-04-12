@@ -26,12 +26,6 @@ SET time_zone = "+00:00";
 -- Struttura della tabella `categorie_primarie`
 --
 
-DROP TABLE IF EXISTS `categorie_primarie`;
-CREATE TABLE `categorie_primarie` (
-  `ID` int(11) NOT NULL,
-  `NOME` varchar(30) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
 --
 -- Dump dei dati per la tabella `categorie_primarie`
 --
@@ -54,9 +48,6 @@ INSERT INTO `categorie_primarie` (`ID`, `NOME`) VALUES
 
 --
 -- Indici per le tabelle `categorie_primarie`
---
-ALTER TABLE `categorie_primarie`
-  ADD PRIMARY KEY (`ID`);
 
 --
 -- AUTO_INCREMENT per le tabelle scaricate
@@ -65,8 +56,6 @@ ALTER TABLE `categorie_primarie`
 --
 -- AUTO_INCREMENT per la tabella `categorie_primarie`
 --
-ALTER TABLE `categorie_primarie`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

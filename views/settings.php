@@ -22,12 +22,6 @@
         margin-bottom: 0!important;
     }
 
-    a {
-        color:white;
-        font-size: 11px;
-        letter-spacing: 0.5px;
-    }
-
     div.form {
         padding:35.25px 24px!important;
     }
@@ -90,7 +84,13 @@
                     <label data-error="Letters & numbers!" for="password">New Password</label>
                     <i id="passwordIcon" onclick="showPassword();" style="cursor:pointer; color: #444; position:inherit; z-index:24; left:30px; top:-50px; background-color:white" class="material-icons right">visibility</i>
                 </div>
-
+                <div class="input-field col s12">
+                    <textarea name="description" id="description" class="materialize-textarea" max-length="300"></textarea>
+                    <label for="description">Description</label>
+                </div>
+                <div class=" col l12 m12 s12">
+                    <br><br>
+                </div>
                 <div class=" col l12 m12 s12">
                     <button id="submit" type="submit" class="deep-orange accent-2 white-text right waves-effect waves-light btn-flat" name="submit">Submit
                         <i class="material-icons right">send</i>
@@ -163,11 +163,11 @@
     
     function errorHandler(event){
         //_("status").innerHTML = "Upload Failed";
-        alert("Upload Failed");
+        Materialize.toast("Upload Failed", 2500);
     }
     function abortHandler(event){
         //_("status").innerHTML = "Upload Aborted";
-        alert("Upload Aborted");
+        Materialize.toast("Upload Aborted", 2500);
     }
 </script>
 
