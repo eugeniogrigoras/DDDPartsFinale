@@ -102,6 +102,11 @@
             passwordIcon.innerHTML="visibility";
         }
     }
+    $('#password,#email').keypress(function(e){
+        if (e.which==13) {
+            validate();
+        }
+    })
 </script>
 
 <?php require_once 'quarto.php'; ?>
