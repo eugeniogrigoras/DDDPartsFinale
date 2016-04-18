@@ -1,41 +1,9 @@
-header, main, footer, nav {
-  	padding-left: 240px!important;
-  	moz-transition: padding-left 0.5s;
-	transition: padding-left 0.5s;
-	webkit-transition : padding-left 0.5s;
+html {
+	background-color: #F0F0F0;
 }
 
 nav {
 	background-color: #444!important;
-	box-shadow: 0 0 0 white!important;
-	height: 101.55px!important;
-	moz-transition: height 0.5s;
-	transition: height 0.5s;
-	webkit-transition : height 0.5s;
-}
-
-ul#slide-out {
-	moz-transition: left 0.5s;
-	transition: left 0.5s;
-	webkit-transition : left 0.5s;
-}
-
-a#open-slide-out {
-	height: 101.55px!important;
-	moz-transition: height 0.5s;
-	transition: height 0.5s;
-	webkit-transition : height 0.5s;
-}
-
-li#account {
-	padding:25px 15px!important; 
-	background-image:url('/img/bg2.jpg'); 
-	background-size:cover;
-}
-
-.dropdown-content a{
-	line-height: 50px!important;
-	height: 50px!important;
 }
 
 li#account div.profile-image {
@@ -68,21 +36,32 @@ li#account div.profile-menu a.dropdown-button {
 	padding:0!important;
 }
 
-nav a#open-slide-out {
-	margin-left: 13.1px!important;
-	color:white!important;
+.dropdown-content a{
+	line-height: 50px!important;
+	height: 50px!important;
+	color:#444!important;
+	padding: 0 15px!important;
+	font-size: 13px!important;
+	font-weight: 500!important;
 }
+
 
 nav ul li:hover {
 	background-color: transparent!important;
 }
 
-nav ul li {
+nav ul#slide-out li {
 	line-height: 50px!important;
-	padding:0!important;
+	padding:0;
 }
 
-nav ul li a {
+li#account {
+	padding:25px 15px!important; 
+	background-image:url('/img/bg2.jpg'); 
+	background-size:cover;
+}
+
+nav ul#slide-out li a {
 	line-height: 50px!important;
 	height:50px!important;
 	font-size: 13px!important;
@@ -98,24 +77,14 @@ nav ul li a i {
 	line-height: inherit!important;
 	height: inherit!important;
 	font-size: 1.6rem!important;
+	margin-right: 1rem;
 	text-align: center!important;
-	margin-right: 1rem!important;
 	display: block!important;
 	float:left!important;
 }
 
 @media only screen and (max-width : 992px) {
-  	header, main, footer, nav {
-    	padding-left: 0!important;
-  	}
-  	nav {
-		line-height: 51.55px!important;
-		height: 51.55px!important;
-	}
 
-	a#open-slide-out {
-		height: 51.55px!important;
-	}
 }
 
 ::-webkit-input-placeholder { /* WebKit, Blink, Edge */

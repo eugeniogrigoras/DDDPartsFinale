@@ -8,7 +8,7 @@
     }
 
     div.main-content form {
-
+        background-color: white;
     }
 
     div.title {

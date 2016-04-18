@@ -6,7 +6,33 @@
 
         <!-- Add your site or application content here -->
         <nav>
-            <ul id="slide-out" class="side-nav fixed">
+            <div class="nav-wrapper">
+                <a style="display:block; margin: 0 13px;" class="button-collapse" href="#" data-activates="slide-out"><i class="material-icons">menu</i></a>
+                <a href="#!" style="font-weight:300; font-size:24px;" class="brand-logo">DDDParts</a>
+                <ul class="right hide-on-med-and-down" style="height:inherit!important; font-weight:300">
+                    <?php if (isset($_SESSION["ID"])): ?>
+                    <li class="waves-effect"><a href="#"><i style="margin:0!important" class="material-icons">notifications</i><span class="new badge red lighten-1">4</span></a></li>
+                    <li style="margin-right:13px">
+                        <a data-beloworigin="true" class='truncate dropdown-button waves-effect' data-activates='profile-option-nav'>
+                            <i class="material-icons left">account_circle</i>
+                            <i style="margin:0!important" class="material-icons right">arrow_drop_down</i>
+                            <?php echo $_SESSION["NOME"]." ".$_SESSION["COGNOME"]; ?>
+                        </a>
+                        <ul style="font-weight:400!important" id='profile-option-nav' class='dropdown-content'>
+                                <li><a class="waves-effect" href="/account"><i class="material-icons">face</i>Profile</a></li>
+                                <li><a class="waves-effect" href="/settings"><i class="material-icons">settings</i>Settings</a></li>
+                                <li class="divider"></li>
+                                <form action="/form.php" method="post" enctype="multipart/form-data">
+                                    <input type="hidden" value="logout" name="getpage">
+                                    <li><a class="waves-effect" onclick="document.getElementById('logout').click();"><i class="material-icons">keyboard_tab</i>Logout</a></li>
+                                    <button type="submit" id="logout" name="submit" style="display:none"></button>
+                                </form>
+                            </ul>
+                    </li>
+                    <?php endif; ?>
+                </ul> 
+            </div>
+            <ul id="slide-out" class="side-nav">
                 <?php if (isset($_SESSION["ID"])): ?>
                     <li id="account" class="row">
                         <div class="col s3 profile-image">
@@ -29,13 +55,14 @@
                             </ul>
                         </div>  
                     </li>
+
                     <li class="search hoverable" style="margin:15px;">
                         <div class="input-field" style="height:45px!important; box-shadow:0 2px 2px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);">
                             <input style="color:#444; height:45px!important; width:180px; margin:0; padding:0 15px;" type="text" placeholder="Search...">
                         </div>
                     </li>
                 <?php else: ?>
-                    <li class="search" style="margin:15px;">
+                    <li class="search hoverable" style="margin:15px;">
                         <div class="input-field" style="height:45px!important; box-shadow:0 2px 2px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);">
                             <input style="color:#444; height:45px!important; width:180px; margin:0; padding:0 15px;" type="text" placeholder="Search...">
                         </div>
@@ -48,5 +75,4 @@
                 <li><a class="waves-effect" href="#!"><i class="material-icons">book</i>Learn</a></li>
                 <li><a class="waves-effect" href="/create"><i class="material-icons">create</i>Create</a></li>
             </ul>
-            <a id="open-slide-out" href="#" data-activates="slide-out" class="valign-wrapper button-collapse"><i class="valign material-icons">menu</i></a>
         </nav>
