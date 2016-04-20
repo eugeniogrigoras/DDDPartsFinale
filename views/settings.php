@@ -85,7 +85,7 @@
                     <i id="passwordIcon" onclick="showPassword();" style="cursor:pointer; color: #444; position:inherit; z-index:24; left:30px; top:-50px; background-color:white" class="material-icons right">visibility</i>
                 </div>
                 <div class="input-field col s12">
-                    <textarea name="description" id="description" class="materialize-textarea" max-length="300"><?php echo requestData()["DESCRIZIONE"]; ?></textarea>
+                    <textarea name="description" id="description" class="materialize-textarea" length="300" maxlength="300"><?php echo requestData()["DESCRIZIONE"]; ?></textarea>
                     <label for="description">Description</label>
                 </div>
                 <div class=" col l12 m12 s12">
@@ -104,10 +104,7 @@
 <?php require_once 'terzo.php'; ?>
 
 <script>
-
-
     $(document).ready(function() {
-        
         $("#upload").submit(function(e) {
             e.preventDefault();  
             var ajax = new XMLHttpRequest();
