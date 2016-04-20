@@ -6,7 +6,7 @@
 	$data=requestData();
 	if ($data) {
 		if (isset($_REQUEST["description"])) {
-			if ($data["DESCRIPTION"]!=$_REQUEST["description"]) {
+			if ($data["DESCRIZIONE"]!=$_REQUEST["description"]) {
 					changeDescription($_REQUEST["description"]);
 					echo "Description changed";
 				}

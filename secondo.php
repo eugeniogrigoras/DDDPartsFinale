@@ -5,13 +5,25 @@
         <![endif]-->
 
         <!-- Add your site or application content here -->
+        <div class="navbar-fixed">
         <nav>
             <div class="nav-wrapper">
                 <a style="display:block; margin: 0 13px;" class="button-collapse" href="#" data-activates="slide-out"><i class="material-icons">menu</i></a>
                 <a href="#!" style="font-weight:300; font-size:24px;" class="brand-logo">DDDParts</a>
                 <ul class="right hide-on-med-and-down" style="height:inherit!important; font-weight:300">
                     <?php if (isset($_SESSION["ID"])): ?>
-                    <li class="waves-effect"><a href="#"><i style="margin:0!important" class="material-icons">notifications</i><span class="new badge red lighten-1">4</span></a></li>
+                    <li>
+                        <a data-alignment="right" data-constrainwidth="false" data-beloworigin="true" class="nav dropdown-button waves-effect" data-activates="notifications">
+                            <i style="margin:0!important" class="material-icons">notifications</i>
+                            <span class="new badge deep-orange accent-2">4</span>
+                        </a>
+                        <ul style="font-weight:400!important" id='notifications' class='dropdown-content'>
+                            <li><a href="">NOTIFICATIONS<span style="margin-left:15px" class="new badge deep-orange accent-2">4</span></a></li>
+                            <li class="divider"></li>
+                            <li><a href="#!">one</a></li>
+                            <li><a href="#!">two</a></li>
+                        </ul>
+                    </li>
                     <li style="margin-right:13px">
                         <a data-beloworigin="true" class='truncate dropdown-button waves-effect' data-activates='profile-option-nav'>
                             <i class="material-icons left">account_circle</i>
@@ -19,15 +31,15 @@
                             <?php echo $_SESSION["NOME"]." ".$_SESSION["COGNOME"]; ?>
                         </a>
                         <ul style="font-weight:400!important" id='profile-option-nav' class='dropdown-content'>
-                                <li><a class="waves-effect" href="/account"><i class="material-icons">face</i>Profile</a></li>
-                                <li><a class="waves-effect" href="/settings"><i class="material-icons">settings</i>Settings</a></li>
-                                <li class="divider"></li>
-                                <form action="/form.php" method="post" enctype="multipart/form-data">
-                                    <input type="hidden" value="logout" name="getpage">
-                                    <li><a class="waves-effect" onclick="document.getElementById('logout').click();"><i class="material-icons">keyboard_tab</i>Logout</a></li>
-                                    <button type="submit" id="logout" name="submit" style="display:none"></button>
-                                </form>
-                            </ul>
+                            <li><a class="waves-effect" href="/account"><i class="material-icons">face</i>Profile</a></li>
+                            <li><a class="waves-effect" href="/settings"><i class="material-icons">settings</i>Settings</a></li>
+                            <li class="divider"></li>
+                            <form action="/form.php" method="post" enctype="multipart/form-data">
+                                <input type="hidden" value="logout" name="getpage">
+                                <li><a class="waves-effect" onclick="document.getElementById('logout').click();"><i class="material-icons">keyboard_tab</i>Logout</a></li>
+                                <button type="submit" id="logout" name="submit" style="display:none"></button>
+                            </form>
+                        </ul>
                     </li>
                     <?php endif; ?>
                 </ul> 
@@ -39,8 +51,8 @@
                             <img src="<?php echo requestPath()."/profile.jpg";?>" alt="" class="z-depth-1 circle">
                         </div>
                         <div class="col s9 profile-menu">
-                            <a data-beloworigin="true" class='truncate dropdown-button waves-effect waves-light' data-activates='profile-option'>
-                                <i style="margin:0!important" class="material-icons right">arrow_drop_down</i><?php echo $_SESSION["NOME"]." ".$_SESSION["COGNOME"]; ?>
+                            <a data-beloworigin="true" class='truncate dropdown-button waves-effect' data-activates='profile-option'>
+                                <i style="margin:0!important; margin-right:-8px!important" class="material-icons right">arrow_drop_down</i><?php echo $_SESSION["NOME"]." ".$_SESSION["COGNOME"]; ?>
                             </a>
 
                             <ul id='profile-option' class='dropdown-content'>
@@ -76,3 +88,4 @@
                 <li><a class="waves-effect" href="/create"><i class="material-icons">create</i>Create</a></li>
             </ul>
         </nav>
+        </div>

@@ -3,7 +3,7 @@
 <style>
 	div.main-content {
         margin-top: 24px;
-        margin-bottom: 24px;
+        margin-bottom: 24px!important;
     }
 
     div.main-content form {
@@ -20,7 +20,7 @@
     }
 
     div.row {
-        margin-bottom: 0!important;
+        margin-bottom: 0;
     }
     #avatar img {
         width: 100%;
