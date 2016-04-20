@@ -19,9 +19,13 @@
 <script>
 	$('a.like-button').on('click', function() {
 		$likes=parseInt($('span#likes').html());
-		$likes++;
+    if ($('a.like-button').hasClass('liked')) {
+        $likes--;
+    } else {
+        $likes++;
+    }
 		$('span#likes').text($likes);
-  		$(this).toggleClass('liked');
+  	$(this).toggleClass('liked');
 	});
 </script>
 
