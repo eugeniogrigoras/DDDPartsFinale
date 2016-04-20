@@ -29,12 +29,18 @@ body {
   font-size: 1rem;
   transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   filter: grayscale(100%);
+  -webkit-filter:grayscale(100%);
+  -moz-filter:grayscale(100%);
+  -o-filter:grayscale(100%);
   user-select: none;
 }
 .like-button.liked {
   color: #ff6e6f;
   border-color: currentColor;
   filter: grayscale(0);
+  -webkit-filter:grayscale(0);
+  -moz-filter:grayscale(0);
+  -o-filter:grayscale(0);
 }
 .like-button:hover {
   border-color: currentColor;
