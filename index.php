@@ -66,6 +66,10 @@
         }   
     });
 
+    Flight::route('/search(/@message)', function($message){
+            Flight::render('search', array('message' =>  $message)); 
+    });
+
 /*    Flight::route('POST /settings(/@message)', function($message){
         if (logged()) {
             echo "POST";

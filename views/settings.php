@@ -80,8 +80,8 @@
                     <label for="actual-password">Actual Password</label>
                 </div>
                 <div class="password input-field col l6 m6 s12" style="width: calc(50% - 30px);">
-                    <input disabled name="password" maxlength="30" style="margin-right:30px!important;" id="password" type="password" class="validate" pattern=".{5,}[a-z0-9A-Z]">
-                    <label data-error="Letters & numbers!" for="password">New Password</label>
+                    <input disabled name="password" maxlength="30" style="margin-right:30px!important;" id="password" type="password" class="validate" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$">
+                    <label data-error="Invalid pattern!" for="password">New Password</label>
                     <i id="passwordIcon" onclick="showPassword();" style="cursor:pointer; color: #444; position:inherit; z-index:24; left:30px; top:-50px; background-color:white" class="material-icons right">visibility</i>
                 </div>
                 <div class="input-field col s12">
@@ -211,6 +211,15 @@
         if(this.value == document.getElementById("actual-password-hidden").value) {
             document.getElementById("password").removeAttribute("disabled"); 
         }
+    });
+
+    superplaceholder({
+    el: document.querySelector('#password'),
+    sentences: [ 'Minimum 8 characters', 'At least 1 UpperCase', 'At least 1 LowerCase', 'At least 1 Number Or SpecialChar'],
+    options: {
+        loop:true,
+        letterDelay: 40
+    }
     });
 </script>
 

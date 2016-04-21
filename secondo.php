@@ -41,6 +41,8 @@
                             </form>
                         </ul>
                     </li>
+                    <?php else: ?>
+                        <li style="margin-right: 13px"><a class="waves-effect" href="/login" style="text-align: center;"><i class="material-icons">account_circle</i>Login</a><li>
                     <?php endif; ?>
                 </ul> 
             </div>
