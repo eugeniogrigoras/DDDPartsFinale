@@ -38,6 +38,7 @@
         <form id="create" action="/form.php" method="post" enctype="multipart/form-data" class="col s12 z-depth-1">
             <div class="row title">Project <?php if(isset($message)) echo "- ".$message ?></div>
         	<input type="hidden" value="create" name="getpage">
+            <input multiple type="file" name="fileToUpload[]" id="fileToUpload">
             <div class="row form">
                 <div class="input-field col s12">
                     <input required name="title" id="title" type="text" class="validate">
@@ -83,6 +84,66 @@
 </main>
 
 <?php require_once 'terzo.php'; ?>
+
+<script>
+    $(document).ready(function() {
+        $("#create").submit(function(e) {
+            e.preventDefault();  
+            var files = _("fileToUpload").files;
+            for (var i = 0, f; f = files[i]; i++) {
+                uploadFile(f);
+            }
+        });
+        
+    });
+
+    function uploadFile (file) {
+        var ajax = new XMLHttpRequest();
+        var formdata = new FormData();
+        
+        //alert(file.name+" | "+file.size+" | "+file.type);
+        //ajax.upload.addEventListener("progress", progressHandler, false);
+        formdata.append("fileToUpload", file);   
+        ajax.addEventListener("load", completeHandler, false);
+        ajax.addEventListener("error", errorHandler, false);
+        ajax.addEventListener("abort", abortHandler, false);
+        ajax.open("POST", "/create.php");
+        ajax.send(formdata);
+    }
+
+    function _(el){
+        return document.getElementById(el);
+    }
+
+    function completeHandler(event){
+        //alert("Ciao");
+        if (event.target.responseText) {
+            var t = event.target.responseText;
+            Materialize.toast(t, 4000,'',function(){})
+            
+        } else {
+            Materialize.toast("No Updates", 2500)
+        }
+        //_("status").innerHTML = event.target.responseText;
+        //_("progressBar").value = 0;
+    }
+
+    function progressHandler(event){
+        //_("loaded_n_total").innerHTML = "Uploaded "+event.loaded+" bytes of "+event.total;
+        var percent = (event.loaded / event.total) * 100;
+        _("progressBar").style.width = Math.round(percent)+"%";
+        //_("status").innerHTML = Math.round(percent)+"% uploaded... please wait";
+    }
+    
+    function errorHandler(event){
+        //_("status").innerHTML = "Upload Failed";
+        Materialize.toast("Upload Failed", 2500);
+    }
+    function abortHandler(event){
+        //_("status").innerHTML = "Upload Aborted";
+        Materialize.toast("Upload Aborted", 2500);
+    }
+</script>
 
 <script>
     function categorySelect(category) {
