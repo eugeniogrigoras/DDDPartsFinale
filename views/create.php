@@ -38,7 +38,9 @@
         <form id="create" action="/form.php" method="post" enctype="multipart/form-data" class="col s12 z-depth-1">
             <div class="row title">Project <?php if(isset($message)) echo "- ".$message ?></div>
         	<input type="hidden" value="create" name="getpage">
+            <ul class="collection" id="uploadedFiles"></ul>
             <input multiple type="file" name="fileToUpload[]" id="fileToUpload">
+            
             <div class="row form">
                 <div class="input-field col s12">
                     <input required name="title" id="title" type="text" class="validate">
@@ -87,12 +89,32 @@
 
 <script>
     $(document).ready(function() {
-        $("#create").submit(function(e) {
-            e.preventDefault();  
+
+        var arr = ['png', 'jpg', 'gif','zip'];
+
+        $("#fileToUpload").change(function() {
             var files = _("fileToUpload").files;
             for (var i = 0, f; f = files[i]; i++) {
-                uploadFile(f);
+                var sizeInMB = (f.size / (1024*1024)).toFixed(4);
+                $("#uploadedFiles").append("<li class='collection-item avatar'><i class='material-icons circle'>folder</i><span class='title truncate' style='margin-right:30px'>"+f.name+"</span><p class='truncate' style='margin-right:30px'>"+sizeInMB+" MB<br>Status</p><a href='#!' class='secondary-content'><i class='material-icons deep-orange-text text-accent-2'>cancel</i></a></li>");
+                if (jQuery.inArray( f.type.toLowerCase(), arr ) != -1) {
+                    uploadFile(f);
+                } else {
+                    Materialize.toast(f.name+" extensione is not allowed", 2500)
+                }   
             }
+        });
+
+        $("#create").submit(function(e) {
+            e.preventDefault();  
+            /*var files = _("fileToUpload").files;
+            for (var i = 0, f; f = files[i]; i++) {
+                if (jQuery.inArray( f.type.toLowerCase(), arr ) != -1) {
+                    uploadFile(f);
+                } else {
+                    Materialize.toast(f.name+" extensione is not allowed", 2500)
+                }   
+            }*/
         });
         
     });
@@ -119,7 +141,7 @@
         //alert("Ciao");
         if (event.target.responseText) {
             var t = event.target.responseText;
-            Materialize.toast(t, 4000,'',function(){})
+            Materialize.toast(t, 2000,'',function(){})
             
         } else {
             Materialize.toast("No Updates", 2500)
