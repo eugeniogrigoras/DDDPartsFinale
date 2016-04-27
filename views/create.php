@@ -38,10 +38,26 @@
         <form id="create" action="/form.php" method="post" enctype="multipart/form-data" class="col s12 z-depth-1">
             <div class="row title">Project <?php if(isset($message)) echo "- ".$message ?></div>
         	<input type="hidden" value="create" name="getpage">
-            <ul class="collection" id="uploadedFiles"></ul>
-            <input multiple type="file" name="fileToUpload[]" id="fileToUpload">
-            
-            <div class="row form">
+            <div class="row">
+                <div class="col s12" style="padding:0!important">
+                    <ul class="tabs">
+                        <li class="tab col s3"><a class="active" href="#files">Files</a></li>
+                        <li class="tab col s3"><a href="#details">Details</a></li>
+                    </ul>
+                </div>
+                <!--FILES-->
+                <div id="files" class="col s12">
+                    <div style="text-align:center; margin:15px 0;">
+                        <a style="font-size:15px;" class="deep-orange accent-2 white-text waves-effect waves-light btn-flat" onclick="$('#fileToUpload').click();">Select
+                            <i class="material-icons right">file_upload</i>
+                        </a>
+                    </div>
+                    <ul class="collection" id="uploadedFiles"></ul>
+                    <input style="display:none" multiple type="file" name="fileToUpload[]" id="fileToUpload">
+                </div>
+                <!--DETAILS-->
+                <div id="details" class="col s12">
+                    <div class="row form">
                 <div class="input-field col s12">
                     <input required name="title" id="title" type="text" class="validate">
                     <label data-error="Wrong!" for="title">Title</label>
@@ -75,12 +91,17 @@
                     <br><br>
                 </div>
                 <div class=" col l12 m12 s12">
-                	<a style="font-size:15px;" class="deep-orange accent-2 white-text right waves-effect waves-light btn-flat" onclick="validate()">Create
+                    <a style="font-size:15px;" class="deep-orange accent-2 white-text right waves-effect waves-light btn-flat" onclick="validate()">Create
                         <i class="material-icons right">send</i>
                     </a>
                 </div>
                 <button id="submit" type="submit" name="submit" style="display:none">
             </div>
+                </div>
+            </div>
+            
+            
+            
         </form>
     </div>
 </main>
@@ -90,80 +111,115 @@
 <script>
     $(document).ready(function() {
 
-        var arr = ['png', 'jpg', 'gif','zip'];
+        var arr = ['png', 'jpg', 'gif','zip', 'iso'];
+
+        var j = 0;
 
         $("#fileToUpload").change(function() {
             var files = _("fileToUpload").files;
             for (var i = 0, f; f = files[i]; i++) {
+                j++;
+                var extension = f.name.substr((f.name.lastIndexOf('.')+1));
                 var sizeInMB = (f.size / (1024*1024)).toFixed(4);
-                $("#uploadedFiles").append("<li class='collection-item avatar'><i class='material-icons circle'>folder</i><span class='title truncate' style='margin-right:30px'>"+f.name+"</span><p class='truncate' style='margin-right:30px'>"+sizeInMB+" MB<br>Status</p><a href='#!' class='secondary-content'><i class='material-icons deep-orange-text text-accent-2'>cancel</i></a></li>");
-                if (jQuery.inArray( f.type.toLowerCase(), arr ) != -1) {
-                    uploadFile(f);
+                $("#uploadedFiles").append("<li id='file"+j+"' class='collection-item avatar'><i class='material-icons circle'>folder</i><span class='title truncate' style='margin-right:30px'>"+f.name+"</span><p class='truncate' style='margin-right:30px'>"+sizeInMB+" MB<br><span id='"+j+"'>Status</span></p><input type='hidden' value='Status' id='status"+j+"'><a href='#!' onclick='abort("+j+")' class='secondary-content'><i class='material-icons deep-orange-text text-accent-2'>cancel</i></a></li>");
+                if (jQuery.inArray( extension.toLowerCase(), arr ) != -1) {
+                    uploadFile(f,j);
                 } else {
-                    Materialize.toast(f.name+" extensione is not allowed", 2500)
+                    _(j).innerHTML='Invalid Extension';
+                    _("status"+j).value='Invalid Extension';
+                    //Materialize.toast(f.name+" extensione is not allowed", 2500)
                 }   
             }
         });
 
         $("#create").submit(function(e) {
-            e.preventDefault();  
-            /*var files = _("fileToUpload").files;
-            for (var i = 0, f; f = files[i]; i++) {
-                if (jQuery.inArray( f.type.toLowerCase(), arr ) != -1) {
-                    uploadFile(f);
-                } else {
-                    Materialize.toast(f.name+" extensione is not allowed", 2500)
-                }   
-            }*/
+            e.preventDefault(); 
         });
         
     });
+    
+    function abort (i) {
+         
+        switch(_("status"+i).value) {
+            case "Uploaded":
+                alert("Delete From Server");
+                //funzionePerEliminareIlFileDalServer();
+                _("status"+i).value="Deleted";
+                _(i).innerHTML="Deleted";
+                break;
 
-    function uploadFile (file) {
+            case "Status":
+                _("status"+i).value='Abort';
+                break;
+
+            case "Deleted":
+            case "Upload Failed":
+            case "Invalid Extension": 
+            case "Unknown Error":
+            case "File Already Exists":
+            case "Abort": 
+            default:
+                //alert("Elimare Visibilmente");
+                var parent = _("uploadedFiles");
+                var child = _("file"+i);
+                parent.removeChild(child);
+                break;
+        }
+    }
+
+    function uploadFile (file, index) {
         var ajax = new XMLHttpRequest();
         var formdata = new FormData();
+
+        formdata.append("fileToUpload", file);  
         
         //alert(file.name+" | "+file.size+" | "+file.type);
-        //ajax.upload.addEventListener("progress", progressHandler, false);
-        formdata.append("fileToUpload", file);   
-        ajax.addEventListener("load", completeHandler, false);
-        ajax.addEventListener("error", errorHandler, false);
-        ajax.addEventListener("abort", abortHandler, false);
-        ajax.open("POST", "/create.php");
+        ajax.upload.addEventListener("progress", function (event) {
+            //alert(file.name);
+            //_("loaded_n_total").innerHTML = "Uploaded "+event.loaded+" bytes of "+event.total;
+            if (_("status"+index).value=='Abort') {
+                ajax.abort();
+            } else {
+                var percent = (event.loaded / event.total) * 100;
+                //console.log(file.name+" "+Math.round(percent)+"%");
+                _(index).innerHTML=Math.round(percent)+"%";
+                //_("progressBar").style.width = Math.round(percent)+"%";
+                //_("status").innerHTML = Math.round(percent)+"% uploaded... please wait";
+            }         
+        }, false);
+
+        ajax.addEventListener("load", function (event) {
+            if (event.target.responseText) {
+                _(index).innerHTML=event.target.responseText;
+                _("status"+index).value=event.target.responseText;
+                //var t = event.target.responseText;
+                //Materialize.toast(t, 2000,'',function(){})
+            } else {
+                Materialize.toast("No Updates", 2500)
+            }
+            //_("status").innerHTML = event.target.responseText;
+            //_("progressBar").value = 0;
+        }, false);
+
+        ajax.addEventListener("error", function (event) {
+            //_("status").innerHTML = "Upload Failed";
+            _(index).innerHTML="Upload Failed";
+            _("status"+index).value="Upload Failed";
+            //Materialize.toast("Upload Failed", 2500);
+        }, false);
+
+        ajax.addEventListener("abort", function (event) {
+            //_("status").innerHTML = "Upload Aborted";
+            _(index).innerHTML="Upload Aborted";
+            //Materialize.toast("Upload Aborted", 2500);
+        }, false);
+
+        ajax.open("POST", "/uploadFile.php");
         ajax.send(formdata);
     }
 
     function _(el){
         return document.getElementById(el);
-    }
-
-    function completeHandler(event){
-        //alert("Ciao");
-        if (event.target.responseText) {
-            var t = event.target.responseText;
-            Materialize.toast(t, 2000,'',function(){})
-            
-        } else {
-            Materialize.toast("No Updates", 2500)
-        }
-        //_("status").innerHTML = event.target.responseText;
-        //_("progressBar").value = 0;
-    }
-
-    function progressHandler(event){
-        //_("loaded_n_total").innerHTML = "Uploaded "+event.loaded+" bytes of "+event.total;
-        var percent = (event.loaded / event.total) * 100;
-        _("progressBar").style.width = Math.round(percent)+"%";
-        //_("status").innerHTML = Math.round(percent)+"% uploaded... please wait";
-    }
-    
-    function errorHandler(event){
-        //_("status").innerHTML = "Upload Failed";
-        Materialize.toast("Upload Failed", 2500);
-    }
-    function abortHandler(event){
-        //_("status").innerHTML = "Upload Aborted";
-        Materialize.toast("Upload Aborted", 2500);
     }
 </script>
 

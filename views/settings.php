@@ -61,9 +61,6 @@
     <div class="container main-content row" style="margin-bottom:24px!important">
         <!-- <h4 id="status"></h4>
         <p id="loaded_n_total"></p> -->
-        <div class="progress" style="margin:0!important; border-radius:0!important; background-color:#fe9da0">
-            <div id="progressBar" class="determinate" style="width:0%; background-color:#e44a3e"></div>
-        </div>
         <form novalidate id="upload" method="post" enctype="multipart/form-data" class="col s12 z-depth-1">
             <input type="hidden" value="settings" name="getpage">
             <input accept=".jpg,.jpeg" type="file" name="fileToUpload" id="fileToUpload" style="display:none;">
@@ -86,6 +83,7 @@
                 </div>
                 <div class="input-field col s12">
                     <textarea name="description" id="description" class="materialize-textarea" length="300" maxlength="300"><?php echo requestData()["DESCRIZIONE"]; ?></textarea>
+                    <input type="hidden" id="descriptionHidden" value="<?php echo requestData()["DESCRIZIONE"]; ?>">
                     <label for="description">Description</label>
                 </div>
                 <div class=" col l12 m12 s12">
@@ -98,6 +96,9 @@
                 </div>
             </div>
         </form>
+        <div class="progress" style="margin:0!important; border-radius:0!important; background-color:#fe9da0">
+            <div id="progressBar" class="determinate" style="width:0%; background-color:#e44a3e"></div>
+        </div>
     </div>
 </main>
 
@@ -110,7 +111,7 @@
             var ajax = new XMLHttpRequest();
             var formdata = new FormData();
             var file = _("fileToUpload").files[0];
-            if(file || _("password").value.length!=0 || _("description").value.length!=0) {
+            if(file || _("password").value.length!=0 || _("description").value!=_("descriptionHidden").value) {
                 ajax.upload.addEventListener("progress", progressHandler, false);
             }
             if (file) {
