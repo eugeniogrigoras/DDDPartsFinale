@@ -6,10 +6,10 @@
 	$destinationPath = "users/".$_SESSION["NOME"]."-".$_SESSION["COGNOME"]."-".$_SESSION["EMAIL"]."/"."Project/".$file;
 	if (!unlink($destinationPath))
 	  	{
-	  		echo ("Error deleting $file");
+	  		echo ("Error Deleting");
 	  	}
 	else
 	  	{
-	  		echo ("Deleted $file");
+	  		echo ("Deleted");
 	  	}
 ?>

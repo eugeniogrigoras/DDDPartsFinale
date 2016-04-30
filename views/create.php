@@ -110,7 +110,7 @@
 
 <script>
     var names = [];
-    
+
     $(document).ready(function() {
 
         var arr = ['png', 'jpg', 'gif','zip', 'iso'];
@@ -144,7 +144,7 @@
     function abort (i) {
         switch(_("status"+i).value) {
             case "Uploaded":
-                //alert("Delete From Server");
+            case "Error Deleting":
                 deleteFromServer (i);
                 break;
 
@@ -172,8 +172,8 @@
 
         ajax.addEventListener("load", function (event) {
             if (event.target.responseText) {
-                _("status"+i).value="Deleted";
-                _(i).innerHTML="Deleted";
+                _("status"+i).value=event.target.responseText;
+                _(i).innerHTML=event.target.responseText;
             }
         }, false);
 
