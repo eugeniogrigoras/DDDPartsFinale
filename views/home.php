@@ -5,8 +5,8 @@
 		background-color: black;
 	}
 	.header {
-		padding-top: 24px;
-		background-image: url('/img/elephante.png');
+		/*padding-top: 24px;*/
+		/*background-image: url('/img/elephante.png');*/
 		background-repeat: no-repeat;
 		background-size: 15%;
 		background-position: center top;
@@ -17,12 +17,20 @@
 		font-size: 24px;
 		height:1920px;
 	}
+	.content {
+		padding: 24px;
+	}
 </style>
 <?php require_once 'secondo.php'; ?>
 <main>
 
 	<div class="header">
-		<!--<p style="margin:0">THE PLACE TO BE FOR 3D</p>-->
+		<div class="content" style="background-color: black">
+			<img src="/img/elephante.png">
+			<!-- <p style="margin:0">THE PLACE TO BE FOR 3D</p> -->
+			<h3>What is DDDParts?</h3>
+			<p style="width: 700px; margin: auto">DDDParts is a social network where users can upload and share their DDDProjects or download one for print its!</p>
+		</div>
 	</div>
 </main>
 
