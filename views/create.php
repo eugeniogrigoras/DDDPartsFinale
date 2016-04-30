@@ -109,6 +109,8 @@
 <?php require_once 'terzo.php'; ?>
 
 <script>
+    var names = [];
+    
     $(document).ready(function() {
 
         var arr = ['png', 'jpg', 'gif','zip', 'iso'];
@@ -119,10 +121,10 @@
             var files = _("fileToUpload").files;
             for (var i = 0, f; f = files[i]; i++) {
                 j++;
+                names[j]=f.name;
                 var extension = f.name.substr((f.name.lastIndexOf('.')+1));
                 var sizeInMB = (f.size / (1024*1024)).toFixed(4);
-                f.name = replaceAll(f.name, " ", "_");
-                $("#uploadedFiles").append("<li id='file"+j+"' class='collection-item avatar'><i class='material-icons circle'>folder</i><span class='title truncate' style='margin-right:30px'>"+f.name+"</span><p class='truncate' style='margin-right:30px'>"+sizeInMB+" MB<br><span id='"+j+"'>Status</span></p><input type='hidden' value='Status' id='status"+j+"'><a href='#!' onclick=abort("+j+",'"+f.name+"') class='secondary-content'><i class='material-icons deep-orange-text text-accent-2'>cancel</i></a></li>");
+                $("#uploadedFiles").append("<li id='file"+j+"' class='collection-item avatar'><i class='material-icons circle'>folder</i><span class='title truncate' style='margin-right:30px'>"+f.name+"</span><p class='truncate' style='margin-right:30px'>"+sizeInMB+" MB<br><span id='"+j+"'>Status</span></p><input type='hidden' value='Status' id='status"+j+"'><a href='#!' onclick='abort("+j+")' class='secondary-content'><i class='material-icons deep-orange-text text-accent-2'>cancel</i></a></li>");
                 if (jQuery.inArray( extension.toLowerCase(), arr ) != -1) {
                     uploadFile(f,j);
                 } else {
@@ -139,12 +141,11 @@
         
     });
     
-    function abort (i, name) {
-         
+    function abort (i) {
         switch(_("status"+i).value) {
             case "Uploaded":
                 //alert("Delete From Server");
-                deleteFromServer (name, i);
+                deleteFromServer (i);
                 break;
 
             case "Status":
@@ -166,7 +167,7 @@
         }
     }
 
-    function deleteFromServer (n, i) {
+    function deleteFromServer (i) {
         var ajax = new XMLHttpRequest();
 
         ajax.addEventListener("load", function (event) {
@@ -181,7 +182,7 @@
             _("status"+i).value="Error Occured";
         }, false);
 
-        ajax.open("DELETE", "/deleteFile.php?name='"+n+"'");
+        ajax.open("DELETE", "/deleteFile.php?name='"+names[i]+"'");
         ajax.send();
     }
 
