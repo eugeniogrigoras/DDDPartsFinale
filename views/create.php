@@ -121,7 +121,8 @@
                 j++;
                 var extension = f.name.substr((f.name.lastIndexOf('.')+1));
                 var sizeInMB = (f.size / (1024*1024)).toFixed(4);
-                $("#uploadedFiles").append("<li id='file"+j+"' class='collection-item avatar'><i class='material-icons circle'>folder</i><span class='title truncate' style='margin-right:30px'>"+f.name+"</span><p class='truncate' style='margin-right:30px'>"+sizeInMB+" MB<br><span id='"+j+"'>Status</span></p><input type='hidden' value='Status' id='status"+j+"'><a href='#!' onclick='abort("+j+")' class='secondary-content'><i class='material-icons deep-orange-text text-accent-2'>cancel</i></a></li>");
+                f.name = replaceAll(f.name, " ", "_");
+                $("#uploadedFiles").append("<li id='file"+j+"' class='collection-item avatar'><i class='material-icons circle'>folder</i><span class='title truncate' style='margin-right:30px'>"+f.name+"</span><p class='truncate' style='margin-right:30px'>"+sizeInMB+" MB<br><span id='"+j+"'>Status</span></p><input type='hidden' value='Status' id='status"+j+"'><a href='#!' onclick=abort("+j+",'"+f.name+"') class='secondary-content'><i class='material-icons deep-orange-text text-accent-2'>cancel</i></a></li>");
                 if (jQuery.inArray( extension.toLowerCase(), arr ) != -1) {
                     uploadFile(f,j);
                 } else {
@@ -138,14 +139,12 @@
         
     });
     
-    function abort (i) {
+    function abort (i, name) {
          
         switch(_("status"+i).value) {
             case "Uploaded":
-                alert("Delete From Server");
-                //funzionePerEliminareIlFileDalServer();
-                _("status"+i).value="Deleted";
-                _(i).innerHTML="Deleted";
+                //alert("Delete From Server");
+                deleteFromServer (name, i);
                 break;
 
             case "Status":
@@ -165,6 +164,25 @@
                 parent.removeChild(child);
                 break;
         }
+    }
+
+    function deleteFromServer (n, i) {
+        var ajax = new XMLHttpRequest();
+
+        ajax.addEventListener("load", function (event) {
+            if (event.target.responseText) {
+                _("status"+i).value="Deleted";
+                _(i).innerHTML="Deleted";
+            }
+        }, false);
+
+        ajax.addEventListener("error", function (event) {
+            _(i).innerHTML="Error Occured";
+            _("status"+i).value="Error Occured";
+        }, false);
+
+        ajax.open("DELETE", "/deleteFile.php?name='"+n+"'");
+        ajax.send();
     }
 
     function uploadFile (file, index) {
