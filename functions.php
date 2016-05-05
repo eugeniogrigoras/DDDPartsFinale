@@ -102,6 +102,31 @@
     		}
     	}
 	}
+
+	function executeQueryAndGetLastId($QUERY) {
+		$conn= new mysqli("localhost","root","",'my_dddparts'); 
+
+    	if ($conn->connect_error) {
+        	die("Connection failed: " . $conn->connect_error);
+        	mysqli_close($conn);
+        	return false;
+    	} else {
+    		$ris=$conn->query($QUERY);
+    		if ($ris) {
+    			$ret = array(
+		    		"ris" => $ris,
+		    		"id" => $conn->insert_id
+				);
+    			mysqli_close($conn);
+    			return $ret;
+    		} else {
+    			echo "Error: " . "<br>" . $conn->error;
+    			mysqli_close($conn);
+    			return false;
+    		}
+    	}
+	}
+
 	function changeDescription($DESCRIPTION) {
 		$QUERY=executeQuery("update utenti set DESCRIZIONE = '$DESCRIPTION' where ID=".$_SESSION["ID"]);
 		if($QUERY) {

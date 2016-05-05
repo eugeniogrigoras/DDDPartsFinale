@@ -53,55 +53,52 @@
                         </a>
                     </div>
                     <ul class="collection" id="uploadedFiles"></ul>
-                    <input style="display:none" multiple type="file" name="fileToUpload[]" id="fileToUpload">
+                    <input style="display:none" multiple type="file" id="fileToUpload">
                 </div>
                 <!--DETAILS-->
                 <div id="details" class="col s12">
                     <div class="row form">
-                <div class="input-field col s12">
-                    <input required name="title" id="title" type="text" class="validate">
-                    <label data-error="Wrong!" for="title">Title</label>
-                </div>
-                <div class="input-field col s12">
-                    <textarea id="description" class="materialize-textarea" max-length="300"></textarea>
-                    <label for="description">Description</label>
-                </div>
-                <div class="input-field col l6 m6 s12">
-                    <select required onchange="categorySelect(this)" name="category">
-                        <option value="" disabled selected>Category</option>
-                        <?php $record = executeQuery("select * from categorie_primarie"); ?>
-                        <?php while ($riga=$record->fetch_assoc()) : ?>
-                            <option value="<?php echo $riga['ID'] ?>"><?php echo $riga['NOME']; ?></option>
-                        <?php endwhile; ?>
-                    </select>
-                </div>
-                <div class="input-field col l6 m6 s12">
-                    <select id="subcategory" required disabled name="subcategory">
-                        <option value="" disabled selected>Subcategory</option>
-                    </select>
-                </div>
-                <div class="input-field col s12">
-                    <input id="tag-input" type="text" class="validate">
-                    <label for="tag-input">Tag</label>
-                </div>
-                <div class="input-field col s12">
-                    <div id="tags"></div>
-                </div>
-                <div class=" col l12 m12 s12">
-                    <br><br>
-                </div>
-                <div class=" col l12 m12 s12">
-                    <a style="font-size:15px;" class="deep-orange accent-2 white-text right waves-effect waves-light btn-flat" onclick="validate()">Create
-                        <i class="material-icons right">send</i>
-                    </a>
-                </div>
-                <button id="submit" type="submit" name="submit" style="display:none">
+                        <div class="input-field col s12">
+                            <input required name="title" id="title" type="text" class="validate">
+                            <label data-error="Wrong!" for="title">Title</label>
+                        </div>
+                        <div class="input-field col s12">
+                            <textarea name="description" id="description" class="materialize-textarea" max-length="300"></textarea>
+                            <label for="description">Description</label>
+                        </div>
+                        <div class="input-field col l6 m6 s12">
+                            <select required onchange="categorySelect(this)" name="category">
+                                <option value="" disabled selected>Category</option>
+                                <?php $record = executeQuery("select * from categorie_primarie"); ?>
+                                <?php while ($riga=$record->fetch_assoc()) : ?>
+                                    <option value="<?php echo $riga['ID'] ?>"><?php echo $riga['NOME']; ?></option>
+                                <?php endwhile; ?>
+                            </select>
+                        </div>
+                        <div class="input-field col l6 m6 s12">
+                            <select id="subcategory" required disabled name="subcategory">
+                                <option value="" disabled selected>Subcategory</option>
+                            </select>
+                        </div>
+                        <div class="input-field col s12">
+                            <input id="tag-input" type="text" class="validate">
+                            <label for="tag-input">Tag</label>
+                        </div>
+                        <div class="input-field col s12">
+                            <div id="tags"></div>
+                        </div>
+                        <div class=" col l12 m12 s12">
+                            <br><br>
+                        </div>
+                        <div class=" col l12 m12 s12">
+                            <a style="font-size:15px;" class="deep-orange accent-2 white-text right waves-effect waves-light btn-flat" onclick="validate()">Create
+                                <i class="material-icons right">send</i>
+                            </a>
+                        </div>
+                        <button id="submit" type="submit" name="submit" style="display:none">
+                    </div>
+                </div> 
             </div>
-                </div>
-            </div>
-            
-            
-            
         </form>
     </div>
 </main>
@@ -130,15 +127,9 @@
                 } else {
                     _(j).innerHTML='Invalid Extension';
                     _("status"+j).value='Invalid Extension';
-                    //Materialize.toast(f.name+" extensione is not allowed", 2500)
                 }   
             }
         });
-
-        $("#create").submit(function(e) {
-            e.preventDefault(); 
-        });
-        
     });
     
     function abort (i) {
@@ -213,11 +204,7 @@
                 _("status"+index).value=event.target.responseText;
                 //var t = event.target.responseText;
                 //Materialize.toast(t, 2000,'',function(){})
-            } else {
-                Materialize.toast("No Updates", 2500)
             }
-            //_("status").innerHTML = event.target.responseText;
-            //_("progressBar").value = 0;
         }, false);
 
         ajax.addEventListener("error", function (event) {

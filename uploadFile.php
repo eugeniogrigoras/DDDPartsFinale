@@ -17,7 +17,6 @@
 
 		if (!file_exists($destinationPath)) {
             mkdir($destinationPath, 0777, true);
-       	 	//copy('img/default.jpg', "users/".$name."-".$surname."-".$email."/profile.jpg");
    	 	}
 
    	 	if (file_exists($destinationPath.$_FILES['fileToUpload']['name'])) {

@@ -42,6 +42,42 @@ if(isset($_POST['submit'])) {
 
 			case 'create':
 				print_r($_POST);
+				$title=$_REQUEST['title'];
+				$description=$_REQUEST['description'];
+				$subcategory=$_REQUEST['subcategory'];
+
+				$QUERY=executeQueryAndGetLastId("insert into progetti  (DESCRIZIONE, FK_CATEGORIA_SECONDARIA, FK_UTENTE, NOME) VALUES ('$description', $subcategory, $_SESSION[ID], '$title')");
+				$lastId=$QUERY['id'];
+
+				$projectPath = "users/".$_SESSION["NOME"]."-".$_SESSION["COGNOME"]."-".$_SESSION["EMAIL"]."/"."Project/";
+
+				if (!file_exists($projectPath)) {
+		            mkdir($projectPath, 0777, true);
+		   	 	}
+
+				$files = array_slice(scandir($projectPath), 2);
+			
+				foreach ($files as $file) {
+	    			$QUERY=executeQuery("insert into parti_3d  (FK_PROGETTO, NOME) VALUES ('$lastId','$file')");
+				}
+
+				if (isset($_REQUEST['tags'])) {
+					$tags=$_REQUEST['tags'];
+					foreach ($tags as $tag) {
+		    			$QUERY=executeQuery("insert ignore into tag (NOME) VALUES ('$tag')");
+					}
+
+					foreach ($tags as $tag) {
+		    			$QUERY=executeQuery("select * from tag where NOME='$tag'");
+		    			if ($QUERY && ($QUERY->num_rows > 0)) {
+							$riga=$QUERY->fetch_assoc();
+							$fkTag = $riga['ID'];
+							$QUERY=executeQuery("insert into progetti_hanno_tag (FK_PROGETTO, FK_TAG) VALUES ('$lastId', '$fkTag')");
+						}
+					}
+				}
+
+				rename ($projectPath,"users/".$_SESSION["NOME"]."-".$_SESSION["COGNOME"]."-".$_SESSION["EMAIL"]."/".$lastId."/");
 				exit();
 				break;
 
