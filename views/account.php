@@ -130,7 +130,7 @@
                         echo $QUERY->num_rows; 
                     ?>
                 </div>
-                <div class="subtitle truncate">FOLLOWING</div>
+                <div class="subtitle truncate" onclick="following()">FOLLOWING</div>
             </div>
             <div class="card col l2 m6 s12 waves-effect" id="follower">
                 <div class="number">
@@ -183,6 +183,14 @@
 
 <?php require_once 'terzo.php'; ?>
 
-<script></script>
+<script>
+    following(){
+        // SELECT * FROM `utenti` WHERE utenti.ID in (SELECT FK_UTENTE_SEGUITO FROM `utenti_seguono_utenti` WHERE FK_UTENTE=42);
+    }
+
+    follower(){
+        // SELECT * FROM `utenti` WHERE utenti.ID in (SELECT FK_UTENTE FROM `utenti_seguono_utenti` WHERE FK_UTENTE_SEGUITO=42);
+    }
+</script>
 
 <?php require_once 'quarto.php'; ?>
