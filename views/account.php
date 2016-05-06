@@ -179,6 +179,26 @@
             </div>
         </div>
     </div>
+    <br><br><br><br><br><br><br>
+
+    <!-- ------------------------------------------------------------------------------------------------------------ -->
+
+    <div class="row users">
+        <div class="col s12 m6 l4 user">
+            <div class="user-header">
+                <div id="avatar">
+                    <img src="<?php echo requestPath()."/profile.jpg";?>" alt="" class="z-depth-1 circle">
+                </div>
+                <p class="center-align">Nome</p>
+                <p class="valign-wrapper"><i class="valign material-icons" style="margin-right:20px;">place</i><span>Posto</span></p>
+            </div>
+            <div class="user-card row">
+                <div class="col s6"> Following</div>
+                <div class="col s6"> Followers</div>
+            </div>
+        </div>
+    </div>
+
 </main>
 
 <?php require_once 'terzo.php'; ?>

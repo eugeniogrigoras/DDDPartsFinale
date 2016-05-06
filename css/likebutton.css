@@ -53,7 +53,7 @@ body {
   position: relative;
   margin-right: .25em;
   font-size: 1.5rem;
-  background: url("http://wojtek.im/heart-colored.svg") no-repeat center;
+  background: url("/img/heart-colored.svg") no-repeat center;
   background-size: 100%;
   animation: heartUnlike 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
 }
@@ -62,7 +62,7 @@ body {
   animation: heartPulse 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
 }
 .liked .like-icon [class^="heart-animation-"] {
-  background: url("http://wojtek.im/heart-colored.svg") no-repeat center;
+  background: url("/img/heart-colored.svg") no-repeat center;
   background-size: 100%;
   display: block;
   position: absolute;
