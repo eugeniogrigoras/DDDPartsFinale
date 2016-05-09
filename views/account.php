@@ -104,6 +104,14 @@
             border-bottom:0px solid #ddd;
         }
     }
+
+    .user-box + .user-box {
+        margin-right:24px;
+    }
+
+    .following-button:hover {
+        cursor:pointer;
+    }
 </style>
 <?php require_once 'secondo.php'; ?>
 <main>
@@ -179,22 +187,35 @@
             </div>
         </div>
     </div>
-    <br><br><br><br><br><br><br>
 
     <!-- ------------------------------------------------------------------------------------------------------------ -->
 
-    <div class="row users">
-        <div class="col s12 m6 l4 user">
-            <div class="user-header">
-                <div id="avatar">
-                    <img src="<?php echo requestPath()."/profile.jpg";?>" alt="" class="z-depth-1 circle">
+    <div class="row users container main-content">
+        <div class="col s12 m6 l4 z-depth-1 user-box">
+            <p style="margin:0!important" class="valign-wrapper following-button" onclick="follow()"><i id="follow-icon" class="valign material-icons" style="margin-bottom:-51.5px!important;">radio_button_unchecked</i></p>
+            <div class="user row" style="background-color:white; padding:12px">
+                <div class="user-header">
+                    <div id="avatar">
+                        <img src="<?php echo requestPath()."/profile.jpg";?>" alt="" class="z-depth-1 circle">
+                    </div>
+                    <p class="center-align" style="margin:0; font-weight:600; color:#424242; margin-top:12px">Eugenio Grigoras</p>
+                    <p class="center-align" style="margin:0!important"><a class="btn-flat disabled" style="text-transform:capitalize; color:#757575"><i class="material-icons left">place</i>Position</a></p>
                 </div>
-                <p class="center-align">Nome</p>
-                <p class="valign-wrapper"><i class="valign material-icons" style="margin-right:20px;">place</i><span>Posto</span></p>
+                
             </div>
-            <div class="user-card row">
-                <div class="col s6"> Following</div>
-                <div class="col s6"> Followers</div>
+            <div class="user-card row" style="border-top:1px solid #ddd;">
+                <div class="col s6 center-align card"> 
+                    <div class="number" style="font-weight:600; color:#424242;">
+                        24
+                    </div>
+                    <div class="subtitle truncate" style="color:#757575">FOLLOWING</div>
+                </div>
+                <div class="col s6 center-align card">
+                    <div class="number" style="font-weight:600; color:#424242;">
+                        24
+                    </div>
+                    <div class="subtitle truncate" style="color:#757575">FOLLOWERS</div>
+                </div>
             </div>
         </div>
     </div>
@@ -204,11 +225,21 @@
 <?php require_once 'terzo.php'; ?>
 
 <script>
-    following(){
+    function follow () {
+        if (_('follow-icon').innerHTML == 'radio_button_checked') {
+            _('follow-icon').innerHTML = 'radio_button_unchecked';
+        } else {
+            _('follow-icon').innerHTML = 'radio_button_checked';
+        }
+    }
+    function _(el){
+        return document.getElementById(el);
+    }
+    function following() {
         // SELECT * FROM `utenti` WHERE utenti.ID in (SELECT FK_UTENTE_SEGUITO FROM `utenti_seguono_utenti` WHERE FK_UTENTE=42);
     }
 
-    follower(){
+    function follower() {
         // SELECT * FROM `utenti` WHERE utenti.ID in (SELECT FK_UTENTE FROM `utenti_seguono_utenti` WHERE FK_UTENTE_SEGUITO=42);
     }
 </script>
