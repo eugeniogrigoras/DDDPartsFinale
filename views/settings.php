@@ -43,7 +43,6 @@
     #avatar {
         overflow: hidden;
         border-radius: 50%;
-        border: 3.5px solid rgba(255, 255, 255, 0.35);
         width: 150px;
         height: 150px;
         background-size: cover; 
@@ -51,7 +50,6 @@
         text-align: center;
         cursor: pointer;
         margin:auto auto;
-        @apply(--shadow-elevation-4dp);
     }
 
 
@@ -66,7 +64,7 @@
             <input accept=".jpg,.jpeg" type="file" name="fileToUpload" id="fileToUpload" style="display:none;">
             <div class="row title">Settings <?php if(isset($message)) echo "- ".$message ?></div>
             <div class="row" style="padding:24px; background-image:url('/img/bg2.jpg'); background-size:cover">
-                <div id="avatar" onclick="chooseImage()">
+                <div id="avatar" onclick="chooseImage()" class="z-depth-1">
                     <img id="preview" src="<?php echo requestPath()."/profile.jpg";?>" >
                 </div>
             </div>
@@ -79,14 +77,14 @@
                 <div class="password input-field col l6 m6 s12" style="width: calc(50% - 30px);">
                     <input disabled name="password" maxlength="30" style="margin-right:30px!important;" id="password" type="password" class="validate" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$">
                     <label data-error="Invalid pattern!" for="password">New Password</label>
-                    <i id="passwordIcon" onclick="showPassword();" style="cursor:pointer; color: #444; position:inherit; z-index:24; left:30px; top:-50px; background-color:white" class="material-icons right">visibility</i>
+                    <i id="passwordIcon" onclick="showPassword();" style="cursor:pointer; color: #444; position:inherit; z-index:24; left:30px; top:-50px; background-color:white" class="material-icons right noselect">visibility</i>
                 </div>
                 <div class="input-field col s12">
                     <textarea name="description" id="description" class="materialize-textarea" length="300" maxlength="300"><?php echo requestData()["DESCRIZIONE"]; ?></textarea>
                     <input type="hidden" id="descriptionHidden" value="<?php echo requestData()["DESCRIZIONE"]; ?>">
                     <label for="description">Description</label>
                 </div>
-                <div class=" col l12 m12 s12">
+                <div class=" col l12 m12 s12 noselect">
                     <br><br>
                 </div>
                 <div class=" col l12 m12 s12">

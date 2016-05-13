@@ -104,3 +104,19 @@ nav ul li a i {
 :placeholder-shown { /* Standard (https://drafts.csswg.org/selectors-4/#placeholder) */
   color:    #9e9e9e;
 }
+
+::selection{ background-color: #ffcc80;}
+::moz-selection{ background-color: #ffcc80;}
+::webkit-selection{ background-color: #ffcc80;}
+::khtml-selection{ background-color: #ffcc80;}
+::ms-selection{ background-color: #ffcc80;}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none;   /* Chrome/Safari/Opera */
+  -khtml-user-select: none;    /* Konqueror */
+  -moz-user-select: none;      /* Firefox */
+  -ms-user-select: none;       /* Internet Explorer/Edge */
+  user-select: none;           /* Non-prefixed version, currently
+                                  not supported by any browser */
+}

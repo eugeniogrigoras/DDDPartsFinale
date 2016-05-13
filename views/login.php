@@ -52,7 +52,7 @@
                 <div class="password input-field col l12 m12 s12" style="width: calc(100% - 30px);">
                     <input required name="password" maxlength="30" style="margin-right:30px!important;" id="password" type="password">
                     <label for="password">Password</label>
-                    <i id="passwordIcon" onclick="showPassword();" style="cursor:pointer; color: #444; position:inherit; z-index:24; left:30px; top:-50px; background-color:white" class="material-icons right">visibility</i>
+                    <i id="passwordIcon" onclick="showPassword();" style="cursor:pointer; color: #444; position:inherit; z-index:24; left:30px; top:-50px; background-color:white" class="material-icons right noselect">visibility</i>
                 </div>
                 <div class=" col l12 m12 s12">
                     <br>

@@ -29,14 +29,13 @@
     #avatar {
         overflow: hidden;
         border-radius: 50%;
-        border: 3.5px solid rgba(255, 255, 255, 0.35);
+        
         width: 150px;
         height: 150px;
         background-size: cover; 
         z-index: 2;
         text-align: center;
         margin:auto auto;
-        @apply(--shadow-elevation-4dp);
     }
 
     div.account {
@@ -106,7 +105,7 @@
     }
 
     .user-box + .user-box {
-        margin-right:24px;
+
     }
 
     .following-button:hover {
@@ -117,17 +116,17 @@
 <main>
     <div class="container main-content row z-depth-1">
     	<div class="card col s12" style="padding:0!important">
-	        <div class="title truncate"><i style="margin:0!important; cursor:pointer" class="activator material-icons right">info_outline</i><?php echo $_SESSION["NOME"]." ".$_SESSION["COGNOME"]; ?></div>
+	        <div class="title truncate"><i style="margin:0!important; cursor:pointer" class="activator material-icons right noselect">info_outline</i><?php echo $_SESSION["NOME"]." ".$_SESSION["COGNOME"]; ?></div>
 	        <div class="" style="padding:24px; background-image:url('/img/bg2.jpg'); background-size:cover">
-	            <div id="avatar">
-	                <img src="<?php echo requestPath()."/profile.jpg";?>" alt="" class="z-depth-1 circle">
+	            <div id="avatar" class="z-depth-1">
+	                <img src="<?php echo requestPath()."/profile.jpg";?>" alt="" class="circle">
 	            </div>
 	        </div>
 	        <div class="card-reveal" style=" text-align:left; color:#444; width:inherit!important">
-	        	<span class="card-title"><i class="material-icons right">close</i><?php echo $_SESSION["NOME"]." ".$_SESSION["COGNOME"]; ?> - Information</span>
-	        	<p class="valign-wrapper"><i class="valign material-icons" style="margin-right:20px;">email</i><?php echo requestData()["EMAIL"];?></p>
-	        	<p class="valign-wrapper"><i class="valign material-icons" style="margin-right:20px;">place</i><?php echo requestData()["COMUNE"];?></p>
-	        	<p class="valign-wrapper"><i class="valign material-icons" style="margin-right:20px;">description</i><?php echo requestData()["DESCRIZIONE"];?></p>    	
+	        	<span class="card-title"><i class="material-icons right noselect">close</i><?php echo $_SESSION["NOME"]." ".$_SESSION["COGNOME"]; ?> - Information</span>
+	        	<p class="valign-wrapper"><i class="valign material-icons noselect" style="margin-right:20px;">email</i><?php echo requestData()["EMAIL"];?></p>
+	        	<p class="valign-wrapper"><i class="valign material-icons noselect" style="margin-right:20px;">place</i><?php echo requestData()["COMUNE"];?></p>
+	        	<p class="valign-wrapper"><i class="valign material-icons noselect" style="margin-right:20px;">description</i><?php echo requestData()["DESCRIZIONE"];?></p>    	
 	        </div>
         </div>
         <div class="sections col s12" style="margin-bottom:0; padding:0!important">
@@ -192,14 +191,14 @@
 
     <div class="row users container main-content">
         <div class="col s12 m6 l4 z-depth-1 user-box">
-            <p style="margin:0!important" class="valign-wrapper following-button" onclick="follow()"><i id="follow-icon" class="valign material-icons" style="margin-bottom:-51.5px!important;">radio_button_unchecked</i></p>
+            <p style="margin:0!important; color:#424242" class="valign-wrapper following-button" onclick="follow()"><i id="follow-icon" class="valign material-icons noselect" style="margin-bottom:-48px!important;">radio_button_unchecked</i></p>
             <div class="user row" style="background-color:white; padding:12px">
                 <div class="user-header">
-                    <div id="avatar">
-                        <img src="<?php echo requestPath()."/profile.jpg";?>" alt="" class="z-depth-1 circle">
+                    <div id="avatar" class="z-depth-1">
+                        <img src="<?php echo requestPath()."/profile.jpg";?>" alt="" class="circle">
                     </div>
-                    <p class="center-align" style="margin:0; font-weight:600; color:#424242; margin-top:12px">Eugenio Grigoras</p>
-                    <p class="center-align" style="margin:0!important"><a class="btn-flat disabled" style="text-transform:capitalize; color:#757575"><i class="material-icons left">place</i>Position</a></p>
+                    <p class="center-align truncate" style="margin:0; font-weight:600; color:#424242; margin-top:12px">Eugenio Grigoras</p>
+                    <p class="center-align" style="margin:0!important; font-size:14px"><a class="btn-flat disabled truncate" style="text-transform:capitalize; color:#757575"><i class="material-icons left noselect">place</i><?php echo substr(strrchr(requestData()["COMUNE"], "-"),2);?></a></p>
                 </div>
                 
             </div>
@@ -217,7 +216,7 @@
                     <div class="subtitle truncate" style="color:#757575">FOLLOWERS</div>
                 </div>
             </div>
-        </div>
+        </div>      
     </div>
 
 </main>
