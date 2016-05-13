@@ -38,15 +38,13 @@
 <main>
 	<div class="header">
 		<div class="content" style="background-color: black">
-			<img src="/img/elephante.png">
+			<img src="/img/elephante.png" style="padding-top: 24px">
 			<!-- <p style="margin:0">THE PLACE TO BE FOR 3D</p> -->
 			<h3>What is DDDParts?</h3>
-			<p style="width: 700px; margin: auto">DDDParts is a social network where users can upload and share their DDDProjects or download one for print its!</p>
+			<p class="container flow-text" style="font-weight: 200">DDDParts is a social network where users can upload and share their DDDProjects or download one for print its!</p>
 		</div>
-		<div class="row title">
-            <a href="/" class="accent-2 white-text center waves-effect waves-light btn-flat" style="background-color: #757575">Try Now!</a>
-        </div>
-			
+            <a href="/login" class="deep-orange accent-2 white-text center waves-effect btn-flat btn-large" style="margin-top: 24px;">Try Now!</a>
+
 		</div>
 	</div>
 </main>
