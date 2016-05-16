@@ -59,7 +59,7 @@
     <div class="container main-content row" style="margin-bottom:24px!important">
         <!-- <h4 id="status"></h4>
         <p id="loaded_n_total"></p> -->
-        <form novalidate id="upload" method="post" enctype="multipart/form-data" class="col s12 z-depth-1">
+        <form autocomplete="off" novalidate id="upload" method="post" enctype="multipart/form-data" class="col s12 z-depth-1">
             <input type="hidden" value="settings" name="getpage">
             <input accept=".jpg,.jpeg" type="file" name="fileToUpload" id="fileToUpload" style="display:none;">
             <div class="row title">Settings <?php if(isset($message)) echo "- ".$message ?></div>

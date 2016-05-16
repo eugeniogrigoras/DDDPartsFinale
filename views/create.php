@@ -35,7 +35,7 @@
 <?php require_once 'secondo.php'; ?>
 <main>
     <div class="container main-content row">
-        <form id="create" action="/form.php" method="post" enctype="multipart/form-data" class="col s12 z-depth-1">
+        <form autocomplete="off" id="create" action="/form.php" method="post" enctype="multipart/form-data" class="col s12 z-depth-1">
             <div class="row title">Project <?php if(isset($message)) echo "- ".$message ?></div>
         	<input type="hidden" value="create" name="getpage">
             <div class="row">
@@ -67,7 +67,7 @@
                             <label for="description">Description</label>
                         </div>
                         <div class="input-field col l6 m6 s12">
-                            <select required onchange="categorySelect(this)" name="category">
+                            <select id="category" required onchange="categorySelect(this)" name="category">
                                 <option value="" disabled selected>Category</option>
                                 <?php $record = executeQuery("select * from categorie_primarie"); ?>
                                 <?php while ($riga=$record->fetch_assoc()) : ?>
@@ -107,8 +107,23 @@
 
 <script>
     var names = [];
+    var submit = false;
+
+    function deleteProjectFolder () {
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("DELETE", "/deleteProjectFolder.php");
+        xhttp.send();
+    }
+
+    window.onbeforeunload = function () {
+        if (!submit) {
+            deleteProjectFolder();
+        } 
+    };
 
     $(document).ready(function() {
+        
+        deleteProjectFolder();
 
         var arr = ['png', 'jpg', 'gif','zip', 'iso'];
 
@@ -121,7 +136,7 @@
                 names[j]=f.name;
                 var extension = f.name.substr((f.name.lastIndexOf('.')+1));
                 var sizeInMB = (f.size / (1024*1024)).toFixed(4);
-                $("#uploadedFiles").append("<li id='file"+j+"' class='collection-item avatar'><i class='material-icons circle'>folder</i><span class='title truncate' style='margin-right:30px'>"+f.name+"</span><p class='truncate' style='margin-right:30px'>"+sizeInMB+" MB<br><span id='"+j+"'>Status</span></p><input type='hidden' value='Status' id='status"+j+"'><a href='#!' onclick='abort("+j+")' class='secondary-content'><i class='material-icons deep-orange-text text-accent-2'>cancel</i></a></li>");
+                $("#uploadedFiles").append("<li id='file"+j+"' class='collection-item avatar'><i class='material-icons circle noselect'>folder</i><span class='title truncate' style='margin-right:30px'>"+f.name+"</span><p class='truncate' style='margin-right:30px'>"+sizeInMB+" MB<br><span id='"+j+"'>Status</span></p><input type='hidden' value='Status' id='status"+j+"'><a href='#!' onclick='abort("+j+")' class='secondary-content'><i class='material-icons deep-orange-text text-accent-2'>cancel</i></a></li>");
                 if (jQuery.inArray( extension.toLowerCase(), arr ) != -1) {
                     uploadFile(f,j);
                 } else {
@@ -246,6 +261,7 @@
     }
 	function validate() {
         if($('#create')[0].checkValidity()) {
+            submit = true;
             $('#submit').click();
         } else {
             Materialize.toast('Fill in all fields!', 2000)

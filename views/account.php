@@ -190,6 +190,33 @@
     <!-- ------------------------------------------------------------------------------------------------------------ -->
 
     <div class="row users container main-content">
+        <div class="col s12 m6 l4 z-depth-1 user-box" style="margin-right:24px">
+            <p style="margin:0!important; color:#424242" class="valign-wrapper following-button" onclick="follow()"><i id="follow-icon" class="valign material-icons noselect" style="margin-bottom:-48px!important;">radio_button_unchecked</i></p>
+            <div class="user row" style="background-color:white; padding:12px">
+                <div class="user-header">
+                    <div id="avatar" class="z-depth-1">
+                        <img src="<?php echo requestPath()."/profile.jpg";?>" alt="" class="circle">
+                    </div>
+                    <p class="center-align truncate" style="margin:0; font-weight:600; color:#424242; margin-top:12px">Eugenio Grigoras</p>
+                    <p class="center-align" style="margin:0!important; font-size:14px"><a class="btn-flat disabled truncate" style="text-transform:capitalize; color:#757575"><i class="material-icons left noselect">place</i><?php echo substr(strrchr(requestData()["COMUNE"], "-"),2);?></a></p>
+                </div>
+                
+            </div>
+            <div class="user-card row" style="border-top:1px solid #ddd;">
+                <div class="col s6 center-align card"> 
+                    <div class="number" style="font-weight:600; color:#424242;">
+                        24
+                    </div>
+                    <div class="subtitle truncate" style="color:#757575">FOLLOWING</div>
+                </div>
+                <div class="col s6 center-align card">
+                    <div class="number" style="font-weight:600; color:#424242;">
+                        24
+                    </div>
+                    <div class="subtitle truncate" style="color:#757575">FOLLOWERS</div>
+                </div>
+            </div>
+        </div>  
         <div class="col s12 m6 l4 z-depth-1 user-box">
             <p style="margin:0!important; color:#424242" class="valign-wrapper following-button" onclick="follow()"><i id="follow-icon" class="valign material-icons noselect" style="margin-bottom:-48px!important;">radio_button_unchecked</i></p>
             <div class="user row" style="background-color:white; padding:12px">
@@ -216,7 +243,7 @@
                     <div class="subtitle truncate" style="color:#757575">FOLLOWERS</div>
                 </div>
             </div>
-        </div>      
+        </div>    
     </div>
 
 </main>

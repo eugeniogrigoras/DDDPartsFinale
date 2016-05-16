@@ -65,7 +65,7 @@
 <?php require_once 'secondo.php'; ?>
 <main>
     <div class="container main-content row" style="margin-bottom:24px!important">
-        <form id="register" action="/form.php" method="post" style="padding:0!important" enctype="multipart/form-data" class="col s12 z-depth-1">
+        <form autocomplete="off" id="register" action="/form.php" method="post" style="padding:0!important" enctype="multipart/form-data" class="col s12 z-depth-1">
             <input type="hidden" value="register" name="getpage">
             <input value="img/default.jpg" accept=".jpg,.jpeg" type="file" name="fileToUpload" id="fileToUpload" style="display:none;">
             <div class="title">ABOUT YOU <?php if(isset($message)) echo "- ".$message ?></div>
