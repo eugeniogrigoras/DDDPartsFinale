@@ -48,7 +48,7 @@
             </div>
             <ul id="slide-out" class="side-nav">
                 <?php if (isset($_SESSION["ID"])): ?>
-                    <li id="account" class="row">
+                    <li id="account" class="row background2">
                         <div class="col s3 profile-image">
                             <img src="<?php echo requestPath()."/profile.jpg";?>" alt="" class="z-depth-1 circle">
                         </div>

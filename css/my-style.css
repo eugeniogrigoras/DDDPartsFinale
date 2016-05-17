@@ -57,8 +57,6 @@ nav ul#slide-out li {
 
 li#account {
 	padding:25px 15px!important; 
-	background-image:url('/img/bg2.jpg'); 
-	background-size:cover;
 }
 
 nav ul#slide-out li a {
@@ -119,4 +117,98 @@ nav ul li a i {
   -ms-user-select: none;       /* Internet Explorer/Edge */
   user-select: none;           /* Non-prefixed version, currently
                                   not supported by any browser */
+}
+
+.background1 {
+	border-top:3px solid rgba(255,109,64,1);
+    	border-bottom:3px solid rgba(255,109,64,1);
+       background: rgba(33,33,33,1);
+background: -moz-linear-gradient(45deg, rgba(33,33,33,1) 0%, rgba(33,33,33,1) 90%, rgba(255,109,64,1) 90%, rgba(255,109,64,1) 100%);
+background: -webkit-gradient(left bottom, right top, color-stop(0%, rgba(33,33,33,1)), color-stop(90%, rgba(33,33,33,1)), color-stop(90%, rgba(255,109,64,1)), color-stop(100%, rgba(255,109,64,1)));
+background: -webkit-linear-gradient(45deg, rgba(33,33,33,1) 0%, rgba(33,33,33,1) 90%, rgba(255,109,64,1) 90%, rgba(255,109,64,1) 100%);
+background: -o-linear-gradient(45deg, rgba(33,33,33,1) 0%, rgba(33,33,33,1) 90%, rgba(255,109,64,1) 90%, rgba(255,109,64,1) 100%);
+background: -ms-linear-gradient(45deg, rgba(33,33,33,1) 0%, rgba(33,33,33,1) 90%, rgba(255,109,64,1) 90%, rgba(255,109,64,1) 100%);
+background: linear-gradient(45deg, rgba(33,33,33,1) 0%, rgba(33,33,33,1) 90%, rgba(255,109,64,1) 90%, rgba(255,109,64,1) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#212121', endColorstr='#ff6d40', GradientType=1 );
+    }
+
+    .background2 {
+    	border-top:3px solid #212121;
+    	border-left:3px solid #212121;
+      background: rgba(255,109,64,1);
+background: -moz-linear-gradient(-45deg, rgba(255,109,64,1) 0%, rgba(255,109,64,1) 10%, rgba(33,33,33,1) 10%, rgba(33,33,33,1) 100%);
+background: -webkit-gradient(left top, right bottom, color-stop(0%, rgba(255,109,64,1)), color-stop(10%, rgba(255,109,64,1)), color-stop(10%, rgba(33,33,33,1)), color-stop(100%, rgba(33,33,33,1)));
+background: -webkit-linear-gradient(-45deg, rgba(255,109,64,1) 0%, rgba(255,109,64,1) 10%, rgba(33,33,33,1) 10%, rgba(33,33,33,1) 100%);
+background: -o-linear-gradient(-45deg, rgba(255,109,64,1) 0%, rgba(255,109,64,1) 10%, rgba(33,33,33,1) 10%, rgba(33,33,33,1) 100%);
+background: -ms-linear-gradient(-45deg, rgba(255,109,64,1) 0%, rgba(255,109,64,1) 10%, rgba(33,33,33,1) 10%, rgba(33,33,33,1) 100%);
+background: linear-gradient(135deg, rgba(255,109,64,1) 0%, rgba(255,109,64,1) 10%, rgba(33,33,33,1) 10%, rgba(33,33,33,1) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff6d40', endColorstr='#212121', GradientType=1 );
+    }
+
+    .background {
+    	border-top:3px solid #212121;
+border-bottom:3px solid #212121;
+border-right:3px solid #212121;
+background: rgba(33,33,33,1);
+background: -moz-linear-gradient(45deg, rgba(33,33,33,1) 0%, rgba(33,33,33,1) 55%, rgba(255,109,64,1) 55%, rgba(255,109,64,1) 100%);
+background: -webkit-gradient(left bottom, right top, color-stop(0%, rgba(33,33,33,1)), color-stop(55%, rgba(33,33,33,1)), color-stop(55%, rgba(255,109,64,1)), color-stop(100%, rgba(255,109,64,1)));
+background: -webkit-linear-gradient(45deg, rgba(33,33,33,1) 0%, rgba(33,33,33,1) 55%, rgba(255,109,64,1) 55%, rgba(255,109,64,1) 100%);
+background: -o-linear-gradient(45deg, rgba(33,33,33,1) 0%, rgba(33,33,33,1) 55%, rgba(255,109,64,1) 55%, rgba(255,109,64,1) 100%);
+background: -ms-linear-gradient(45deg, rgba(33,33,33,1) 0%, rgba(33,33,33,1) 55%, rgba(255,109,64,1) 55%, rgba(255,109,64,1) 100%);
+background: linear-gradient(45deg, rgba(33,33,33,1) 0%, rgba(33,33,33,1) 55%, rgba(255,109,64,1) 55%, rgba(255,109,64,1) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#212121', endColorstr='#ff6d40', GradientType=1 );
+    }
+
+    [type="checkbox"]:checked + label:before {
+  top: -4px;
+  left: -3px;
+  width: 12px;
+  height: 22px;
+  border-top: 2px solid transparent;
+  border-left: 2px solid transparent;
+  border-right: 2px solid rgba(255,109,64,1);
+  border-bottom: 2px solid rgba(255,109,64,1);
+  -webkit-transform: rotate(40deg);
+          transform: rotate(40deg);
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+  -webkit-transform-origin: 100% 100%;
+          transform-origin: 100% 100%;
+}
+
+input:not([type]):focus:not([readonly]), input[type=text]:focus:not([readonly]), input[type=password]:focus:not([readonly]), input[type=email]:focus:not([readonly]), input[type=url]:focus:not([readonly]), input[type=time]:focus:not([readonly]), input[type=date]:focus:not([readonly]), input[type=datetime-local]:focus:not([readonly]), input[type=tel]:focus:not([readonly]), input[type=number]:focus:not([readonly]), input[type=search]:focus:not([readonly]), textarea.materialize-textarea:focus:not([readonly]) {
+	border-bottom: 1px solid rgba(255,109,64,1);
+	    box-shadow: 0 1px 0 0 rgba(255,109,64,1);
+}
+
+input:not([type]):focus:not([readonly]) + label,
+input[type=text]:focus:not([readonly]) + label,
+input[type=password]:focus:not([readonly]) + label,
+input[type=email]:focus:not([readonly]) + label,
+input[type=url]:focus:not([readonly]) + label,
+input[type=time]:focus:not([readonly]) + label,
+input[type=date]:focus:not([readonly]) + label,
+input[type=datetime-local]:focus:not([readonly]) + label,
+input[type=tel]:focus:not([readonly]) + label,
+input[type=number]:focus:not([readonly]) + label,
+input[type=search]:focus:not([readonly]) + label,
+textarea.materialize-textarea:focus:not([readonly]) + label {
+  color: rgba(255,109,64,1);
+}
+
+[type="checkbox"].filled-in:checked + label:after {
+  top: 0px;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255,109,64,1);
+  background-color: rgba(255,109,64,1);
+  z-index: 0;
+}
+
+.dropdown-content li > a, .dropdown-content li > span {
+  font-size: 16px;
+  color: rgba(255,109,64,1);
+  display: block;
+  line-height: 22px;
+  padding: 14px 16px;
 }

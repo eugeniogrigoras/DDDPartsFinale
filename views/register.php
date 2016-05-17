@@ -49,7 +49,6 @@
     #avatar {
         overflow: hidden;
         border-radius: 50%;
-        border: 3.5px solid rgba(255, 255, 255, 0.35);
         width: 150px;
         height: 150px;
         background-size: cover; 
@@ -57,7 +56,6 @@
         text-align: center;
         cursor: pointer;
         margin:auto auto;
-        @apply(--shadow-elevation-4dp);
     }
 
 
@@ -69,8 +67,8 @@
             <input type="hidden" value="register" name="getpage">
             <input value="img/default.jpg" accept=".jpg,.jpeg" type="file" name="fileToUpload" id="fileToUpload" style="display:none;">
             <div class="title">ABOUT YOU <?php if(isset($message)) echo "- ".$message ?></div>
-            <div class="" style="padding:24px; background-image:url('/img/bg2.jpg'); background-size:cover">
-                <div id="avatar" onclick="chooseImage()">
+            <div class="background" style="padding:24px;">
+                <div id="avatar" onclick="chooseImage()" class="z-depth-1">
                     <img id="preview" src="/img/default.jpg" >
                 </div>
             </div>

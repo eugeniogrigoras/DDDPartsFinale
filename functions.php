@@ -87,15 +87,15 @@
 	function getComune($FK_COMUNE) {
 			$data=executeQuery("select comuni.nome, province.nomeprovincia, regioni.nomeregione from comuni, province, regioni where comuni.id='".$FK_COMUNE."' and comuni.idprovincia=province.idprovincia and comuni.idregione=regioni.idregione");
 			if ($data) {
-			if ($data->num_rows > 0) {
-	        	$riga=$data->fetch_assoc();
-				return $riga["nomeregione"]." - ".$riga["nomeprovincia"]." - ".$riga["nome"];
+				if ($data->num_rows > 0) {
+		        	$riga=$data->fetch_assoc();
+					return $riga["nomeregione"]." - ".$riga["nomeprovincia"]." - ".$riga["nome"];
+				} else {
+					return false;
+				}
 			} else {
 				return false;
 			}
-		} else {
-			return false;
-		}
 	}
 
 	function executeQuery($QUERY) {

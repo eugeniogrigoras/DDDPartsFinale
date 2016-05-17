@@ -63,7 +63,7 @@
             <input type="hidden" value="settings" name="getpage">
             <input accept=".jpg,.jpeg" type="file" name="fileToUpload" id="fileToUpload" style="display:none;">
             <div class="row title">Settings <?php if(isset($message)) echo "- ".$message ?></div>
-            <div class="row" style="padding:24px; background-image:url('/img/bg2.jpg'); background-size:cover">
+            <div class="row background" style="padding:24px;">
                 <div id="avatar" onclick="chooseImage()" class="z-depth-1">
                     <img id="preview" src="<?php echo requestPath()."/profile.jpg";?>" >
                 </div>
@@ -124,7 +124,7 @@
                     return;
                 } 
             }
-            if (_("description").value.length!=0) {
+            if (_("description").value!=_("descriptionHidden").value) {
                     formdata.append("description", _("description").value);
             }
             ajax.addEventListener("load", completeHandler, false);

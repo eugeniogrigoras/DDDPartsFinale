@@ -14,7 +14,7 @@
         <link rel="stylesheet" href="/css/normalize.css">
         <link rel="stylesheet" href="/css/main.css">
         <script src="/js/vendor/modernizr-2.8.3.min.js"></script>
-        <link type="text/css" rel="stylesheet" href="/css/materialize.min.css"  media="screen,projection"/>
+        <link type="text/css" rel="stylesheet" href="/css/materialize.css"  media="screen,projection"/>
         <link rel="stylesheet" href="/css/my-style.css">
         <link rel="stylesheet" href="/iconfont/material-icons.css">
         <link rel="stylesheet" href="/css/likebutton.css">

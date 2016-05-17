@@ -31,6 +31,13 @@
         margin:3px;
         border-radius: 0!important;
     }
+    .tabs .indicator {
+      position: absolute;
+      bottom: 0;
+      height: 2px;
+      background-color: rgba(255,109,64,1);
+      will-change: left, right;
+    }
 </style>
 <?php require_once 'secondo.php'; ?>
 <main>
@@ -41,8 +48,8 @@
             <div class="row">
                 <div class="col s12" style="padding:0!important">
                     <ul class="tabs">
-                        <li class="tab col s3"><a class="active" href="#files">Files</a></li>
-                        <li class="tab col s3"><a href="#details">Details</a></li>
+                        <li class="tab col s3"><a class="active" href="#files" style="color:rgba(255,109,64,1)">Files</a></li>
+                        <li class="tab col s3"><a href="#details" style="color:rgba(255,109,64,1)">Details</a></li>
                     </ul>
                 </div>
                 <!--FILES-->

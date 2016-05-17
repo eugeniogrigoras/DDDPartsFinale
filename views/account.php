@@ -53,11 +53,11 @@
         color: #686868;
         font-size: 10px;
     }
-    .card:hover {
+    .user-card:hover {
         background-color: #ddd;
     }
 
-    .card {
+    .user-card {
         padding:12px 24px!important;
         text-align: center;
         position: relative;
@@ -70,30 +70,32 @@
 		webkit-transition : background-color 0.25s;
     }
 
-    .card +.card {
+    .user-card +.user-card {
         border-left:1px solid #ddd;
     }
 
+    div#profile-card {
+        border-bottom:1px solid #ddd!important;
+    }
+
     @media only screen and (min-width : 993px) {
-    	div.card-reveal {
-    		border-bottom:1px solid #ddd!important;
-    	}
+    	
     }
 
     @media only screen and (max-width : 992px) {
-        div.card:nth-of-type(1) {
+        div.user-card:nth-of-type(1) {
             border-right:1px solid #ddd;
         }
-        div.card:nth-of-type(3) {
+        div.user-card:nth-of-type(3) {
             border-right:1px solid #ddd;
         }
-        div.card:nth-of-type(5) {
+        div.user-card:nth-of-type(5) {
             border-right:1px solid #ddd;
         }
-        .card +.card {
+        .user-card +.user-card {
             border-left:0px solid #ddd;
         }
-        .card {
+        .user-card {
             border-bottom:1px solid #ddd;
         }
         #followed-collection {
@@ -111,18 +113,21 @@
     .following-button:hover {
         cursor:pointer;
     }
+
+    
+
 </style>
 <?php require_once 'secondo.php'; ?>
 <main>
     <div class="container main-content row z-depth-1">
-    	<div class="card col s12" style="padding:0!important">
+    	<div class="card col s12" style="padding:0!important; margin:0!important">
 	        <div class="title truncate"><i style="margin:0!important; cursor:pointer" class="activator material-icons right noselect">info_outline</i><?php echo $_SESSION["NOME"]." ".$_SESSION["COGNOME"]; ?></div>
-	        <div class="" style="padding:24px; background-image:url('/img/bg2.jpg'); background-size:cover">
+	        <div class="background" style="padding:24px; ">
 	            <div id="avatar" class="z-depth-1">
-	                <img src="<?php echo requestPath()."/profile.jpg";?>" alt="" class="circle">
+	                <img src="<?php echo requestPath()."/profile.jpg";?>" alt="">
 	            </div>
 	        </div>
-	        <div class="card-reveal" style=" text-align:left; color:#444; width:inherit!important">
+	        <div id="profile-card" class="card-reveal" style=" text-align:left; color:#444; width:inherit!important">
 	        	<span class="card-title"><i class="material-icons right noselect">close</i><?php echo $_SESSION["NOME"]." ".$_SESSION["COGNOME"]; ?> - Information</span>
 	        	<p class="valign-wrapper"><i class="valign material-icons noselect" style="margin-right:20px;">email</i><?php echo requestData()["EMAIL"];?></p>
 	        	<p class="valign-wrapper"><i class="valign material-icons noselect" style="margin-right:20px;">place</i><?php echo requestData()["COMUNE"];?></p>
@@ -130,7 +135,7 @@
 	        </div>
         </div>
         <div class="sections col s12" style="margin-bottom:0; padding:0!important">
-            <div class="card col l2 m6 s12 waves-effect" id="following">
+            <div class="user-card col l2 m6 s12 waves-effect" id="following">
                 <div class="number">
                     <?php
                         $QUERY=executeQuery("select * FROM utenti_seguono_utenti where FK_UTENTE=".$_SESSION["ID"]);
@@ -139,7 +144,7 @@
                 </div>
                 <div class="subtitle truncate" onclick="following()">FOLLOWING</div>
             </div>
-            <div class="card col l2 m6 s12 waves-effect" id="follower">
+            <div class="user-card col l2 m6 s12 waves-effect" id="follower">
                 <div class="number">
                     <?php
                         $QUERY=executeQuery("select * FROM utenti_seguono_utenti where FK_UTENTE_SEGUITO=".$_SESSION["ID"]);
@@ -148,7 +153,7 @@
                 </div>
                 <div class="subtitle truncate">FOLLOWERS</div>
             </div>
-            <div class="card col l2 m6 s12 waves-effect" id="likes">
+            <div class="user-card col l2 m6 s12 waves-effect" id="likes">
                 <div class="number">
                     <?php
                         $QUERY=executeQuery("select * FROM utenti_like_progetti as p, utenti_like_collezioni as c where p.FK_UTENTE=".$_SESSION["ID"]." and c.FK_UTENTE=".$_SESSION["ID"]);
@@ -157,7 +162,7 @@
                 </div>
                 <div class="subtitle truncate">LIKES</div>
             </div>
-            <div class="card col l2 m6 s12 waves-effect" id="projects">
+            <div class="user-card col l2 m6 s12 waves-effect" id="projects">
                 <div class="number">
                     <?php
                         $QUERY=executeQuery("select * FROM progetti where FK_UTENTE=".$_SESSION["ID"]);
@@ -166,7 +171,7 @@
                 </div>
                 <div class="subtitle truncate">PROJECTS</div>
             </div>
-            <div class="card col l2 m6 s12 waves-effect" id="my-collections">
+            <div class="user-card col l2 m6 s12 waves-effect" id="my-collections">
                 <div class="number">
                     <?php
                         $QUERY=executeQuery("select * FROM collezioni where FK_UTENTE=".$_SESSION["ID"]);
@@ -175,7 +180,7 @@
                 </div>
                 <div class="subtitle truncate">MY COLLECTIONS</div>
             </div>
-            <div class="card col l2 m6 s12 waves-effect" id="followed-collections">
+            <div class="user-card col l2 m6 s12 waves-effect" id="followed-collections">
                 <div class="number">
                     <?php
                         $QUERY=executeQuery("select * FROM utenti_seguono_collezioni where FK_UTENTE=".$_SESSION["ID"]);
@@ -189,75 +194,146 @@
 
     <!-- ------------------------------------------------------------------------------------------------------------ -->
 
-    <div class="row users container main-content">
-        <div class="col s12 m6 l4 z-depth-1 user-box" style="margin-right:24px">
-            <p style="margin:0!important; color:#424242" class="valign-wrapper following-button" onclick="follow()"><i id="follow-icon" class="valign material-icons noselect" style="margin-bottom:-48px!important;">radio_button_unchecked</i></p>
-            <div class="user row" style="background-color:white; padding:12px">
-                <div class="user-header">
-                    <div id="avatar" class="z-depth-1">
-                        <img src="<?php echo requestPath()."/profile.jpg";?>" alt="" class="circle">
+    <div class="row users container">
+        <?php 
+            $users=executeQuery("select * from utenti");
+            
+            while ($user=$users->fetch_assoc()) : 
+        ?>
+        <div class="col s12 m6 l4">
+            <div class="z-depth-1 card" style="background-color:white">
+                <div class="background2 card-image waves-effect waves-block waves-light activator" style="padding:12px 0;">
+                    <div id="avatar" class="z-depth-1 activator">
+                        <img class="activator" src="<?php echo requestPathUser($user["NOME"], $user["COGNOME"], $user["EMAIL"])."/profile.jpg" ?>">
                     </div>
-                    <p class="center-align truncate" style="margin:0; font-weight:600; color:#424242; margin-top:12px">Eugenio Grigoras</p>
-                    <p class="center-align" style="margin:0!important; font-size:14px"><a class="btn-flat disabled truncate" style="text-transform:capitalize; color:#757575"><i class="material-icons left noselect">place</i><?php echo substr(strrchr(requestData()["COMUNE"], "-"),2);?></a></p>
+                </div>
+                <div class="card-content" style="padding:12px 15px;">
+                    <p>
+                        <input 
+                        <?php 
+                            $data=executeQuery("select * from utenti_seguono_utenti where FK_UTENTE=".$_SESSION["ID"]." and FK_UTENTE_SEGUITO=".$user["ID"]);
+                            if ($data) {
+                                if ($data->num_rows > 0) {
+                                    echo "checked";
+                                }
+                            }
+                        ?> 
+                        type="checkbox" id="<?php echo $user["ID"]; ?>" />
+                        <label for="<?php echo $user["ID"]; ?>" style="font-weight:600; color:#424242"><?php echo $user["NOME"]." ".$user["COGNOME"] ?></label>
+                    </p>
                 </div>
                 
-            </div>
-            <div class="user-card row" style="border-top:1px solid #ddd;">
-                <div class="col s6 center-align card"> 
-                    <div class="number" style="font-weight:600; color:#424242;">
-                        24
+                <div class="card-action" style="padding:0">
+                    <div class="center-align waves-effect col s6"style="padding:6px 0;"> 
+                        <div class="number" style="font-weight:600; color:#424242;">
+                            <?php
+                                $QUERY=executeQuery("select * FROM utenti_seguono_utenti where FK_UTENTE=".$user["ID"]);
+                                echo $QUERY->num_rows; 
+                            ?>
+                        </div>
+                        <div class="subtitle truncate" style="color:#757575">FOLLOWING</div>
                     </div>
-                    <div class="subtitle truncate" style="color:#757575">FOLLOWING</div>
+                    <div class="center-align waves-effect" style="width:50%; padding:6px 0; border-left:1px solid #ddd">
+                        <div class="number" style="font-weight:600; color:#424242;">
+                            <?php
+                            $QUERY=executeQuery("select * FROM utenti_seguono_utenti where FK_UTENTE_SEGUITO=".$user["ID"]);
+                            echo $QUERY->num_rows; 
+                        ?>
+                        </div>
+                        <div class="subtitle truncate" style="color:#757575">FOLLOWERS</div>
+                    </div>
                 </div>
-                <div class="col s6 center-align card">
-                    <div class="number" style="font-weight:600; color:#424242;">
-                        24
-                    </div>
-                    <div class="subtitle truncate" style="color:#757575">FOLLOWERS</div>
-                </div>
-            </div>
-        </div>  
-        <div class="col s12 m6 l4 z-depth-1 user-box">
-            <p style="margin:0!important; color:#424242" class="valign-wrapper following-button" onclick="follow()"><i id="follow-icon" class="valign material-icons noselect" style="margin-bottom:-48px!important;">radio_button_unchecked</i></p>
-            <div class="user row" style="background-color:white; padding:12px">
-                <div class="user-header">
-                    <div id="avatar" class="z-depth-1">
-                        <img src="<?php echo requestPath()."/profile.jpg";?>" alt="" class="circle">
-                    </div>
-                    <p class="center-align truncate" style="margin:0; font-weight:600; color:#424242; margin-top:12px">Eugenio Grigoras</p>
-                    <p class="center-align" style="margin:0!important; font-size:14px"><a class="btn-flat disabled truncate" style="text-transform:capitalize; color:#757575"><i class="material-icons left noselect">place</i><?php echo substr(strrchr(requestData()["COMUNE"], "-"),2);?></a></p>
-                </div>
-                
-            </div>
-            <div class="user-card row" style="border-top:1px solid #ddd;">
-                <div class="col s6 center-align card"> 
-                    <div class="number" style="font-weight:600; color:#424242;">
-                        24
-                    </div>
-                    <div class="subtitle truncate" style="color:#757575">FOLLOWING</div>
-                </div>
-                <div class="col s6 center-align card">
-                    <div class="number" style="font-weight:600; color:#424242;">
-                        24
-                    </div>
-                    <div class="subtitle truncate" style="color:#757575">FOLLOWERS</div>
+                <div class="card-reveal">
+                    <span class="card-title grey-text text-darken-4"><i class="material-icons right noselect">close</i><?php echo $user["NOME"]." ".$user["COGNOME"] ?></span>
+                    <p class="valign-wrapper"><i class="valign material-icons noselect" style="margin-right:20px;">email</i><?php echo $user["EMAIL"] ?></p>
+                    <p class="valign-wrapper"><i class="valign material-icons noselect" style="margin-right:20px;">place</i><?php echo getComune($user["FK_COMUNE"]) ?></p>
+                    <p class="valign-wrapper"><i class="valign material-icons noselect" style="margin-right:20px;">description</i><?php echo $user["DESCRIZIONE"] ?></p>
                 </div>
             </div>
-        </div>    
+        </div>
+        <?php endwhile; ?>
+              
     </div>
+
+    <!-- <div class="row projects container">
+        <div class="col s12 m6 l4">
+            <div class="z-depth-1 card" style="background-color:white">
+                <div class="card-image waves-effect waves-block waves-light">
+                    <img class="activator" src="/img/bg1.jpg">
+                </div>
+                <div class="card-content">
+                    <span class="card-title activator grey-text text-darken-4">Card Title<i class="material-icons right">more_vert</i></span>
+                    <p><a href="#">This is a link</a></p>
+                </div>
+                <div class="card-reveal">
+                    <span class="card-title grey-text text-darken-4">Card Title<i class="material-icons right">close</i></span>
+                    <p>Here is some more information about this product that is only revealed once clicked on.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col s12 m6 l4">
+            <div class="z-depth-1 card" style="background-color:white">
+                <div class="card-image waves-effect waves-block waves-light">
+                    <img class="activator" src="/img/bg2.jpg">
+                </div>
+                <div class="card-content">
+                    <span class="card-title activator grey-text text-darken-4">Card Title<i class="material-icons right">more_vert</i></span>
+                    <p><a href="#">This is a link</a></p>
+                </div>
+                <div class="card-reveal">
+                    <span class="card-title grey-text text-darken-4">Card Title<i class="material-icons right">close</i></span>
+                    <p>Here is some more information about this product that is only revealed once clicked on.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col s12 m6 l4">
+            <div class="z-depth-1 card" style="background-color:white">
+                <div class="card-image waves-effect waves-block waves-light">
+                    <img class="activator" src="/img/bg1.jpg">
+                </div>
+                <div class="card-content">
+                    <span class="card-title activator grey-text text-darken-4">Card Title<i class="material-icons right">more_vert</i></span>
+                    <p><a href="#">This is a link</a></p>
+                </div>
+                <div class="card-reveal">
+                    <span class="card-title grey-text text-darken-4">Card Title<i class="material-icons right">close</i></span>
+                    <p>Here is some more information about this product that is only revealed once clicked on.</p>
+                </div>
+            </div>
+        </div>
+    </div> -->
 
 </main>
 
 <?php require_once 'terzo.php'; ?>
 
 <script>
-    function follow () {
-        if (_('follow-icon').innerHTML == 'radio_button_checked') {
-            _('follow-icon').innerHTML = 'radio_button_unchecked';
-        } else {
-            _('follow-icon').innerHTML = 'radio_button_checked';
-        }
-    }
+    $(document).ready(function() {
+        $("input[type=checkbox]").change(function(){
+            var ajax = new XMLHttpRequest();
+            var formdata = new FormData();
+            formdata.append("id", this.id);
+
+            ajax.addEventListener("load", function (event) {
+                if (event.target.responseText) {
+                    var t = event.target.responseText;
+                    Materialize.toast(t, 2000);
+                }
+            }, false);
+
+            ajax.addEventListener("error", function (event) {
+                Materialize.toast("Error Occured", 2500);
+            }, false);
+            if (this.checked) {
+                formdata.append("fx", "follow");
+            } else {
+                formdata.append("fx", "unfollow");
+            }
+            ajax.open("POST", "/follow.php");
+            ajax.send(formdata);
+        });
+    });
+
     function _(el){
         return document.getElementById(el);
     }
