@@ -1,5 +1,6 @@
 <?php require_once 'primo.php'; ?>
 <title>Home</title>
+<meta name="description" content="Explore the most popular printable projects of the moment and create your favourite objects.">
 <style>
 	main {
 		background-color: #212121;
