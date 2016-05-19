@@ -57,6 +57,10 @@
         background-color: #ddd;
     }
 
+    .card-action .center-align:hover {
+        background-color: #ddd;
+    }
+
     .user-card {
         padding:12px 24px!important;
         text-align: center;
@@ -135,7 +139,7 @@
 	        </div>
         </div>
         <div class="sections col s12" style="margin-bottom:0; padding:0!important">
-            <div class="user-card col l2 m6 s12 waves-effect" id="following">
+            <div class="user-card col l2 m6 s12 waves-effect" onclick="Materialize.showStaggeredList('#staggered-test')" id="following">
                 <div class="number">
                     <?php
                         $QUERY=executeQuery("select * FROM utenti_seguono_utenti where FK_UTENTE=".$_SESSION["ID"]);
@@ -193,13 +197,14 @@
     </div>
 
     <!-- ------------------------------------------------------------------------------------------------------------ -->
-
+    <ul id="staggered-test">
     <div class="row users container">
         <?php 
-            $users=executeQuery("select * from utenti");
-            
+            //$users=executeQuery('select * from utenti where utenti.ID IN (select FK_UTENTE_SEGUITO from utenti_seguono_utenti where FK_UTENTE='.$_SESSION["ID"].')');
+            $users=executeQuery('select * from utenti');
             while ($user=$users->fetch_assoc()) : 
         ?>
+        <li style="opacity: 0;">
         <div class="col s12 m6 l4">
             <div class="z-depth-1 card" style="background-color:white">
                 <div class="background2 card-image waves-effect waves-block waves-light activator" style="padding:12px 0;">
@@ -251,10 +256,11 @@
                 </div>
             </div>
         </div>
+        </li>
         <?php endwhile; ?>
               
     </div>
-
+    </ul>
     <!-- <div class="row projects container">
         <div class="col s12 m6 l4">
             <div class="z-depth-1 card" style="background-color:white">
