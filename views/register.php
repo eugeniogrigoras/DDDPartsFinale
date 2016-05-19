@@ -1,6 +1,7 @@
 <?php require_once 'primo.php'; ?>
 
 <title>Register</title>
+<meta name="description" content="Welcome to DDDParts! Subscribe to explore DDDProjects and DDDWorld.">
 
 <style>
     div.main-content {

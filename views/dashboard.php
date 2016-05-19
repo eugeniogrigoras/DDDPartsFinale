@@ -1,6 +1,6 @@
 <?php require_once 'primo.php'; ?>
-<title>Dashboard</title>
-<meta name="description" content="DDDParts – The social network for sharing and downloading printable 3D parts and projects.">
+<title>Dashboard - What's New?</title>
+<meta name="description" content="Dashboard – Look into things you're interested in">
 <?php require_once 'secondo.php'; ?>
 <main>
     <div class="container main-content row">

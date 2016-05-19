@@ -1,7 +1,7 @@
 <?php require_once 'primo.php'; ?>
 
-<title>Log in to DDDParts</title>
-<meta name="description" content="Log in to DDDParts for search and download DDDParts and DDDProjects.">
+<title>Welcome back to DDDParts!</title>
+<meta name="description" content="Welcome back to DDDParts! Please log in to explore DDDProjects.">
 
 <style>
     div.main-content {

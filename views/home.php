@@ -1,6 +1,6 @@
 <?php require_once 'primo.php'; ?>
-<title>Home</title>
-<meta name="description" content="Explore the most popular printable projects of the moment and create your favourite objects.">
+<title>DDDParts - The social network for sharing and downloading printable 3D parts and projects</title>
+<meta name="description" content="Explore the most popular printable 3D projects of the moment and create your favourite objects.">
 <style>
 	main {
 		background-color: #212121;
