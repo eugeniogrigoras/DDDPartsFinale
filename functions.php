@@ -229,13 +229,12 @@
 	    
 	}
 
-	function imageUpload() {
+	function imageUpload($target_file) {
 		if ($_FILES['fileToUpload']['size'] == 0 || $_FILES['fileToUpload']['error'] != 0) {
             echo "Error!";     
         } else { 
             // Qua diamo il nome all'immagine
             $_FILES['fileToUpload']['name']="profile.".pathinfo($_FILES['fileToUpload']['name'],PATHINFO_EXTENSION);
-            $target_file = "users/".$_SESSION["NOME"]."-".$_SESSION["COGNOME"]."-".$_SESSION["EMAIL"]."/profile.jpg";
             $uploadOk = 1;
             $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
             // Check if image file is a actual image or fake image

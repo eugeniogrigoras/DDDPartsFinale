@@ -38,6 +38,21 @@
       background-color: rgba(255,109,64,1);
       will-change: left, right;
     }
+    #avatar img {
+        width: 100%;
+        height: 100%;
+    }
+    #avatar {
+        overflow: hidden;
+        width: 150px;
+        height: 150px;
+        background-size: cover; 
+        z-index: 2;
+        text-align: center;
+        cursor: pointer;
+        margin:auto auto;
+    }
+
 </style>
 <?php require_once 'secondo.php'; ?>
 <main>
@@ -55,16 +70,22 @@
                 <!--FILES-->
                 <div id="files" class="col s12">
                     <div style="text-align:center; margin:15px 0;">
-                        <a style="font-size:15px;" class="deep-orange accent-2 white-text waves-effect waves-light btn-flat" onclick="$('#fileToUpload').click();">Select
+                        <a style="font-size:15px;" class="deep-orange accent-2 white-text waves-effect waves-light btn-flat" onclick="$('#filesToUpload').click();">Select
                             <i class="material-icons right">file_upload</i>
                         </a>
                     </div>
                     <ul class="collection" id="uploadedFiles"></ul>
-                    <input style="display:none" multiple type="file" id="fileToUpload">
+                    <input style="display:none" multiple type="file" id="filesToUpload">
                 </div>
                 <!--DETAILS-->
                 <div id="details" class="col s12">
                     <div class="row form">
+                        <div class="col s12 m6 l4 offset-l4 card offset-m3" style="padding:0">
+                            <div class="card-image waves-effect waves-block waves-light" onclick="chooseImage()">
+                                <img id="preview" src="/img/bg1.jpg">
+                                <input value="img/bg1.jpg" accept=".jpg,.jpeg" type="file" name="fileToUpload" id="fileToUpload" style="display:none;">
+                            </div>
+                        </div>
                         <div class="input-field col s12">
                             <input required name="title" id="title" type="text" class="validate">
                             <label data-error="Wrong!" for="title">Title</label>
@@ -113,6 +134,28 @@
 <?php require_once 'terzo.php'; ?>
 
 <script>
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            
+            reader.onload = function (e) {
+                $('#preview').attr('src', e.target.result);
+                $('#avatar').attr('style', "background-image:url("+e.target.result+")");
+            }
+            
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $("#fileToUpload").change(function(){
+        readURL(this);
+    });
+
+    function chooseImage() {
+        document.getElementById('fileToUpload').click();
+        console.log("Choosed!");
+    }
+
     var names = [];
     var submit = false;
 
@@ -136,8 +179,8 @@
 
         var j = 0;
 
-        $("#fileToUpload").change(function() {
-            var files = _("fileToUpload").files;
+        $("#filesToUpload").change(function() {
+            var files = _("filesToUpload").files;
             for (var i = 0, f; f = files[i]; i++) {
                 j++;
                 names[j]=f.name;
@@ -203,7 +246,7 @@
         var ajax = new XMLHttpRequest();
         var formdata = new FormData();
 
-        formdata.append("fileToUpload", file);  
+        formdata.append("filesToUpload", file);  
         
         //alert(file.name+" | "+file.size+" | "+file.type);
         ajax.upload.addEventListener("progress", function (event) {

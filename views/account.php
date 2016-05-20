@@ -261,7 +261,12 @@
               
     </div>
     </ul>
-    <!-- <div class="row projects container">
+    <div class="row projects container">
+        <?php 
+            //$users=executeQuery('select * from utenti where utenti.ID IN (select FK_UTENTE_SEGUITO from utenti_seguono_utenti where FK_UTENTE='.$_SESSION["ID"].')');
+            $projects=executeQuery('select * from progetti');
+            while ($project=$projects->fetch_assoc()) : 
+        ?>
         <div class="col s12 m6 l4">
             <div class="z-depth-1 card" style="background-color:white">
                 <div class="card-image waves-effect waves-block waves-light">
@@ -277,37 +282,7 @@
                 </div>
             </div>
         </div>
-        <div class="col s12 m6 l4">
-            <div class="z-depth-1 card" style="background-color:white">
-                <div class="card-image waves-effect waves-block waves-light">
-                    <img class="activator" src="/img/bg2.jpg">
-                </div>
-                <div class="card-content">
-                    <span class="card-title activator grey-text text-darken-4">Card Title<i class="material-icons right">more_vert</i></span>
-                    <p><a href="#">This is a link</a></p>
-                </div>
-                <div class="card-reveal">
-                    <span class="card-title grey-text text-darken-4">Card Title<i class="material-icons right">close</i></span>
-                    <p>Here is some more information about this product that is only revealed once clicked on.</p>
-                </div>
-            </div>
-        </div>
-        <div class="col s12 m6 l4">
-            <div class="z-depth-1 card" style="background-color:white">
-                <div class="card-image waves-effect waves-block waves-light">
-                    <img class="activator" src="/img/bg1.jpg">
-                </div>
-                <div class="card-content">
-                    <span class="card-title activator grey-text text-darken-4">Card Title<i class="material-icons right">more_vert</i></span>
-                    <p><a href="#">This is a link</a></p>
-                </div>
-                <div class="card-reveal">
-                    <span class="card-title grey-text text-darken-4">Card Title<i class="material-icons right">close</i></span>
-                    <p>Here is some more information about this product that is only revealed once clicked on.</p>
-                </div>
-            </div>
-        </div>
-    </div> -->
+    </div>
 
 </main>
 

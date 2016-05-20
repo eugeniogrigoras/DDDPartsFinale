@@ -1,7 +1,7 @@
 <?php
 	require_once 'functions.php';
 	if (isset($_FILES["fileToUpload"])) {
-		imageUpload();
+		imageUpload("users/".$_SESSION["NOME"]."-".$_SESSION["COGNOME"]."-".$_SESSION["EMAIL"]."/profile.jpg");
 	}
 	$data=requestData();
 	if ($data) {

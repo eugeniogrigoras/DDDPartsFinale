@@ -53,6 +53,7 @@ if(isset($_POST['submit'])) {
 
 				if (!file_exists($projectPath)) {
 		            mkdir($projectPath, 0777, true);
+		            copy('img/bg1.jpg', $projectPath."projectWallpaper.jpg");
 		   	 	}
 
 				$files = array_slice(scandir($projectPath), 2);
@@ -76,6 +77,9 @@ if(isset($_POST['submit'])) {
 						}
 					}
 				}
+
+				
+				imageUpload($projectPath."projectWallpaper.jpg");
 
 				rename ($projectPath,"users/".$_SESSION["NOME"]."-".$_SESSION["COGNOME"]."-".$_SESSION["EMAIL"]."/".$lastId."/");
 				exit();
@@ -122,12 +126,7 @@ if(isset($_POST['submit'])) {
 		                localMail($email, $name, $surname, $randomString, $last_id);
 		                //altervistaMail($email, $randomString, $last_id);
 
-
-		                $_SESSION["ID"]=$last_id;
-						$_SESSION["NOME"]=$name;
-						$_SESSION["COGNOME"]=$surname;
-						$_SESSION["EMAIL"]=$email;
-		                imageUpload();
+		                imageUpload("users/".$name."-".$surname."-".$email."/profile.jpg");
 
 		                session_unset();
 						session_destroy();
