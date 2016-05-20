@@ -282,6 +282,7 @@
                 </div>
             </div>
         </div>
+        <?php endwhile; ?>
     </div>
 
 </main>
