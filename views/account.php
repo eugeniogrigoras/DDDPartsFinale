@@ -139,8 +139,8 @@
 	        </div>
         </div>
         <div class="sections col s12" style="margin-bottom:0; padding:0!important">
-            <div class="user-card col l2 m6 s12 waves-effect" onclick="Materialize.showStaggeredList('#staggered-test')" id="following">
-                <div class="number">
+            <div class="user-card col l2 m6 s12 waves-effect" onclick="following()">
+                <div class="number" id="followingNumber">
                     <?php
                         $QUERY=executeQuery("select * FROM utenti_seguono_utenti where FK_UTENTE=".$_SESSION["ID"]);
                         echo $QUERY->num_rows; 
@@ -148,8 +148,8 @@
                 </div>
                 <div class="subtitle truncate" onclick="following()">FOLLOWING</div>
             </div>
-            <div class="user-card col l2 m6 s12 waves-effect" id="follower">
-                <div class="number">
+            <div class="user-card col l2 m6 s12 waves-effect" onclick="followers()">
+                <div class="number" id="followersNumber">
                     <?php
                         $QUERY=executeQuery("select * FROM utenti_seguono_utenti where FK_UTENTE_SEGUITO=".$_SESSION["ID"]);
                         echo $QUERY->num_rows; 
@@ -157,7 +157,7 @@
                 </div>
                 <div class="subtitle truncate">FOLLOWERS</div>
             </div>
-            <div class="user-card col l2 m6 s12 waves-effect" id="likes">
+            <div class="user-card col l2 m6 s12 waves-effect">
                 <div class="number">
                     <?php
                         $QUERY=executeQuery("select * FROM utenti_like_progetti as p, utenti_like_collezioni as c where p.FK_UTENTE=".$_SESSION["ID"]." and c.FK_UTENTE=".$_SESSION["ID"]);
@@ -196,71 +196,10 @@
         </div>
     </div>
 
-    <!-- ------------------------------------------------------------------------------------------------------------ -->
-    <ul id="staggered-test">
-    <div class="row users container">
-        <?php 
-            //$users=executeQuery('select * from utenti where utenti.ID IN (select FK_UTENTE_SEGUITO from utenti_seguono_utenti where FK_UTENTE='.$_SESSION["ID"].')');
-            $users=executeQuery('select * from utenti');
-            while ($user=$users->fetch_assoc()) : 
-        ?>
-        <li style="opacity: 0;">
-        <div class="col s12 m6 l4">
-            <div class="z-depth-1 card" style="background-color:white">
-                <div class="background2 card-image waves-effect waves-block waves-light activator" style="padding:12px 0;">
-                    <div id="avatar" class="z-depth-1 activator">
-                        <img class="activator" src="<?php echo requestPathUser($user["NOME"], $user["COGNOME"], $user["EMAIL"])."/profile.jpg" ?>">
-                    </div>
-                </div>
-                <div class="card-content" style="padding:12px 15px;">
-                    <p>
-                        <input 
-                        <?php 
-                            $data=executeQuery("select * from utenti_seguono_utenti where FK_UTENTE=".$_SESSION["ID"]." and FK_UTENTE_SEGUITO=".$user["ID"]);
-                            if ($data) {
-                                if ($data->num_rows > 0) {
-                                    echo "checked";
-                                }
-                            }
-                        ?> 
-                        type="checkbox" id="<?php echo $user["ID"]; ?>" />
-                        <label for="<?php echo $user["ID"]; ?>" style="font-weight:600; color:#424242"><?php echo $user["NOME"]." ".$user["COGNOME"] ?></label>
-                    </p>
-                </div>
-                
-                <div class="card-action" style="padding:0">
-                    <div class="center-align waves-effect col s6"style="padding:6px 0;"> 
-                        <div class="number" style="font-weight:600; color:#424242;">
-                            <?php
-                                $QUERY=executeQuery("select * FROM utenti_seguono_utenti where FK_UTENTE=".$user["ID"]);
-                                echo $QUERY->num_rows; 
-                            ?>
-                        </div>
-                        <div class="subtitle truncate" style="color:#757575">FOLLOWING</div>
-                    </div>
-                    <div class="center-align waves-effect" style="width:50%; padding:6px 0; border-left:1px solid #ddd">
-                        <div class="number" style="font-weight:600; color:#424242;">
-                            <?php
-                            $QUERY=executeQuery("select * FROM utenti_seguono_utenti where FK_UTENTE_SEGUITO=".$user["ID"]);
-                            echo $QUERY->num_rows; 
-                        ?>
-                        </div>
-                        <div class="subtitle truncate" style="color:#757575">FOLLOWERS</div>
-                    </div>
-                </div>
-                <div class="card-reveal">
-                    <span class="card-title grey-text text-darken-4"><i class="material-icons right noselect">close</i><?php echo $user["NOME"]." ".$user["COGNOME"] ?></span>
-                    <p class="valign-wrapper"><i class="valign material-icons noselect" style="margin-right:20px;">email</i><?php echo $user["EMAIL"] ?></p>
-                    <p class="valign-wrapper"><i class="valign material-icons noselect" style="margin-right:20px;">place</i><?php echo getComune($user["FK_COMUNE"]) ?></p>
-                    <p class="valign-wrapper"><i class="valign material-icons noselect" style="margin-right:20px;">description</i><?php echo $user["DESCRIZIONE"] ?></p>
-                </div>
-            </div>
-        </div>
-        </li>
-        <?php endwhile; ?>
-              
-    </div>
-    </ul>
+
+
+    <div id="accountCardsResponse"></div>
+    
     <div class="row projects container">
         <?php 
             //$users=executeQuery('select * from utenti where utenti.ID IN (select FK_UTENTE_SEGUITO from utenti_seguono_utenti where FK_UTENTE='.$_SESSION["ID"].')');
@@ -290,41 +229,73 @@
 <?php require_once 'terzo.php'; ?>
 
 <script>
-    $(document).ready(function() {
-        $("input[type=checkbox]").change(function(){
-            var ajax = new XMLHttpRequest();
-            var formdata = new FormData();
-            formdata.append("id", this.id);
+    //ACCOUNT CARDS
+    function following() {
+        var ajax = new XMLHttpRequest();
+        var formdata = new FormData();
+        formdata.append("fx", "following");
+        ajax.addEventListener("load", function (event) {
+            var t = event.target.responseText;
+            _("accountCardsResponse").innerHTML=t;
+            Materialize.showStaggeredList('#following');
+        }, false);
 
-            ajax.addEventListener("load", function (event) {
-                if (event.target.responseText) {
-                    var t = event.target.responseText;
-                    Materialize.toast(t, 2000);
-                }
-            }, false);
+        ajax.addEventListener("error", function (event) {
+            Materialize.toast("Error Occured", 2500);
+        }, false);
+        ajax.open("POST", "/accountCards.php");
+        ajax.send(formdata);
+    }
 
-            ajax.addEventListener("error", function (event) {
-                Materialize.toast("Error Occured", 2500);
-            }, false);
-            if (this.checked) {
-                formdata.append("fx", "follow");
-            } else {
-                formdata.append("fx", "unfollow");
-            }
-            ajax.open("POST", "/follow.php");
-            ajax.send(formdata);
-        });
+    function followers() {
+        var ajax = new XMLHttpRequest();
+        var formdata = new FormData();
+        formdata.append("fx", "followers");
+        ajax.addEventListener("load", function (event) {
+            var t = event.target.responseText;
+            _("accountCardsResponse").innerHTML=t;
+            Materialize.showStaggeredList('#followers');
+        }, false);
+
+        ajax.addEventListener("error", function (event) {
+            Materialize.toast("Error Occured", 2500);
+        }, false);
+        ajax.open("POST", "/accountCards.php");
+        ajax.send(formdata);
+    }
+    
+</script>
+
+<script>
+
+    $("#accountCardsResponse").on("change", "input[type=checkbox]", function(){
+        var ajax = new XMLHttpRequest();
+        var formdata = new FormData();
+        formdata.append("id", this.id);
+
+        ajax.addEventListener("load", function (event) {
+            var res = $.parseJSON(event.target.responseText);
+            Materialize.toast(res.message, 2000);
+            _('userFollowingNumber'+res.userID).innerHTML=res.following;
+            _('userFollowersNumber'+res.userID).innerHTML=res.followers;
+            _('followingNumber').innerHTML=res.userFollowing;
+            _('followersNumber').innerHTML=res.userFollowers;
+        }, false);
+
+        ajax.addEventListener("error", function (event) {
+            Materialize.toast("Error Occured", 2500);
+        }, false);
+        if (this.checked) {
+            formdata.append("fx", "follow");
+        } else {
+            formdata.append("fx", "unfollow");
+        }
+        ajax.open("POST", "/follow.php");
+        ajax.send(formdata);
     });
 
     function _(el){
         return document.getElementById(el);
-    }
-    function following() {
-        // SELECT * FROM `utenti` WHERE utenti.ID in (SELECT FK_UTENTE_SEGUITO FROM `utenti_seguono_utenti` WHERE FK_UTENTE=42);
-    }
-
-    function follower() {
-        // SELECT * FROM `utenti` WHERE utenti.ID in (SELECT FK_UTENTE FROM `utenti_seguono_utenti` WHERE FK_UTENTE_SEGUITO=42);
     }
 </script>
 
