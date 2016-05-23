@@ -118,7 +118,9 @@
         cursor:pointer;
     }
 
-    
+    a {
+        color: rgba(255,109,64,1);
+    }
 
 </style>
 <?php require_once 'secondo.php'; ?>
@@ -146,7 +148,7 @@
                         echo $QUERY->num_rows; 
                     ?>
                 </div>
-                <div class="subtitle truncate" onclick="following()">FOLLOWING</div>
+                <div class="subtitle truncate">FOLLOWING</div>
             </div>
             <div class="user-card col l2 m6 s12 waves-effect" onclick="followers()">
                 <div class="number" id="followersNumber">
@@ -166,7 +168,7 @@
                 </div>
                 <div class="subtitle truncate">LIKES</div>
             </div>
-            <div class="user-card col l2 m6 s12 waves-effect" id="projects">
+            <div class="user-card col l2 m6 s12 waves-effect" onclick="projects()">
                 <div class="number">
                     <?php
                         $QUERY=executeQuery("select * FROM progetti where FK_UTENTE=".$_SESSION["ID"]);
@@ -199,30 +201,6 @@
 
 
     <div id="accountCardsResponse"></div>
-    
-    <div class="row projects container">
-        <?php 
-            //$users=executeQuery('select * from utenti where utenti.ID IN (select FK_UTENTE_SEGUITO from utenti_seguono_utenti where FK_UTENTE='.$_SESSION["ID"].')');
-            $projects=executeQuery('select * from progetti');
-            while ($project=$projects->fetch_assoc()) : 
-        ?>
-        <div class="col s12 m6 l4">
-            <div class="z-depth-1 card" style="background-color:white">
-                <div class="card-image waves-effect waves-block waves-light">
-                    <img class="activator" src="/img/bg1.jpg">
-                </div>
-                <div class="card-content">
-                    <span class="card-title activator grey-text text-darken-4">Card Title<i class="material-icons right">more_vert</i></span>
-                    <p><a href="#">This is a link</a></p>
-                </div>
-                <div class="card-reveal">
-                    <span class="card-title grey-text text-darken-4">Card Title<i class="material-icons right">close</i></span>
-                    <p>Here is some more information about this product that is only revealed once clicked on.</p>
-                </div>
-            </div>
-        </div>
-        <?php endwhile; ?>
-    </div>
 
 </main>
 
@@ -230,6 +208,23 @@
 
 <script>
     //ACCOUNT CARDS
+    function projects() {
+        var ajax = new XMLHttpRequest();
+        var formdata = new FormData();
+        formdata.append("fx", "projects");
+        ajax.addEventListener("load", function (event) {
+            var t = event.target.responseText;
+            _("accountCardsResponse").innerHTML=t;
+            Materialize.showStaggeredList('#projects');
+        }, false);
+
+        ajax.addEventListener("error", function (event) {
+            Materialize.toast("Error Occured", 2500);
+        }, false);
+        ajax.open("POST", "/accountCards.php");
+        ajax.send(formdata);
+    }
+
     function following() {
         var ajax = new XMLHttpRequest();
         var formdata = new FormData();

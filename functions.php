@@ -233,10 +233,9 @@
 		if ($_FILES['fileToUpload']['size'] == 0 || $_FILES['fileToUpload']['error'] != 0) {
             echo "Error!";     
         } else { 
-            // Qua diamo il nome all'immagine
             $_FILES['fileToUpload']['name']="profile.".pathinfo($_FILES['fileToUpload']['name'],PATHINFO_EXTENSION);
             $uploadOk = 1;
-            $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
+            $imageFileType = pathinfo($_FILES['fileToUpload']['name'],PATHINFO_EXTENSION);
             // Check if image file is a actual image or fake image
             $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
             if($check !== false) {
