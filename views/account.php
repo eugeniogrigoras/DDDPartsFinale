@@ -32,9 +32,6 @@
         
         width: 150px;
         height: 150px;
-        background-size: cover; 
-        z-index: 2;
-        text-align: center;
         margin:auto auto;
     }
 
