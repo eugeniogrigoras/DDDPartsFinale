@@ -156,9 +156,7 @@
 		            <li style="opacity: 0;">
 		                <div class="col s12 m6 l4">
 		                    <div class="z-depth-1 card" style="background-color:white">
-		                        <div class="card-image waves-effect waves-block waves-light">
-		                            <img class="activator" src="<?php echo "/users/".$project["NOME_UTENTE"]."-".$project["COGNOME"]."-".$project["EMAIL"]."/".$project["ID"]; ?>/projectWallpaper.jpg">
-		                        </div>
+		                        <div class="card-image waves-effect waves-block waves-light activator" style="background-image:url('<?php echo "/users/".$project["NOME_UTENTE"]."-".$project["COGNOME"]."-".$project["EMAIL"]."/".$project["ID"]; ?>/projectWallpaper.jpg')"></div>
 		                        <div class="card-content truncate" style="padding:12px 15px;">
 		                            <p style="font-size:20px; margin-bottom:6px;"><?php echo $project["NOME_PROGETTO"] ?></p>
 		                            <p class="truncate"><a href="#"><?php echo $project["NOME_UTENTE"]." ".$project["COGNOME"] ?></a></p>

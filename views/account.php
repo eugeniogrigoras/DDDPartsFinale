@@ -23,8 +23,8 @@
         margin-bottom: 0;
     }
     #avatar img {
-        width: 100%;
-        height: 100%;
+        width: 150px;
+        height: 150px;
     }
     #avatar {
         overflow: hidden;
@@ -32,9 +32,6 @@
         
         width: 150px;
         height: 150px;
-        background-size: cover; 
-        z-index: 2;
-        text-align: center;
         margin:auto auto;
     }
 
@@ -120,6 +117,15 @@
 
     a {
         color: rgba(255,109,64,1);
+    }
+
+    .card-image {
+    position: relative;
+    height: 150px;
+    background-position: 50% 50%;
+    background-repeat:   no-repeat;
+    background-size:     cover;
+
     }
 
 </style>
