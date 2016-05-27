@@ -82,6 +82,29 @@
 		}	
 	}
 
+	function requestDataUser($id) {
+		$data=executeQuery("select * from utenti where ID=".$id);
+		
+		if ($data) {
+			if ($data->num_rows > 0) {
+	        	$riga=$data->fetch_assoc();
+				$array = array(
+		    		"ID" => $riga["ID"],
+		    		"NOME" => $riga["NOME"],
+		    		"COGNOME" => $riga["COGNOME"],
+		    		"DESCRIZIONE" => $riga["DESCRIZIONE"],
+		    		"EMAIL" => $riga["EMAIL"],
+		    		"PASSWORD" => $riga["PASSWORD"],
+		    		"COMUNE" => getComune($riga["FK_COMUNE"])
+				);
+				return $array;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}	
+	}
 	
 
 	function getComune($FK_COMUNE) {

@@ -6,7 +6,7 @@
 			<ul id="following">
 			    <div class="row users container">
 			        <?php 
-			            $users=executeQuery('select * from utenti where utenti.ID IN (select FK_UTENTE_SEGUITO from utenti_seguono_utenti where FK_UTENTE='.$_SESSION["ID"].')');
+			            $users=executeQuery('select * from utenti where utenti.ID IN (select FK_UTENTE_SEGUITO from utenti_seguono_utenti where FK_UTENTE='.$_REQUEST["id"].')');
 			            //$users=executeQuery('select * from utenti');
 			            while ($user=$users->fetch_assoc()) :
 			        ?>
@@ -23,7 +23,7 @@
 			                    <p class="truncate">
 			                        <input 
 			                        <?php 
-			                            $data=executeQuery("select * from utenti_seguono_utenti where FK_UTENTE=".$_SESSION["ID"]." and FK_UTENTE_SEGUITO=".$user["ID"]);
+			                            $data=executeQuery("select * from utenti_seguono_utenti where FK_UTENTE=".$_REQUEST["id"]." and FK_UTENTE_SEGUITO=".$user["ID"]);
 			                            if ($data) {
 			                                if ($data->num_rows > 0) {
 			                                    echo "checked";
@@ -31,7 +31,7 @@
 			                            }
 			                        ?> 
 			                        type="checkbox" id="<?php echo $user["ID"]; ?>" />
-			                        <label for="<?php echo $user["ID"]; ?>" style="font-weight:400; color:#424242"><a href="#" style="color:#424242!important"><?php echo $user["NOME"]." ".$user["COGNOME"] ?></a></label>            
+			                        <label for="<?php echo $user["ID"]; ?>" style="font-weight:400; color:#424242"><a href="/user/<?php echo $user["ID"]; ?>" style="color:#424242!important"><?php echo $user["NOME"]." ".$user["COGNOME"] ?></a></label>            
 			                    </p>
 			                </div>
 			                
@@ -88,7 +88,7 @@
 			<ul id="followers">
 			    <div class="row users container">
 			        <?php 
-			            $users=executeQuery('select * from utenti where utenti.ID IN (select FK_UTENTE from utenti_seguono_utenti where FK_UTENTE_SEGUITO='.$_SESSION["ID"].')');
+			            $users=executeQuery('select * from utenti where utenti.ID IN (select FK_UTENTE from utenti_seguono_utenti where FK_UTENTE_SEGUITO='.$_REQUEST["id"].')');
 			            //$users=executeQuery('select * from utenti');
 			            while ($user=$users->fetch_assoc()) :
 			        ?>
@@ -104,7 +104,7 @@
 			                    <p class="truncate">
 			                        <input 
 			                        <?php 
-			                            $data=executeQuery("select * from utenti_seguono_utenti where FK_UTENTE=".$_SESSION["ID"]." and FK_UTENTE_SEGUITO=".$user["ID"]);
+			                            $data=executeQuery("select * from utenti_seguono_utenti where FK_UTENTE=".$_REQUEST["id"]." and FK_UTENTE_SEGUITO=".$user["ID"]);
 			                            if ($data) {
 			                                if ($data->num_rows > 0) {
 			                                    echo "checked";
@@ -112,7 +112,7 @@
 			                            }
 			                        ?> 
 			                        type="checkbox" id="<?php echo $user["ID"]; ?>" />
-			                        <label for="<?php echo $user["ID"]; ?>" style="font-weight:400; color:#424242"><a href="#" style="color:#424242!important"><?php echo $user["NOME"]." ".$user["COGNOME"] ?></a></label>            
+			                        <label for="<?php echo $user["ID"]; ?>" style="font-weight:400; color:#424242"><a href="/user/<?php echo $user["ID"]; ?>" style="color:#424242!important"><?php echo $user["NOME"]." ".$user["COGNOME"] ?></a></label>            
 			                    </p>
 			                </div>
 			                
@@ -170,7 +170,7 @@
 		        <div class="row projects container">
 		            <?php 
 		                //$users=executeQuery('select * from utenti where utenti.ID IN (select FK_UTENTE_SEGUITO from utenti_seguono_utenti where FK_UTENTE='.$_SESSION["ID"].')');
-		                $projects=executeQuery('select progetti.ID, progetti.NOME AS NOME_PROGETTO, progetti.DESCRIZIONE, progetti.FK_UTENTE, utenti.NOME AS NOME_UTENTE, utenti.COGNOME, utenti.EMAIL, categorie_primarie.NOME AS CATEGORIA_PRIMARIA, categorie_secondarie.NOME AS CATEGORIA_SECONDARIA, COUNT(*) AS FILES FROM progetti, utenti, categorie_primarie, categorie_secondarie, parti_3d WHERE progetti.FK_CATEGORIA_SECONDARIA=categorie_secondarie.ID AND categorie_secondarie.FK_CATEGORIA_PRIMARIA=categorie_primarie.ID AND progetti.FK_UTENTE=utenti.ID AND parti_3d.FK_PROGETTO=progetti.ID GROUP BY progetti.ID');
+		                $projects=executeQuery('select progetti.ID, progetti.NOME AS NOME_PROGETTO, progetti.DESCRIZIONE, progetti.FK_UTENTE, utenti.ID AS ID_UTENTE, utenti.NOME AS NOME_UTENTE, utenti.COGNOME, utenti.EMAIL, categorie_primarie.NOME AS CATEGORIA_PRIMARIA, categorie_secondarie.NOME AS CATEGORIA_SECONDARIA, COUNT(*) AS FILES FROM progetti, utenti, categorie_primarie, categorie_secondarie, parti_3d WHERE progetti.FK_CATEGORIA_SECONDARIA=categorie_secondarie.ID AND utenti.ID='.$_REQUEST["id"].' AND categorie_secondarie.FK_CATEGORIA_PRIMARIA=categorie_primarie.ID AND progetti.FK_UTENTE=utenti.ID AND parti_3d.FK_PROGETTO=progetti.ID GROUP BY progetti.ID');
 		                while ($project=$projects->fetch_assoc()) : 
 		            ?>
 		            <li style="opacity: 0;">
@@ -182,8 +182,8 @@
 				                    </a>
 		                        </div>
 		                        <div class="card-content truncate" style="padding:12px 15px;">
-		                            <p class="truncate" style="font-size:20px; margin-bottom:6px;"><a href="#" style="color:#212121!important"><?php echo $project["NOME_PROGETTO"] ?></a><p>
-		                            <p class="truncate" style="font-size:13px">by <a href="#"><?php echo $project["NOME_UTENTE"]." ".$project["COGNOME"] ?></a></p>
+		                            <p class="truncate" style="font-size:20px; margin-bottom:6px;"><a href="/project/<?php echo $project["ID"] ?>" style="color:#212121!important"><?php echo $project["NOME_PROGETTO"] ?></a><p>
+		                            <p class="truncate" style="font-size:13px">by <a href="/user/<?php echo $project["ID_UTENTE"]; ?>"><?php echo $project["NOME_UTENTE"]." ".$project["COGNOME"] ?></a></p>
 		                        </div>
 		                        <div class="card-content truncate" style="padding:12px 15px; border-top:1px solid #ddd">
 		                        	<p style="font-size:13px; color:#999; margin-bottom:12px" class="truncate">Submitted in <a href="#"><?php echo $project["CATEGORIA_SECONDARIA"]?></a></p>

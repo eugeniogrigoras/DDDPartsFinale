@@ -1,5 +1,5 @@
 <?php require_once 'primo.php'; ?>
-<title>Account</title>
+<title>User - <?php $userData = requestDataUser($id); echo $userData["NOME"]." ".$userData["COGNOME"] ?></title>
 <style>
 	div.main-content {
         margin-top: 24px;
@@ -145,24 +145,24 @@
 <main>
     <div class="container main-content row z-depth-1">
     	<div class="card col s12" style="padding:0!important; margin:0!important">
-	        <div class="title truncate"><i style="margin:0!important; cursor:pointer" class="activator material-icons right noselect">info_outline</i><?php echo $_SESSION["NOME"]." ".$_SESSION["COGNOME"]; ?></div>
+	        <div class="title truncate"><i style="margin:0!important; cursor:pointer" class="activator material-icons right noselect">info_outline</i><?php echo $userData["NOME"]." ".$userData["COGNOME"]; ?></div>
 	        <div class="background" style="padding:24px; ">
-	            <div id="avatar" class="z-depth-1" style="background-image:url('<?php echo requestPath()."/profile.jpg";?>')">
+	            <div id="avatar" class="z-depth-1" style="background-image:url('<?php echo requestPathUser($userData["NOME"],$userData["COGNOME"],$userData["EMAIL"])."/profile.jpg";?>')">
 	                
 	            </div>
 	        </div>
 	        <div id="profile-card" class="card-reveal" style=" text-align:left; color:#444; width:inherit!important">
-	        	<span class="card-title"><i class="material-icons right noselect">close</i><?php echo $_SESSION["NOME"]." ".$_SESSION["COGNOME"]; ?> - Information</span>
-	        	<p class="valign-wrapper"><i class="valign material-icons noselect" style="margin-right:20px;">email</i><?php echo requestData()["EMAIL"];?></p>
-	        	<p class="valign-wrapper"><i class="valign material-icons noselect" style="margin-right:20px;">place</i><?php echo requestData()["COMUNE"];?></p>
-	        	<p class="valign-wrapper"><i class="valign material-icons noselect" style="margin-right:20px;">description</i><?php echo requestData()["DESCRIZIONE"];?></p>    	
+	        	<span class="card-title"><i class="material-icons right noselect">close</i><?php echo $userData["NOME"]." ".$userData["COGNOME"]; ?> - Information</span>
+	        	<p class="valign-wrapper"><i class="valign material-icons noselect" style="margin-right:20px;">email</i><?php echo $userData["EMAIL"];?></p>
+	        	<p class="valign-wrapper"><i class="valign material-icons noselect" style="margin-right:20px;">place</i><?php echo $userData["COMUNE"];?></p>
+	        	<p class="valign-wrapper"><i class="valign material-icons noselect" style="margin-right:20px;">description</i><?php echo $userData["DESCRIZIONE"];?></p>    	
 	        </div>
         </div>
         <div class="sections col s12" style="margin-bottom:0; padding:0!important">
             <div class="user-card col l2 m6 s12 waves-effect" onclick="following()">
                 <div class="number" id="followingNumber">
                     <?php
-                        $QUERY=executeQuery("select * FROM utenti_seguono_utenti where FK_UTENTE=".$_SESSION["ID"]);
+                        $QUERY=executeQuery("select * FROM utenti_seguono_utenti where FK_UTENTE=".$id);
                         echo $QUERY->num_rows; 
                     ?>
                 </div>
@@ -171,7 +171,7 @@
             <div class="user-card col l2 m6 s12 waves-effect" onclick="followers()">
                 <div class="number" id="followersNumber">
                     <?php
-                        $QUERY=executeQuery("select * FROM utenti_seguono_utenti where FK_UTENTE_SEGUITO=".$_SESSION["ID"]);
+                        $QUERY=executeQuery("select * FROM utenti_seguono_utenti where FK_UTENTE_SEGUITO=".$id);
                         echo $QUERY->num_rows; 
                     ?>
                 </div>
@@ -180,7 +180,7 @@
             <div class="user-card col l2 m6 s12 waves-effect">
                 <div class="number">
                     <?php
-                        $QUERY=executeQuery("select * FROM utenti_like_progetti as p, utenti_like_collezioni as c where p.FK_UTENTE=".$_SESSION["ID"]." and c.FK_UTENTE=".$_SESSION["ID"]);
+                        $QUERY=executeQuery("select * FROM utenti_like_progetti as p, utenti_like_collezioni as c where p.FK_UTENTE=".$id." and c.FK_UTENTE=".$id);
                         echo $QUERY->num_rows; 
                     ?>
                 </div>
@@ -189,7 +189,7 @@
             <div class="user-card col l2 m6 s12 waves-effect" onclick="projects()">
                 <div class="number">
                     <?php
-                        $QUERY=executeQuery("select * FROM progetti where FK_UTENTE=".$_SESSION["ID"]);
+                        $QUERY=executeQuery("select * FROM progetti where FK_UTENTE=".$id);
                         echo $QUERY->num_rows; 
                     ?>
                 </div>
@@ -198,7 +198,7 @@
             <div class="user-card col l2 m6 s12 waves-effect" id="my-collections">
                 <div class="number">
                     <?php
-                        $QUERY=executeQuery("select * FROM collezioni where FK_UTENTE=".$_SESSION["ID"]);
+                        $QUERY=executeQuery("select * FROM collezioni where FK_UTENTE=".$id);
                         echo $QUERY->num_rows; 
                     ?>
                 </div>
@@ -207,7 +207,7 @@
             <div class="user-card col l2 m6 s12 waves-effect" id="followed-collections">
                 <div class="number">
                     <?php
-                        $QUERY=executeQuery("select * FROM utenti_seguono_collezioni where FK_UTENTE=".$_SESSION["ID"]);
+                        $QUERY=executeQuery("select * FROM utenti_seguono_collezioni where FK_UTENTE=".$id);
                         echo $QUERY->num_rows; 
                     ?>
                 </div>
@@ -230,7 +230,7 @@
         var ajax = new XMLHttpRequest();
         var formdata = new FormData();
         formdata.append("fx", "projects");
-        formdata.append("id", <?php echo $_SESSION["ID"] ?>);
+        formdata.append("id", <?php echo $id ?>);
         ajax.addEventListener("load", function (event) {
             var t = event.target.responseText;
             _("accountCardsResponse").innerHTML=t;
@@ -248,7 +248,7 @@
         var ajax = new XMLHttpRequest();
         var formdata = new FormData();
         formdata.append("fx", "following");
-        formdata.append("id", <?php echo $_SESSION["ID"] ?>);
+        formdata.append("id", <?php echo $id ?>);
         ajax.addEventListener("load", function (event) {
             var t = event.target.responseText;
             _("accountCardsResponse").innerHTML=t;
@@ -266,7 +266,7 @@
         var ajax = new XMLHttpRequest();
         var formdata = new FormData();
         formdata.append("fx", "followers");
-        formdata.append("id", <?php echo $_SESSION["ID"] ?>);
+        formdata.append("id", <?php echo $id ?>);
         ajax.addEventListener("load", function (event) {
             var t = event.target.responseText;
             _("accountCardsResponse").innerHTML=t;
@@ -294,8 +294,8 @@
             Materialize.toast(res.message, 2000);
             _('userFollowingNumber'+res.userID).innerHTML=res.following;
             _('userFollowersNumber'+res.userID).innerHTML=res.followers;
-            _('followingNumber').innerHTML=res.userFollowing;
-            _('followersNumber').innerHTML=res.userFollowers;
+            //_('followingNumber').innerHTML=res.userFollowing;
+            //_('followersNumber').innerHTML=res.userFollowers;
         }, false);
 
         ajax.addEventListener("error", function (event) {

@@ -44,7 +44,7 @@
 
     Flight::route('/account(/@message)', function($message){
         if (logged()) {
-            Flight::render('account');
+            Flight::render('account', array('message' =>  $message));
         } else {
             Flight::redirect('/login');
         }   
@@ -72,6 +72,20 @@
 
     Flight::route('/project/@id(/@message)', function($id, $message){
             Flight::render('project', array('message' =>  $message, 'id' => $id)); 
+    });
+
+    Flight::route('/user/@id(/@message)', function($id, $message){
+            $QUERY=executeQuery("select * FROM utenti where ID=".$id);
+            $num = $QUERY->num_rows;
+            if ($num!=0) {
+                if ($id==$_SESSION["ID"]) {
+                    Flight::redirect('/account');
+                } else {
+                    Flight::render('user', array('message' =>  $message, 'id' => $id)); 
+                } 
+            } else {
+                echo "NO;";
+            }        
     });
 
 /*    Flight::route('POST /settings(/@message)', function($message){
