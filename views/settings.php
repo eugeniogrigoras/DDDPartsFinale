@@ -36,20 +36,16 @@
         }
     }
 
-    #avatar img {
-        width: 100%;
-        height: 100%;
-    }
     #avatar {
         overflow: hidden;
         border-radius: 50%;
+        cursor:pointer;
         width: 150px;
         height: 150px;
-        background-size: cover; 
-        z-index: 2;
-        text-align: center;
-        cursor: pointer;
         margin:auto auto;
+        background-position: 50% 50%;
+        background-repeat:   no-repeat;
+        background-size:     cover;
     }
 
 
@@ -64,9 +60,7 @@
             <input accept=".jpg,.jpeg" type="file" name="fileToUpload" id="fileToUpload" style="display:none;">
             <div class="row title">Settings <?php if(isset($message)) echo "- ".$message ?></div>
             <div class="row background" style="padding:24px;">
-                <div id="avatar" onclick="chooseImage()" class="z-depth-1">
-                    <img id="preview" src="<?php echo requestPath()."/profile.jpg";?>" >
-                </div>
+                <div id="avatar" onclick="chooseImage()" class="z-depth-1 waves-effect waves-block waves-light" style="background-image:url('<?php echo requestPath()."/profile.jpg";?>')"></div>
             </div>
             <div class="row form">
                 <div class="input-field col l6 m6 s12">
@@ -188,7 +182,6 @@
             var reader = new FileReader();
             
             reader.onload = function (e) {
-                $('#preview').attr('src', e.target.result);
                 $('#avatar').attr('style', "background-image:url("+e.target.result+")");
             }
             

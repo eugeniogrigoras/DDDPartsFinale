@@ -38,19 +38,12 @@
       background-color: rgba(255,109,64,1);
       will-change: left, right;
     }
-    #avatar img {
-        width: 100%;
-        height: 100%;
-    }
-    #avatar {
-        overflow: hidden;
-        width: 150px;
+
+    .card-image {
         height: 150px;
-        background-size: cover; 
-        z-index: 2;
-        text-align: center;
-        cursor: pointer;
-        margin:auto auto;
+        background-position: 50% 50%;
+        background-repeat:   no-repeat;
+        background-size:     cover;
     }
 
 </style>
@@ -80,9 +73,8 @@
                 <!--DETAILS-->
                 <div id="details" class="col s12">
                     <div class="row form">
-                        <div class="col s12 m6 l4 offset-l4 card offset-m3" style="padding:0">
-                            <div class="card-image waves-effect waves-block waves-light" onclick="chooseImage()">
-                                <img id="preview" src="/img/bg1.jpg">
+                        <div class="col s12 m6 l4 offset-l4 card offset-m3" style="padding:0; margin-top:0; margin-bottom:35.25px">
+                            <div id="projectWallpaper" class="card-image waves-effect waves-block waves-light" onclick="chooseImage()" style="background-image:url('/img/bg1.jpg')">
                                 <input value="img/bg1.jpg" accept=".jpg,.jpeg" type="file" name="fileToUpload" id="fileToUpload" style="display:none;">
                             </div>
                         </div>
@@ -139,8 +131,7 @@
             var reader = new FileReader();
             
             reader.onload = function (e) {
-                $('#preview').attr('src', e.target.result);
-                $('#avatar').attr('style', "background-image:url("+e.target.result+")");
+                $('#projectWallpaper').attr('style', "background-image:url("+e.target.result+")");
             }
             
             reader.readAsDataURL(input.files[0]);

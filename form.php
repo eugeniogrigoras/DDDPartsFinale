@@ -123,8 +123,8 @@ if(isset($_POST['submit'])) {
 			           	 	copy('img/default.jpg', "users/".$name."-".$surname."-".$email."/profile.jpg");
 		           	 	}
 
-		                localMail($email, $name, $surname, $randomString, $last_id);
-		                //altervistaMail($email, $randomString, $last_id);
+		                //localMail($email, $name, $surname, $randomString, $last_id);
+		                altervistaMail($email, $randomString, $last_id);
 
 		                imageUpload("users/".$name."-".$surname."-".$email."/profile.jpg");
 

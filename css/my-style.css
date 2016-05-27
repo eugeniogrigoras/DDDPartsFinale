@@ -8,10 +8,12 @@ nav {
 
 li#account div.profile-image {
 	padding:0!important;
-}
-
-li#account div.profile-image img{
-	width:50px; height:50px;
+  height: 50px;
+  width:50px;
+  border-radius: 50%;
+  background-position: 50% 50%;
+  background-repeat:   no-repeat;
+  background-size:     cover;
 }
 
 li#account div.profile-menu {

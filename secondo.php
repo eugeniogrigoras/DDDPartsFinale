@@ -49,8 +49,8 @@
             <ul id="slide-out" class="side-nav">
                 <?php if (isset($_SESSION["ID"])): ?>
                     <li id="account" class="row background2">
-                        <div class="col s3 profile-image">
-                            <img src="<?php echo requestPath()."/profile.jpg";?>" alt="" class="z-depth-1 circle">
+                        <div class="col s3 profile-image" style="background-image:url('<?php echo requestPath()."/profile.jpg";?>')">
+                            
                         </div>
                         <div class="col s9 profile-menu">
                             <a data-beloworigin="true" class='truncate dropdown-button waves-effect' data-activates='profile-option'>

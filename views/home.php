@@ -60,7 +60,7 @@
 			<div class="container1"><img src="/img/bg9.png" style=" width:80% " ></div>
 			<!-- <p style="margin:0">THE PLACE TO BE FOR 3D</p> -->
 			<h3>What is DDDParts?</h3>
-			<p class="container flow-text" style="font-weight: 200">DDDParts is a social network where users can upload and share their DDDProjects or download one for print its!</p>
+			<p class="container flow-text" style="font-weight: 200">"3D Parts, Projects and Collections in a platform for DDDusers"</p>
 		
             <a href="/login" class="deep-orange accent-2 grey-text text-darken-4 center waves-effect btn-flat btn-large" style="margin-top: 1.168rem;">Try Now!</a>
         </div>

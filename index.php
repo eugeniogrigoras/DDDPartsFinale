@@ -70,6 +70,10 @@
             Flight::render('search', array('message' =>  $message)); 
     });
 
+    Flight::route('/project/@id(/@message)', function($id, $message){
+            Flight::render('project', array('message' =>  $message, 'id' => $id)); 
+    });
+
 /*    Flight::route('POST /settings(/@message)', function($message){
         if (logged()) {
             echo "POST";

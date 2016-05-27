@@ -22,10 +22,6 @@
     div.row {
         margin-bottom: 0;
     }
-    #avatar img {
-        width: 100%;
-        height: 100%;
-    }
     #avatar {
         overflow: hidden;
         border-radius: 50%;
@@ -33,6 +29,9 @@
         width: 150px;
         height: 150px;
         margin:auto auto;
+        background-position: 50% 50%;
+        background-repeat:   no-repeat;
+        background-size:     cover;
     }
 
     div.account {
@@ -115,8 +114,30 @@
         cursor:pointer;
     }
 
-    a {
-        color: rgba(255,109,64,1);
+    .fit-content {
+        width: -moz-fit-content;
+        width: -webkit-fit-content;
+        width: fit-content;
+    }
+
+    p a {
+        color: rgba(255,109,64,1)!important;
+        border-bottom:1px solid #ddd;
+    }
+
+    p a:hover {
+        border-bottom:1px solid rgba(255,109,64,1);
+    }
+
+    button#save {
+        display: none;
+    }
+
+    .card-image {
+        height: 150px;
+        background-position: 50% 50%;
+        background-repeat:   no-repeat;
+        background-size:     cover;
     }
 
 </style>
@@ -126,8 +147,8 @@
     	<div class="card col s12" style="padding:0!important; margin:0!important">
 	        <div class="title truncate"><i style="margin:0!important; cursor:pointer" class="activator material-icons right noselect">info_outline</i><?php echo $_SESSION["NOME"]." ".$_SESSION["COGNOME"]; ?></div>
 	        <div class="background" style="padding:24px; ">
-	            <div id="avatar" class="z-depth-1">
-	                <img src="<?php echo requestPath()."/profile.jpg";?>" alt="">
+	            <div id="avatar" class="z-depth-1" style="background-image:url('<?php echo requestPath()."/profile.jpg";?>')">
+	                
 	            </div>
 	        </div>
 	        <div id="profile-card" class="card-reveal" style=" text-align:left; color:#444; width:inherit!important">
