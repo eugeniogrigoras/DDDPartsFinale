@@ -1,6 +1,14 @@
 <?php
 	session_start();
 
+	function logged () {
+    	if (isset($_SESSION["ID"])) {
+    		return true;
+    	} else {
+    		return false;
+    	}	
+    }
+
 	function deleteDir($dirPath) {
 		if (!is_dir($dirPath)) {
 			throw new InvalidArgumentException ("$dirPath must be a directory");

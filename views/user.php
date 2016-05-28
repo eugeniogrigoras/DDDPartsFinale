@@ -1,5 +1,5 @@
 <?php require_once 'primo.php'; ?>
-<title>User - <?php $userData = requestDataUser($id); echo $userData["NOME"]." ".$userData["COGNOME"] ?></title>
+<title><?php $userData = requestDataUser($id); echo $userData["NOME"]." ".$userData["COGNOME"] ?></title>
 <style>
 	div.main-content {
         margin-top: 24px;
@@ -145,7 +145,25 @@
 <main>
     <div class="container main-content row z-depth-1">
     	<div class="card col s12" style="padding:0!important; margin:0!important">
-	        <div class="title truncate"><i style="margin:0!important; cursor:pointer" class="activator material-icons right noselect">info_outline</i><?php echo $userData["NOME"]." ".$userData["COGNOME"]; ?></div>
+	        <div class="title truncate">
+                <i style="margin:0!important; cursor:pointer" class="activator material-icons right noselect">info_outline</i>
+                <input
+                    <?php 
+                        if (!logged()) {
+                            echo "disabled";
+                        } else {
+                            $data=executeQuery("select * from utenti_seguono_utenti where FK_UTENTE=".$_SESSION["ID"]." and FK_UTENTE_SEGUITO=".$userData["ID"]);
+                            if ($data) {
+                                if ($data->num_rows > 0) {
+                                    echo "checked";
+                                }
+                            }
+                        }
+                        
+                    ?>
+                    class="white-checkbox" type="checkbox" id="<?php echo $userData["ID"] ?>" />
+                <label class="truncate" style="color:white; width:85%; margin-bottom:-10px" for="<?php echo $userData["ID"] ?>"> <?php echo $userData["NOME"]." ".$userData["COGNOME"]; ?></label>
+            </div>
 	        <div class="background" style="padding:24px; ">
 	            <div id="avatar" class="z-depth-1" style="background-image:url('<?php echo requestPathUser($userData["NOME"],$userData["COGNOME"],$userData["EMAIL"])."/profile.jpg";?>')">
 	                
@@ -159,8 +177,8 @@
 	        </div>
         </div>
         <div class="sections col s12" style="margin-bottom:0; padding:0!important">
-            <div class="user-card col l2 m6 s12 waves-effect" onclick="following()">
-                <div class="number" id="followingNumber">
+            <div id="userFollowingCard" class="user-card col l2 m6 s12 waves-effect" onclick="following()">
+                <div class="number" id="userFollowingNumber<?php echo $userData["ID"]; ?>">
                     <?php
                         $QUERY=executeQuery("select * FROM utenti_seguono_utenti where FK_UTENTE=".$id);
                         echo $QUERY->num_rows; 
@@ -168,8 +186,8 @@
                 </div>
                 <div class="subtitle truncate">FOLLOWING</div>
             </div>
-            <div class="user-card col l2 m6 s12 waves-effect" onclick="followers()">
-                <div class="number" id="followersNumber">
+            <div id="userFollowersCard" class="user-card col l2 m6 s12 waves-effect" onclick="followers()">
+                <div class="number" id="userFollowersNumber<?php echo $userData["ID"]; ?>">
                     <?php
                         $QUERY=executeQuery("select * FROM utenti_seguono_utenti where FK_UTENTE_SEGUITO=".$id);
                         echo $QUERY->num_rows; 
@@ -186,7 +204,7 @@
                 </div>
                 <div class="subtitle truncate">LIKES</div>
             </div>
-            <div class="user-card col l2 m6 s12 waves-effect" onclick="projects()">
+            <div id="userProjectsCard" class="user-card col l2 m6 s12 waves-effect" onclick="projects()">
                 <div class="number">
                     <?php
                         $QUERY=executeQuery("select * FROM progetti where FK_UTENTE=".$id);
@@ -225,6 +243,24 @@
 <?php require_once 'terzo.php'; ?>
 
 <script>
+    function _(el){
+        return document.getElementById(el);
+    }
+
+    $(document).ready(function() {
+        <?php if(isset($_REQUEST["fx"]) && $_REQUEST["fx"]=="following"): ?>
+            _('userFollowingCard').click();
+        <?php endif; ?>
+
+        <?php if(isset($_REQUEST["fx"]) && $_REQUEST["fx"]=="followers"): ?>
+            _('userFollowersCard').click();
+        <?php endif; ?>
+
+        <?php if(isset($_REQUEST["fx"]) && $_REQUEST["fx"]=="projects"): ?>
+            _('userProjectsCard').click();
+        <?php endif; ?>
+    });
+    
     //ACCOUNT CARDS
     function projects() {
         var ajax = new XMLHttpRequest();
@@ -292,10 +328,45 @@
         ajax.addEventListener("load", function (event) {
             var res = $.parseJSON(event.target.responseText);
             Materialize.toast(res.message, 2000);
-            _('userFollowingNumber'+res.userID).innerHTML=res.following;
-            _('userFollowersNumber'+res.userID).innerHTML=res.followers;
-            //_('followingNumber').innerHTML=res.userFollowing;
-            //_('followersNumber').innerHTML=res.userFollowers;
+            _('usersFollowingNumber'+res.requestID).innerHTML=res.usersFollowingNumber;
+            _('usersFollowersNumber'+res.requestID).innerHTML=res.usersFollowersNumber;
+            try {
+                _('usersFollowingNumber'+res.sessionID).innerHTML=res.userFollowingNumber;
+                _('usersFollowersNumber'+res.sessionID).innerHTML=res.userFollowersNumber;
+            } catch (err) {
+                //alert(err);
+            }
+        }, false);
+
+        ajax.addEventListener("error", function (event) {
+            Materialize.toast("Error Occured", 2500);
+        }, false);
+        if (this.checked) {
+            formdata.append("fx", "follow");
+        } else {
+            formdata.append("fx", "unfollow");
+        }
+        ajax.open("POST", "/follow.php");
+        ajax.send(formdata);
+    }); 
+
+    $("input[type=checkbox]").change(function(){
+        var ajax = new XMLHttpRequest();
+        var formdata = new FormData();
+        formdata.append("id", this.id);
+
+        ajax.addEventListener("load", function (event) {
+            var res = $.parseJSON(event.target.responseText);
+            Materialize.toast(res.message, 2000);
+            
+            _('userFollowingNumber'+res.requestID).innerHTML=res.usersFollowingNumber;
+            _('userFollowersNumber'+res.requestID).innerHTML=res.usersFollowersNumber;
+            try {
+                _('usersFollowingNumber'+res.sessionID).innerHTML=res.userFollowingNumber;
+                _('usersFollowersNumber'+res.sessionID).innerHTML=res.userFollowersNumber;
+            } catch (err) {
+                //alert(err);
+            }        
         }, false);
 
         ajax.addEventListener("error", function (event) {
@@ -309,10 +380,6 @@
         ajax.open("POST", "/follow.php");
         ajax.send(formdata);
     });
-
-    function _(el){
-        return document.getElementById(el);
-    }
 </script>
 
 <?php require_once 'quarto.php'; ?>

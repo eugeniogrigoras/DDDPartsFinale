@@ -9,14 +9,6 @@
 		$_SESSION["EMAIL"]=$_COOKIE["EMAIL"];
     }
 
-    function logged () {
-    	if (isset($_SESSION["ID"])) {
-    		return true;
-    	} else {
-    		return false;
-    	}	
-    }
-
     Flight::route('/', function(){
     	if (logged()) {
     		Flight::render('dashboard');
@@ -77,14 +69,22 @@
     Flight::route('/user/@id(/@message)', function($id, $message){
             $QUERY=executeQuery("select * FROM utenti where ID=".$id);
             $num = $QUERY->num_rows;
-            if ($num!=0) {
-                if ($id==$_SESSION["ID"]) {
-                    Flight::redirect('/account');
+            if ($num!=0) {    
+                if (logged()) {
+                    if ($_SESSION["ID"]==$id) {
+                        if (isset($_REQUEST["fx"])) {
+                            Flight::redirect('/account?fx='.$_REQUEST["fx"]);
+                        } else {
+                            Flight::redirect('/account');
+                        }
+                    } else {
+                        Flight::render('user', array('message' =>  $message, 'id' => $id));
+                    }
                 } else {
-                    Flight::render('user', array('message' =>  $message, 'id' => $id)); 
-                } 
+                    Flight::render('user', array('message' =>  $message, 'id' => $id));
+                }              
             } else {
-                echo "NO;";
+                echo "NO USER IN DATABASE;";
             }        
     });
 

@@ -211,3 +211,17 @@ textarea.materialize-textarea:focus:not([readonly]) + label {
   line-height: 22px;
   padding: 14px 16px;
 }
+
+.white-checkbox + label:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 18px;
+  height: 18px;
+  z-index: 0;
+  border: 2px solid white;
+  border-radius: 1px;
+  margin-top: 2px;
+  transition: .2s;
+}

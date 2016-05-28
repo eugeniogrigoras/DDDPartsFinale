@@ -23,12 +23,17 @@
 			                    <p class="truncate">
 			                        <input 
 			                        <?php 
-			                            $data=executeQuery("select * from utenti_seguono_utenti where FK_UTENTE=".$_REQUEST["id"]." and FK_UTENTE_SEGUITO=".$user["ID"]);
-			                            if ($data) {
-			                                if ($data->num_rows > 0) {
-			                                    echo "checked";
-			                                }
-			                            }
+			                        	if (!logged()) {
+			                        		echo "disabled";
+			                        	} else {
+			                        		$data=executeQuery("select * from utenti_seguono_utenti where FK_UTENTE=".$_SESSION["ID"]." and FK_UTENTE_SEGUITO=".$user["ID"]);
+				                            if ($data) {
+				                                if ($data->num_rows > 0) {
+				                                    echo "checked ";
+				                                }
+				                            }
+				                            if ($user["ID"]==$_SESSION["ID"]) echo "disabled";
+			                        	}		                            
 			                        ?> 
 			                        type="checkbox" id="<?php echo $user["ID"]; ?>" />
 			                        <label for="<?php echo $user["ID"]; ?>" style="font-weight:400; color:#424242"><a href="/user/<?php echo $user["ID"]; ?>" style="color:#424242!important"><?php echo $user["NOME"]." ".$user["COGNOME"] ?></a></label>            
@@ -36,33 +41,39 @@
 			                </div>
 			                
 			                <div class="card-content truncate" style="padding:0; border-top:1px solid #ddd;">
-			                    <div class="center-align waves-effect col s4"style="padding:6px 0; border-right:1px solid #ddd"> 
-			                        <div id="userFollowingNumber<?php echo $user["ID"]; ?>" class="number" style="font-weight:600; color:#424242;">
-			                            <?php
-			                                $QUERY=executeQuery("select * FROM utenti_seguono_utenti where FK_UTENTE=".$user["ID"]);
-			                                echo $QUERY->num_rows; 
-			                            ?>
-			                        </div>
-			                        <div class="subtitle truncate" style="color:#757575">FOLLOWING</div>
-			                    </div>
-			                    <div class="center-align waves-effect col s4 " style="padding:6px 0; height:100%;">
-				                    <div class="number" style="font-weight:600; color:#424242;">
-			                            <?php
-			                                $QUERY=executeQuery("select * FROM progetti where FK_UTENTE=".$user["ID"]);
-			                                echo $QUERY->num_rows; 
-			                            ?>
-			                        </div>
-				                    <div class="subtitle truncate" style="color:#757575">PROJECTS</div>
-			                    </div>
-			                    <div class="center-align waves-effect col s4" style=" padding:6px 0; border-left:1px solid #ddd">
-			                        <div id="userFollowersNumber<?php echo $user["ID"]; ?>" class="number" style="font-weight:600; color:#424242;">
-			                            <?php
-			                            $QUERY=executeQuery("select * FROM utenti_seguono_utenti where FK_UTENTE_SEGUITO=".$user["ID"]);
-			                            echo $QUERY->num_rows; 
-			                        ?>
-			                        </div>
-			                        <div class="subtitle truncate" style="color:#757575">FOLLOWERS</div>
-			                    </div>
+			                	<a href="/user/<?php echo $user["ID"]; ?>?fx=following">
+				                    <div class="center-align waves-effect col s4"style="padding:6px 0; border-right:1px solid #ddd"> 
+				                        <div id="usersFollowingNumber<?php echo $user["ID"]; ?>" class="number" style="font-weight:600; color:#424242;">
+				                            <?php
+				                                $QUERY=executeQuery("select * FROM utenti_seguono_utenti where FK_UTENTE=".$user["ID"]);
+				                                echo $QUERY->num_rows; 
+				                            ?>
+				                        </div>
+				                        <div class="subtitle truncate" style="color:#757575">FOLLOWING</div>
+				                    </div>
+			                    </a>
+			                    <a href="/user/<?php echo $user["ID"]; ?>?fx=projects">
+				                    <div class="center-align waves-effect col s4 " style="padding:6px 0; height:100%;">
+					                    <div class="number" style="font-weight:600; color:#424242;">
+				                            <?php
+				                                $QUERY=executeQuery("select * FROM progetti where FK_UTENTE=".$user["ID"]);
+				                                echo $QUERY->num_rows; 
+				                            ?>
+				                        </div>
+					                    <div class="subtitle truncate" style="color:#757575">PROJECTS</div>
+				                    </div>
+			                    </a>
+			                    <a href="/user/<?php echo $user["ID"]; ?>?fx=followers">
+				                    <div class="center-align waves-effect col s4" style=" padding:6px 0; border-left:1px solid #ddd">
+				                        <div id="usersFollowersNumber<?php echo $user["ID"]; ?>" class="number" style="font-weight:600; color:#424242;">
+				                            <?php
+				                            $QUERY=executeQuery("select * FROM utenti_seguono_utenti where FK_UTENTE_SEGUITO=".$user["ID"]);
+				                            echo $QUERY->num_rows; 
+				                        ?>
+				                        </div>
+				                        <div class="subtitle truncate" style="color:#757575">FOLLOWERS</div>
+				                    </div>
+			                    </a>
 			                </div>
 
 			                <div class="card-reveal">
@@ -104,12 +115,17 @@
 			                    <p class="truncate">
 			                        <input 
 			                        <?php 
-			                            $data=executeQuery("select * from utenti_seguono_utenti where FK_UTENTE=".$_REQUEST["id"]." and FK_UTENTE_SEGUITO=".$user["ID"]);
-			                            if ($data) {
-			                                if ($data->num_rows > 0) {
-			                                    echo "checked";
-			                                }
-			                            }
+			                        	if (!logged()) {
+			                        		echo "disabled";
+			                        	} else {
+			                        		$data=executeQuery("select * from utenti_seguono_utenti where FK_UTENTE=".$_SESSION["ID"]." and FK_UTENTE_SEGUITO=".$user["ID"]);
+				                            if ($data) {
+				                                if ($data->num_rows > 0) {
+				                                    echo "checked";
+				                                }
+				                            }
+				                            if ($user["ID"]==$_SESSION["ID"]) echo "disabled";
+			                        	}        
 			                        ?> 
 			                        type="checkbox" id="<?php echo $user["ID"]; ?>" />
 			                        <label for="<?php echo $user["ID"]; ?>" style="font-weight:400; color:#424242"><a href="/user/<?php echo $user["ID"]; ?>" style="color:#424242!important"><?php echo $user["NOME"]." ".$user["COGNOME"] ?></a></label>            
@@ -117,33 +133,39 @@
 			                </div>
 			                
 			                <div class="card-content truncate" style="padding:0; border-top:1px solid #ddd;">
-			                    <div class="center-align waves-effect col s4"style="padding:6px 0; border-right:1px solid #ddd"> 
-			                        <div id="userFollowingNumber<?php echo $user["ID"]; ?>" class="number" style="font-weight:600; color:#424242;">
-			                            <?php
-			                                $QUERY=executeQuery("select * FROM utenti_seguono_utenti where FK_UTENTE=".$user["ID"]);
-			                                echo $QUERY->num_rows; 
-			                            ?>
-			                        </div>
-			                        <div class="subtitle truncate" style="color:#757575">FOLLOWING</div>
-			                    </div>
-			                    <div class="center-align waves-effect col s4 " style="padding:6px 0; height:100%;">
-				                    <div class="number" style="font-weight:600; color:#424242;">
-			                            <?php
-			                                $QUERY=executeQuery("select * FROM progetti where FK_UTENTE=".$user["ID"]);
-			                                echo $QUERY->num_rows; 
-			                            ?>
-			                        </div>
-				                    <div class="subtitle truncate" style="color:#757575">PROJECTS</div>
-			                    </div>
-			                    <div class="center-align waves-effect col s4" style=" padding:6px 0; border-left:1px solid #ddd">
-			                        <div id="userFollowersNumber<?php echo $user["ID"]; ?>" class="number" style="font-weight:600; color:#424242;">
-			                            <?php
-			                            $QUERY=executeQuery("select * FROM utenti_seguono_utenti where FK_UTENTE_SEGUITO=".$user["ID"]);
-			                            echo $QUERY->num_rows; 
-			                        ?>
-			                        </div>
-			                        <div class="subtitle truncate" style="color:#757575">FOLLOWERS</div>
-			                    </div>
+			                	<a href="/user/<?php echo $user["ID"]; ?>?fx=following">
+				                    <div class="center-align waves-effect col s4"style="padding:6px 0; border-right:1px solid #ddd"> 
+				                        <div id="usersFollowingNumber<?php echo $user["ID"]; ?>" class="number" style="font-weight:600; color:#424242;">
+				                            <?php
+				                                $QUERY=executeQuery("select * FROM utenti_seguono_utenti where FK_UTENTE=".$user["ID"]);
+				                                echo $QUERY->num_rows; 
+				                            ?>
+				                        </div>
+				                        <div class="subtitle truncate" style="color:#757575">FOLLOWING</div>
+				                    </div>
+			                    </a>
+			                    <a href="/user/<?php echo $user["ID"]; ?>?fx=projects">
+				                    <div class="center-align waves-effect col s4 " style="padding:6px 0; height:100%;">
+					                    <div class="number" style="font-weight:600; color:#424242;">
+				                            <?php
+				                                $QUERY=executeQuery("select * FROM progetti where FK_UTENTE=".$user["ID"]);
+				                                echo $QUERY->num_rows; 
+				                            ?>
+				                        </div>
+					                    <div class="subtitle truncate" style="color:#757575">PROJECTS</div>
+				                    </div>
+			                    </a>
+			                    <a href="/user/<?php echo $user["ID"]; ?>?fx=followers">
+				                    <div class="center-align waves-effect col s4" style=" padding:6px 0; border-left:1px solid #ddd">
+				                        <div id="usersFollowersNumber<?php echo $user["ID"]; ?>" class="number" style="font-weight:600; color:#424242;">
+				                            <?php
+				                            $QUERY=executeQuery("select * FROM utenti_seguono_utenti where FK_UTENTE_SEGUITO=".$user["ID"]);
+				                            echo $QUERY->num_rows; 
+				                        ?>
+				                        </div>
+				                        <div class="subtitle truncate" style="color:#757575">FOLLOWERS</div>
+				                    </div>
+			                    </a>
 			                </div>
 			                <div class="card-reveal">
 			                    <span class="card-title grey-text text-darken-4"><i class="material-icons right noselect">close</i><?php echo $user["NOME"]." ".$user["COGNOME"] ?></span>

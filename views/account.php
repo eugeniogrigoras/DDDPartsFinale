@@ -159,8 +159,8 @@
 	        </div>
         </div>
         <div class="sections col s12" style="margin-bottom:0; padding:0!important">
-            <div class="user-card col l2 m6 s12 waves-effect" onclick="following()">
-                <div class="number" id="followingNumber">
+            <div id="userFollowingCard" class="user-card col l2 m6 s12 waves-effect" onclick="following()">
+                <div class="number" id="userFollowingNumber">
                     <?php
                         $QUERY=executeQuery("select * FROM utenti_seguono_utenti where FK_UTENTE=".$_SESSION["ID"]);
                         echo $QUERY->num_rows; 
@@ -168,8 +168,8 @@
                 </div>
                 <div class="subtitle truncate">FOLLOWING</div>
             </div>
-            <div class="user-card col l2 m6 s12 waves-effect" onclick="followers()">
-                <div class="number" id="followersNumber">
+            <div id="userFollowersCard" class="user-card col l2 m6 s12 waves-effect" onclick="followers()">
+                <div class="number" id="userFollowersNumber">
                     <?php
                         $QUERY=executeQuery("select * FROM utenti_seguono_utenti where FK_UTENTE_SEGUITO=".$_SESSION["ID"]);
                         echo $QUERY->num_rows; 
@@ -186,7 +186,7 @@
                 </div>
                 <div class="subtitle truncate">LIKES</div>
             </div>
-            <div class="user-card col l2 m6 s12 waves-effect" onclick="projects()">
+            <div id="userProjectsCard" class="user-card col l2 m6 s12 waves-effect" onclick="projects()">
                 <div class="number">
                     <?php
                         $QUERY=executeQuery("select * FROM progetti where FK_UTENTE=".$_SESSION["ID"]);
@@ -225,6 +225,25 @@
 <?php require_once 'terzo.php'; ?>
 
 <script>
+
+    function _(el){
+        return document.getElementById(el);
+    }
+
+    $(document).ready(function() {
+        <?php if(isset($_REQUEST["fx"]) && $_REQUEST["fx"]=="following"): ?>
+            _('userFollowingCard').click();
+        <?php endif; ?>
+
+        <?php if(isset($_REQUEST["fx"]) && $_REQUEST["fx"]=="followers"): ?>
+            _('userFollowersCard').click();
+        <?php endif; ?>
+
+        <?php if(isset($_REQUEST["fx"]) && $_REQUEST["fx"]=="projects"): ?>
+            _('userProjectsCard').click();
+        <?php endif; ?>
+    });
+
     //ACCOUNT CARDS
     function projects() {
         var ajax = new XMLHttpRequest();
@@ -292,10 +311,10 @@
         ajax.addEventListener("load", function (event) {
             var res = $.parseJSON(event.target.responseText);
             Materialize.toast(res.message, 2000);
-            _('userFollowingNumber'+res.userID).innerHTML=res.following;
-            _('userFollowersNumber'+res.userID).innerHTML=res.followers;
-            _('followingNumber').innerHTML=res.userFollowing;
-            _('followersNumber').innerHTML=res.userFollowers;
+            _('usersFollowingNumber'+res.requestID).innerHTML=res.usersFollowingNumber;
+            _('usersFollowersNumber'+res.requestID).innerHTML=res.usersFollowersNumber;
+            _('userFollowingNumber').innerHTML=res.userFollowingNumber;
+            _('userFollowersNumber').innerHTML=res.userFollowersNumber;
         }, false);
 
         ajax.addEventListener("error", function (event) {
@@ -309,10 +328,6 @@
         ajax.open("POST", "/follow.php");
         ajax.send(formdata);
     });
-
-    function _(el){
-        return document.getElementById(el);
-    }
 </script>
 
 <?php require_once 'quarto.php'; ?>
