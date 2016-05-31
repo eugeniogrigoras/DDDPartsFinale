@@ -71,7 +71,6 @@
                     <p class="truncate" style="font-size:13px; margin:0">by <a href="/user/<?php echo $project["FK_UTENTE"]; ?>"><?php echo $project["NOME_UTENTE"]." ".$project["COGNOME"] ?></a></p>
                 </div>
                 <div class="gallery carousel">
-                <img src="" alt="">
                     <?php 
                         $projectPath = "users/".$project["NOME_UTENTE"]."-".$project["COGNOME"]."-".$project["EMAIL"]."/".$project["ID"];
                         foreach (glob($projectPath."/*.jpg") as $filename) : ?>
