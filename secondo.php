@@ -9,7 +9,7 @@
         <nav>
             <div class="nav-wrapper">
                 <a style="display:block; margin: 0 13px;" class="button-collapse" href="#" data-activates="slide-out"><i class="material-icons noselect">menu</i></a>
-                <a href="#!" style="font-weight:300; font-size:24px;" class="brand-logo">DDDParts</a>
+                <a href="#!" style="font-weight:300; font-size:24px;" class="brand-logo"><span style="color:#ff6e40; font-weight:400">DDD</span>Parts</a>
                 <ul class="right hide-on-med-and-down" style="height:inherit!important; font-weight:300">
                     <?php if (isset($_SESSION["ID"])): ?>
                     <li>

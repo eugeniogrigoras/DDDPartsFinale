@@ -204,7 +204,7 @@
 				                    </a>
 		                        </div>
 		                        <div class="card-content truncate" style="padding:12px 15px;">
-		                            <p class="truncate" style="font-size:20px; margin-bottom:6px;"><a href="/project/<?php echo $project["ID"] ?>" style="color:#212121!important"><?php echo $project["NOME_PROGETTO"] ?></a><p>
+		                            <p class="truncate" style="font-size:20px; margin-bottom:6px;"><a href="/project/<?php echo $project["ID"] ?>" style="color:#212121!important"><?php echo $project["NOME_PROGETTO"] ?></a></p>
 		                            <p class="truncate" style="font-size:13px">by <a href="/user/<?php echo $project["ID_UTENTE"]; ?>"><?php echo $project["NOME_UTENTE"]." ".$project["COGNOME"] ?></a></p>
 		                        </div>
 		                        <div class="card-content truncate" style="padding:12px 15px; border-top:1px solid #ddd">

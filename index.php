@@ -62,8 +62,8 @@
             Flight::render('search', array('message' =>  $message)); 
     });
 
-    Flight::route('/project/@id(/@message)', function($id, $message){
-            Flight::render('project', array('message' =>  $message, 'id' => $id)); 
+    Flight::route('/project/@id', function($id){
+            Flight::render('project', array('id' =>  $id)); 
     });
 
     Flight::route('/user/@id(/@message)', function($id, $message){

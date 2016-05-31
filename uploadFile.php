@@ -2,7 +2,7 @@
 	require_once 'functions.php';
 
 	// A list of permitted file extensions
-	$allowed = array('png', 'jpg', 'gif','zip');
+	$allowed = array('png', 'jpg', 'zip', 'stl', 'jpeg', 'pdf', 'txt', 'obj');
 
 	if(isset($_FILES['filesToUpload']) && $_FILES['filesToUpload']['error'] == 0){
 

@@ -39,13 +39,11 @@
     }
 
     .number {
-        @apply(--paper-font-title);
         color: #444;
         margin-bottom: 5px;
     }
 
     .subtitle {
-        @apply(--paper-font-caption);
         color: #686868;
         font-size: 10px;
     }

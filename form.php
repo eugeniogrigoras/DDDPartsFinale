@@ -73,7 +73,10 @@ if(isset($_POST['submit'])) {
 		    			if ($QUERY && ($QUERY->num_rows > 0)) {
 							$riga=$QUERY->fetch_assoc();
 							$fkTag = $riga['ID'];
-							$QUERY=executeQuery("insert into progetti_hanno_tag (FK_PROGETTO, FK_TAG) VALUES ('$lastId', '$fkTag')");
+							$QUERY=executeQuery("select * from progetti_hanno_tag where FK_PROGETTO=$lastId and FK_TAG=$fkTag");
+							if ($QUERY->num_rows == 0) {
+								$QUERY=executeQuery("insert into progetti_hanno_tag (FK_PROGETTO, FK_TAG) VALUES ('$lastId', '$fkTag')");
+							}
 						}
 					}
 				}

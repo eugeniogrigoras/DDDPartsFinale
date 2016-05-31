@@ -1,13 +1,9 @@
 <?php require_once 'primo.php'; ?>
 <title>Search</title>
 <style>
-	div.main-content {
+	.main-content {
         margin-top: 24px;
         margin-bottom: 24px!important;
-    }
-
-    div.main-content form {
-
     }
 
     div.title {
@@ -36,11 +32,10 @@
         z-index: 2;
         text-align: center;
         margin:auto auto;
-        @apply(--shadow-elevation-4dp);
     }
 
-    div.account {
-        padding: 0px;
+    .account {
+        padding: 0;
     }
 
 </style>

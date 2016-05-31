@@ -166,7 +166,7 @@
         
         deleteProjectFolder();
 
-        var arr = ['png', 'jpg', 'gif','zip', 'iso'];
+        var arr = ['png', 'jpg', 'zip', 'stl', 'jpeg', 'pdf', 'txt', 'obj'];
 
         var j = 0;
 
@@ -305,7 +305,7 @@
             submit = true;
             $('#submit').click();
         } else {
-            Materialize.toast('Fill in all fields!', 2000)
+            Materialize.toast('Fill in all fields!', 2000);
         }
     }
 	$('#tag-input').keypress(function (e) {
