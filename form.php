@@ -85,6 +85,7 @@ if(isset($_POST['submit'])) {
 				imageUpload($projectPath."projectWallpaper.jpg");
 
 				rename ($projectPath,"users/".$_SESSION["NOME"]."-".$_SESSION["COGNOME"]."-".$_SESSION["EMAIL"]."/".$lastId."/");
+				header("location: /project/$lastId");
 				exit();
 				break;
 

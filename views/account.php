@@ -140,6 +140,39 @@
 
 </style>
 <?php require_once 'secondo.php'; ?>
+<?php 
+    $rootPath = realpath("users/Mattia-Lodi-mattia.lodi97@gmail.com/prova");
+    echo "<script>alert('".$rootPath."');</script>";
+
+// Initialize archive object
+$zip = new ZipArchive();
+$zip->open('users/Mattia-Lodi-mattia.lodi97@gmail.com/file.zip', ZipArchive::CREATE | ZipArchive::OVERWRITE);
+
+// Create recursive directory iterator
+/** @var SplFileInfo[] $files */
+$files = new RecursiveIteratorIterator(
+    new RecursiveDirectoryIterator($rootPath),
+    RecursiveIteratorIterator::LEAVES_ONLY
+);
+
+foreach ($files as $name => $file)
+{
+    // Skip directories (they would be added automatically)
+    if (!$file->isDir())
+    {
+        // Get real and relative path for current file
+        $filePath = $file->getRealPath();
+        $relativePath = substr($filePath, strlen($rootPath) + 1);
+
+        // Add current file to archive
+        $zip->addFile($filePath, $relativePath);
+    }
+}
+
+// Zip archive will be created only after closing object
+$zip->close();
+
+?>
 <main>
     <div class="container main-content row z-depth-1">
     	<div class="card col s12" style="padding:0!important; margin:0!important">

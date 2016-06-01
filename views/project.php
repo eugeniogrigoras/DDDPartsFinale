@@ -32,9 +32,6 @@
         margin:3px;
         border-radius: 0!important;
     }
-    .flickity-page-dots {
-        display: none;
-    }
 
     img {
         display: block;
@@ -46,7 +43,7 @@
         background-color:#212121;
     }
 
-    @media screen and ( min-width: 768px ) {
+    @media screen and (min-width: 768px) {
         img, .carousel {
             height: 400px;
         }
@@ -58,13 +55,52 @@
     .progress-bar {
         height: 6px;
         width: 0;
-        background: rgba(255,109,64,0.75);
+        background-color:#ff6e40;
+        background-color: rgba(255,109,64,0.75);
+    }
+    .fit-content {
+        width: -moz-fit-content;
+        width: -webkit-fit-content;
+        width: fit-content;
+    }
+    li.download + li.download {
+        border-top: 1px solid #ddd;
     }
 </style>
 <?php require_once 'secondo.php'; ?>
 <main>
-    <div class="row main-content">
-        <div class="col l9 s12 m8">
+    <div class="fixed-action-btn">
+        <div class="btn-floating btn-large deep-orange accent-2 waves-effect modal-trigger" href="#download-content">
+            <i class="large material-icons">file_download</i>
+        </div>
+    </div>
+    <div id="download-content" class="modal modal-fixed-footer bottom-sheet" style="max-height:100%">
+        <div class="modal-content">
+            <h4>What do you need?</h4>
+            <ul style="border:0; margin:0; padding:24px; border:1px solid #ddd; background-color:white" class="col s12 collection" id="uploadedFiles">
+                        <?php 
+                            $projectPath = "users/".$project["NOME_UTENTE"]."-".$project["COGNOME"]."-".$project["EMAIL"]."/".$project["ID"];
+
+                            $files = array_slice(scandir($projectPath), 2);
+                        
+                            foreach ($files as $file) {
+                                echo '<li style="padding:24px 0;" class="download">'.$file.'</li>';
+                            }
+                            foreach (glob($projectPath."/*.jpg") as $filename) {
+                                var2console($filename);
+                                echo "/$filename size " . (filesize($filename) / (1024*1024));
+                                echo "<br>";
+                            }   
+                        ?>
+                    </ul>
+        </div>
+        <div class="modal-footer">  
+            <a href="#!" style="margin-left:6px" class="modal-action waves-effect waves-light btn-flat grey darken-3 white-text">Download</a>
+            <a href="#!" class="modal-action modal-close waves-effect btn-flat">Close</a>
+        </div>
+    </div>
+    <div class="row main-content" style="margin:0">
+        <div class="col l9 s12 m8" style="margin-bottom:24px">
             <div class="col s12 z-depth-1" style="height:100%; background-color:white; margin:0; padding:0">
                 <div class="col s12 title">
                     <p class="truncate" style="font-size:20px; margin:0;"><?php echo $project["NOME_PROGETTO"] ?></p>
@@ -72,14 +108,15 @@
                 </div>
                 <div class="gallery carousel">
                     <?php 
-                        $projectPath = "users/".$project["NOME_UTENTE"]."-".$project["COGNOME"]."-".$project["EMAIL"]."/".$project["ID"];
-                        foreach (glob($projectPath."/*.jpg") as $filename) : ?>
+                        foreach (glob($projectPath."/*.{jpg,png,gif}", GLOB_BRACE) as $filename) : ?>
                           <img src="<?php echo "/".$filename; ?>" alt="">
                     <?php endforeach; ?>
                 </div>
-                <div style="background:#ddd"><div class="progress-bar"></div></div>
+                <div style="background:#9e9e9e"><div class="progress-bar"></div></div>
                 <div class="col s12" style="padding:24px;">
-                    <ul style="border:0; margin:0; padding:0" class="col s12 collection" id="uploadedFiles">
+                    <h4>Description</h4>
+                    <p><?php echo $project["DESCRIZIONE"] ?></p>
+                    <ul style="border:0; margin:0; padding:0; display:none" class="col s12 collection" id="uploadedFiles">
                     
                         <?php 
 
@@ -99,11 +136,11 @@
                 </div>
             </div>
         </div>
-        <div class="col l3 s12 m4">
-            <div class="row z-depth-1" style="height:100%; background-color:white">
+        <div class="col l3 s12 m4" style="margin-bottom:24px;">
+            <div class="row z-depth-1" style="height:100%; background-color:white; margin:0">
                 <div class="col s12 title">
                     <p class="truncate" style="font-size:20px; margin:0;">Stats</p>
-                    <p class="truncate" style="font-size:13px; margin:0">more about - <?php echo $project["NOME_PROGETTO"] ?> -</p>
+                    <p class="truncate" style="font-size:13px; margin:0">more about - <?php echo $project["NOME_PROGETTO"] ?></p>
                 </div>
                 <div class="col s12" style="padding:12px">
                     <div id="category">
@@ -133,7 +170,9 @@
 <script>
     var flkty = new Flickity('.gallery', {
       imagesLoaded: true,
-      freeScroll: true
+      freeScroll: true,
+      initialIndex: 0,
+      pageDots: false
     });
 
     var progressBar = document.querySelector('.progress-bar');

@@ -12,7 +12,7 @@
                 <a href="#!" style="font-weight:300; font-size:24px;" class="brand-logo"><span style="color:#ff6e40; font-weight:400">DDD</span>Parts</a>
                 <ul class="right hide-on-med-and-down" style="height:inherit!important; font-weight:300">
                     <?php if (isset($_SESSION["ID"])): ?>
-                    <li>
+                    <!-- <li>
                         <a data-alignment="right" data-constrainwidth="false" data-beloworigin="true" class="nav dropdown-button waves-effect" data-activates="notifications">
                             <i style="margin:0!important" class="material-icons">notifications</i>
                             <span class="new badge deep-orange accent-2">4</span>
@@ -23,7 +23,7 @@
                             <li><a href="#!">one</a></li>
                             <li><a href="#!">two</a></li>
                         </ul>
-                    </li>
+                    </li> -->
                     <li style="margin-right:13px">
                         <a data-beloworigin="true" class='truncate dropdown-button waves-effect' data-activates='profile-option-nav'>
                             <i class="material-icons left">account_circle</i>
