@@ -34,6 +34,21 @@
         background-size:     cover;
     }
 
+    .collection-image {
+        position: absolute;
+        overflow: hidden;
+        border-radius: 50%;
+        
+        width: 42px;
+        height: 42px;
+        background-position: 50% 50%;
+        background-repeat:   no-repeat;
+        background-size:     cover;
+        left: 15px;
+        display: inline-block;
+        vertical-align: middle;
+    }
+
     div.account {
         padding: 0px;
     }
@@ -76,8 +91,22 @@
         border-bottom:1px solid #ddd!important;
     }
 
-    @media only screen and (min-width : 993px) {
-    	
+    @media only screen and (max-width : 600px) {
+        .user-card {
+            border-right:0px solid #ddd!important;
+        }
+        .user-card:nth-of-type(5) {
+            border-bottom:1px solid #ddd!important;
+        }
+    }
+
+    @media only screen and (max-width : 992px) {
+        .user-card:nth-of-type(5) {
+            border-bottom:0px solid #ddd;
+        }
+        .user-card:nth-of-type(6) {
+            border-bottom:0px solid #ddd!important;
+        }
     }
 
     @media only screen and (max-width : 992px) {
@@ -119,8 +148,8 @@
     }
 
     p a {
-        color: rgba(255,109,64,1)!important;
-        border-bottom:1px solid #ddd;
+        color: rgba(255,109,64,1);
+        border-bottom:0px solid #ddd;
     }
 
     p a:hover {
@@ -137,6 +166,23 @@
         background-repeat:   no-repeat;
         background-size:     cover;
     }
+
+    .no_style a {
+        color:#777;
+    }
+
+    .no_style a:hover {
+        border-bottom:0px solid rgba(255,109,64,1)!important;
+    }
+
+    .no_style:hover {
+        color:rgba(255,109,64,1)!important;
+    }
+
+    .no_style:hover a{
+        color:rgba(255,109,64,1)!important;
+    }
+
 
 </style>
 <?php require_once 'secondo.php'; ?>
@@ -176,7 +222,7 @@
         </div>
         <div class="sections col s12" style="margin-bottom:0; padding:0!important">
             <div id="userFollowingCard" class="user-card col l2 m6 s12 waves-effect" onclick="following()">
-                <div class="number" id="userFollowingNumber<?php echo $userData["ID"]; ?>">
+                <div class="number" id="userFollowingNumber<?php echo $id; ?>">
                     <?php
                         $QUERY=executeQuery("select * FROM utenti_seguono_utenti where FK_UTENTE=".$id);
                         echo $QUERY->num_rows; 
@@ -185,7 +231,7 @@
                 <div class="subtitle truncate">FOLLOWING</div>
             </div>
             <div id="userFollowersCard" class="user-card col l2 m6 s12 waves-effect" onclick="followers()">
-                <div class="number" id="userFollowersNumber<?php echo $userData["ID"]; ?>">
+                <div class="number" id="userFollowersNumber<?php echo $id; ?>">
                     <?php
                         $QUERY=executeQuery("select * FROM utenti_seguono_utenti where FK_UTENTE_SEGUITO=".$id);
                         echo $QUERY->num_rows; 
@@ -193,17 +239,17 @@
                 </div>
                 <div class="subtitle truncate">FOLLOWERS</div>
             </div>
-            <div class="user-card col l2 m6 s12 waves-effect">
-                <div class="number">
+            <div class="user-card col l2 m6 s12 waves-effect" id="userLikesCard" onclick="likes()">
+                <div class="number" id="userLikesNumber<?php echo $id; ?>">
                     <?php
-                        $QUERY=executeQuery("select * FROM utenti_like_progetti as p, utenti_like_collezioni as c where p.FK_UTENTE=".$id." and c.FK_UTENTE=".$id);
+                        $QUERY=executeQuery("select * from utenti_like_progetti where FK_UTENTE=".$id);
                         echo $QUERY->num_rows; 
                     ?>
                 </div>
                 <div class="subtitle truncate">LIKES</div>
             </div>
             <div id="userProjectsCard" class="user-card col l2 m6 s12 waves-effect" onclick="projects()">
-                <div class="number">
+                <div class="number" id="userProjectsNumber<?php echo $id; ?>">
                     <?php
                         $QUERY=executeQuery("select * FROM progetti where FK_UTENTE=".$id);
                         echo $QUERY->num_rows; 
@@ -211,8 +257,8 @@
                 </div>
                 <div class="subtitle truncate">PROJECTS</div>
             </div>
-            <div class="user-card col l2 m6 s12 waves-effect" id="my-collections">
-                <div class="number">
+            <div id="userMyCollectionsCard" class="user-card col l2 m6 s12 waves-effect" onclick="myCollections()">
+                <div id="userMyCollectionsNumber<?php echo $id; ?>" class="number">
                     <?php
                         $QUERY=executeQuery("select * FROM collezioni where FK_UTENTE=".$id);
                         echo $QUERY->num_rows; 
@@ -220,8 +266,8 @@
                 </div>
                 <div class="subtitle truncate">MY COLLECTIONS</div>
             </div>
-            <div class="user-card col l2 m6 s12 waves-effect" id="followed-collections">
-                <div class="number">
+            <div class="user-card col l2 m6 s12 waves-effect" id="userFollowedCollectionsCard" onclick="followedCollections()">
+                <div class="number" id="userFollowedCollectionsNumber<?php echo $id; ?>">
                     <?php
                         $QUERY=executeQuery("select * FROM utenti_seguono_collezioni where FK_UTENTE=".$id);
                         echo $QUERY->num_rows; 
@@ -235,6 +281,50 @@
 
 
     <div id="accountCardsResponse"></div>
+
+    <?php if (logged()): ?>
+
+    <div id="collections" class="modal"></div>
+
+    <div id="add_to_collection" style="display:none">
+        <div class="modal-content" style="text-align: center; padding: 15px; background-color:#f6f7f9">
+            <p id="collections_title" style="margin:6px 0; font-size: 18px"></p>
+            <a style="font-size: 14px; color:#ff6e40" href="/account?fx=myCollections">Go to my Collections</a>
+        </div>
+        <ul class="modal-content collection" id="collections-container" style="padding:0; margin:0 15px">
+
+        </ul>
+        <div class="modal-content" style="text-align:center">
+            <a onCLick="newCollection()" style="font-size: 14px; color:#ff6e40; margin:6px 0; cursor:pointer">Create a new Collection</a>
+        </div>
+    </div>
+
+    <div id="new_collection" style="display:none">
+        <div class="modal-content" style="text-align: center; padding: 15px; background-color:#f6f7f9">
+            <p style="margin:6px 0; font-size: 18px">Create a new Collection</p>
+            <a style="font-size: 14px; color:#ff6e40" href="/user/<?php echo $_SESSION["ID"]; ?>?fx=myColections">Go to my Collections</a>
+        </div>
+        <div class="modal-content" style="text-align:center">
+            <div class="row">
+                <form autocomplete="off" novalidate class="col s12" id="create_collection">
+                    <div class="input-field col s12">
+                        <input required placeholder="Collection Name" id="collection_name" type="text" class="validate">
+                        <label for="collection_name">Name</label>
+                    </div>
+                    <div class="input-field col s12">
+                        <textarea placeholder="Collection Description" id="collection_description" class="materialize-textarea" length="300" maxlength="300"></textarea>
+                        <label for="collection_description">Description</label>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a id="save_collection_button" onClick="submitCollection()" style="margin-left:6px" class="modal-action modal-close waves-effect waves-light btn-flat grey darken-3 white-text">Save</a>
+            <a onClick="cancelCollectionCreate()" class="waves-effect btn-flat ">Cancel</a>
+        </div>
+    </div>
+
+    <?php endif; ?>
 
 </main>
 
@@ -257,10 +347,28 @@
         <?php if(isset($_REQUEST["fx"]) && $_REQUEST["fx"]=="projects"): ?>
             _('userProjectsCard').click();
         <?php endif; ?>
+
+        <?php if(isset($_REQUEST["fx"]) && $_REQUEST["fx"]=="myCollections"): ?>
+            _('userMyCollectionsCard').click();
+        <?php endif; ?>
+
+        <?php if(isset($_REQUEST["fx"]) && $_REQUEST["fx"]=="followedCollections"): ?>
+            _('userFollowedCollectionsCard').click();
+        <?php endif; ?>
+
+        <?php if(isset($_REQUEST["fx"]) && $_REQUEST["fx"]=="likes"): ?>
+            _('userLikesCard').click();
+        <?php endif; ?>
     });
     
     //ACCOUNT CARDS
     function projects() {
+        _('userFollowingCard').style.backgroundColor="#fff";
+        _('userFollowersCard').style.backgroundColor="#fff";
+        _('userProjectsCard').style.backgroundColor="#f5f5f5";
+        _('userMyCollectionsCard').style.backgroundColor="#fff";
+        _('userFollowedCollectionsCard').style.backgroundColor="#fff";
+        _('userLikesCard').style.backgroundColor="#fff";
         var ajax = new XMLHttpRequest();
         var formdata = new FormData();
         formdata.append("fx", "projects");
@@ -269,6 +377,7 @@
             var t = event.target.responseText;
             _("accountCardsResponse").innerHTML=t;
             Materialize.showStaggeredList('#projects');
+            DISQUSWIDGETS.getCount({reset: true});
         }, false);
 
         ajax.addEventListener("error", function (event) {
@@ -279,6 +388,12 @@
     }
 
     function following() {
+        _('userFollowingCard').style.backgroundColor="#f5f5f5";
+        _('userFollowersCard').style.backgroundColor="#fff";
+        _('userProjectsCard').style.backgroundColor="#fff";
+        _('userMyCollectionsCard').style.backgroundColor="#fff";
+        _('userFollowedCollectionsCard').style.backgroundColor="#fff";
+        _('userLikesCard').style.backgroundColor="#fff";
         var ajax = new XMLHttpRequest();
         var formdata = new FormData();
         formdata.append("fx", "following");
@@ -297,6 +412,12 @@
     }
 
     function followers() {
+        _('userFollowingCard').style.backgroundColor="#fff";
+        _('userFollowersCard').style.backgroundColor="#f5f5f5";
+        _('userProjectsCard').style.backgroundColor="#fff";
+        _('userMyCollectionsCard').style.backgroundColor="#fff";
+        _('userFollowedCollectionsCard').style.backgroundColor="#fff";
+        _('userLikesCard').style.backgroundColor="#fff";
         var ajax = new XMLHttpRequest();
         var formdata = new FormData();
         formdata.append("fx", "followers");
@@ -313,7 +434,166 @@
         ajax.open("POST", "/accountCards.php");
         ajax.send(formdata);
     }
-    
+
+    function myCollections() {
+        _('userFollowingCard').style.backgroundColor="#fff";
+        _('userFollowersCard').style.backgroundColor="#fff";
+        _('userProjectsCard').style.backgroundColor="#fff";
+        _('userMyCollectionsCard').style.backgroundColor="#f5f5f5";
+        _('userFollowedCollectionsCard').style.backgroundColor="#fff";
+        _('userLikesCard').style.backgroundColor="#fff";
+        var ajax = new XMLHttpRequest();
+        var formdata = new FormData();
+        formdata.append("fx", "myCollections");
+        formdata.append("id", <?php echo $id ?>);
+        ajax.addEventListener("load", function (event) {
+            var t = event.target.responseText;
+            _("accountCardsResponse").innerHTML=t;
+            Materialize.showStaggeredList('#myCollections');
+        }, false);
+
+        ajax.addEventListener("error", function (event) {
+            Materialize.toast("Error Occured", 2500);
+        }, false);
+        ajax.open("POST", "/accountCards.php");
+        ajax.send(formdata);
+    }
+
+    function followedCollections() {
+        _('userFollowingCard').style.backgroundColor="#fff";
+        _('userFollowersCard').style.backgroundColor="#fff";
+        _('userProjectsCard').style.backgroundColor="#fff";
+        _('userMyCollectionsCard').style.backgroundColor="#fff";
+        _('userFollowedCollectionsCard').style.backgroundColor="#f5f5f5";
+        _('userLikesCard').style.backgroundColor="#fff";
+        var ajax = new XMLHttpRequest();
+        var formdata = new FormData();
+        formdata.append("fx", "followedCollections");
+        formdata.append("id", <?php echo $id ?>);
+        ajax.addEventListener("load", function (event) {
+            var t = event.target.responseText;
+            _("accountCardsResponse").innerHTML=t;
+            Materialize.showStaggeredList('#followedCollections');
+        }, false);
+
+        ajax.addEventListener("error", function (event) {
+            Materialize.toast("Error Occured", 2500);
+        }, false);
+        ajax.open("POST", "/accountCards.php");
+        ajax.send(formdata);
+    }
+
+    function likes() {
+        _('userFollowingCard').style.backgroundColor="#fff";
+        _('userFollowersCard').style.backgroundColor="#fff";
+        _('userProjectsCard').style.backgroundColor="#fff";
+        _('userMyCollectionsCard').style.backgroundColor="#fff";
+        _('userFollowedCollectionsCard').style.backgroundColor="#fff";
+        _('userLikesCard').style.backgroundColor="#f5f5f5";
+        var ajax = new XMLHttpRequest();
+        var formdata = new FormData();
+        formdata.append("fx", "likes");
+        formdata.append("id", <?php echo $id ?>);
+        ajax.addEventListener("load", function (event) {
+            var t = event.target.responseText;
+            _("accountCardsResponse").innerHTML=t;
+            Materialize.showStaggeredList('#likes');
+        }, false);
+
+        ajax.addEventListener("error", function (event) {
+            Materialize.toast("Error Occured", 2500);
+        }, false);
+        ajax.open("POST", "/accountCards.php");
+        ajax.send(formdata);
+    }    
+</script>
+
+<?php if (logged()) : ?>
+
+<script>
+    function save(id, name) {
+        updateCollections($("#"+id).data('projectid'));
+        //alert ($("#"+id).data('projectid'));
+        $('#collections').html('');
+        $("#collections_title").text('Add "'+name+'" to a collection');
+        $('#collections').html($('#add_to_collection').html());
+        $('#save_collection_button').attr("data-selectedproject", $("#"+id).data('projectid'));
+        
+        $('#collections').openModal();
+    }
+    function newCollection () {
+        $('#collections').html($('#new_collection').html());
+    }
+
+    function cancelCollectionCreate () {
+        updateCollections($("#save_collection_button").data('selectedproject'));
+        $('#collections').html($('#add_to_collection').html());
+    }
+
+    function submitCollection () {
+        if($('#create_collection')[0].checkValidity()) {
+            var ajax = new XMLHttpRequest();
+            var formdata = new FormData();
+            formdata.append("name", _("collection_name").value);
+            formdata.append("description", _("collection_description").value);
+            formdata.append("project_id", $("#save_collection_button").data('selectedproject'));
+            formdata.append("user_id", <?php echo $_SESSION["ID"]; ?>);
+
+            ajax.addEventListener("load", function (event) {
+                var t = event.target.responseText;
+                if (t) {
+                    var res = $.parseJSON(t);
+                    $('#collections').closeModal();
+                    _("inCollection"+res.projectID).innerHTML=res.inCollection;
+                    Materialize.toast(res.message, 2000);
+                }
+            }, false);
+            ajax.addEventListener("error", function (event) {
+                Materialize.toast('Error occured!', 2000);
+            }, false);
+            ajax.open("POST", "/createCollection");
+            ajax.send(formdata);
+        } else {
+            Materialize.toast('Fill in all fields!', 2000)
+        }
+    }
+    function updateCollections ($projectID) {
+        var ajax = new XMLHttpRequest();
+        var formdata = new FormData();
+        formdata.append("projectID", $projectID);
+        ajax.addEventListener("load", function (event) {
+            var t = event.target.responseText;
+            if (t) {
+                $('#collections-container').html(t);
+            }
+        }, false);
+        ajax.addEventListener("error", function (event) {
+            Materialize.toast('Error occured!', 2000);
+        }, false);
+        ajax.open("POST", "/getCollections");
+        ajax.send(formdata);
+    }
+
+    function addProjectToCollection ($projectID, $collectionID) {
+        var ajax = new XMLHttpRequest();
+        var formdata = new FormData();
+        formdata.append("projectID", $projectID);
+        formdata.append("collectionID", $collectionID);
+        ajax.addEventListener("load", function (event) {
+            var t = event.target.responseText;
+            if (t) {
+                var res = $.parseJSON(t);
+                $('#collections').closeModal();
+                _("inCollection"+res.projectID).innerHTML=res.inCollection;
+                Materialize.toast(res.message, 2000);
+            }
+        }, false);
+        ajax.addEventListener("error", function (event) {
+            Materialize.toast('Error occured!', 2000);
+        }, false);
+        ajax.open("POST", "/addProjectToCollection");
+        ajax.send(formdata);
+    }
 </script>
 
 <script>
@@ -344,7 +624,7 @@
         } else {
             formdata.append("fx", "unfollow");
         }
-        ajax.open("POST", "/follow.php");
+        ajax.open("POST", "/follow");
         ajax.send(formdata);
     }); 
 
@@ -375,9 +655,17 @@
         } else {
             formdata.append("fx", "unfollow");
         }
-        ajax.open("POST", "/follow.php");
+        ajax.open("POST", "/follow");
         ajax.send(formdata);
     });
 </script>
+
+<?php else: ?>
+<script>
+    function save(id, name) {
+        Materialize.toast("You need to login first", 2000);
+    }
+</script>
+<?php endif; ?>
 
 <?php require_once 'quarto.php'; ?>

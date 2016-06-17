@@ -42,8 +42,7 @@
 <?php require_once 'secondo.php'; ?>
 <main>
     <div class="container main-content row" style="margin-bottom:24px!important">
-        <form autocomplete="off" style="background-color:white;" id="login" action="/form.php" method="post" enctype="multipart/form-data" class="col s12 z-depth-1">
-            <input type="hidden" value="login" name="getpage">
+        <form autocomplete="off" style="background-color:white;" id="login" action="/login" method="POST" enctype="multipart/form-data" class="col s12 z-depth-1">
             <div class="row title">LOGIN <?php if(isset($message)) echo "- ".$message ?></div>
             <div class="row form">
                 <div class="input-field col l12 m12 s12">

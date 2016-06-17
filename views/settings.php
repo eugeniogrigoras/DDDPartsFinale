@@ -64,7 +64,6 @@
             </div>
             <div class="row form">
                 <div class="input-field col l6 m6 s12">
-                    <input type="hidden" id="actual-password-hidden" value="<?php echo requestData()["PASSWORD"]; ?>">
                     <input id="actual-password" type="password">
                     <label for="actual-password">Actual Password</label>
                 </div>
@@ -124,7 +123,7 @@
             ajax.addEventListener("load", completeHandler, false);
             ajax.addEventListener("error", errorHandler, false);
             ajax.addEventListener("abort", abortHandler, false);
-            ajax.open("POST", "/settings.php");
+            ajax.open("POST", "/settings");
             ajax.send(formdata);
         });
         
@@ -200,9 +199,27 @@
     }
 
     $("#actual-password").change(function(){
-        if(this.value == document.getElementById("actual-password-hidden").value) {
-            document.getElementById("password").removeAttribute("disabled"); 
-        }
+        if (this.value.length > 7) {
+            var ajax = new XMLHttpRequest();
+            var formdata = new FormData();
+            formdata.append("password", this.value);
+            ajax.addEventListener("load", function () {
+                if (event.target.responseText) {
+                    var t = event.target.responseText;
+                    if (t=="OK") {
+                        Materialize.toast("You can now change your password", 2000);
+                        document.getElementById("password").removeAttribute("disabled");
+                    }    
+                }
+            }, false);
+
+            ajax.addEventListener("error", function () {
+                Materialize.toast("Error Occured!", 2000);
+            }, false);
+
+            ajax.open("POST", "/controlPassword");
+            ajax.send(formdata);
+        }   
     });
 
     superplaceholder({

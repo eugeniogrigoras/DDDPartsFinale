@@ -7,5 +7,6 @@
             r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
             ga('create','UA-75616544-1','auto');ga('send','pageview');
         </script>
+        <script id="dsq-count-scr" src="//dddparts.disqus.com/count.js" async></script>
     </body>
 </html>

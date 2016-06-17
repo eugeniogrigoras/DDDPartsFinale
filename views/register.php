@@ -60,7 +60,7 @@
 <?php require_once 'secondo.php'; ?>
 <main>
     <div class="container main-content row" style="margin-bottom:24px!important">
-        <form autocomplete="off" id="register" action="/form.php" method="post" style="padding:0!important" enctype="multipart/form-data" class="col s12 z-depth-1">
+        <form autocomplete="off" id="register" action="/register" method="post" style="padding:0!important" enctype="multipart/form-data" class="col s12 z-depth-1">
             <input type="hidden" value="register" name="getpage">
             <input value="img/default.jpg" accept=".jpg,.jpeg" type="file" name="fileToUpload" id="fileToUpload" style="display:none;">
             <div class="title">ABOUT YOU <?php if(isset($message)) echo "- ".$message ?></div>
@@ -138,30 +138,34 @@
         document.getElementById("city").innerHTML = "<option value='' disabled selected>City</option>";
         document.getElementById("city").setAttribute("disabled",""); 
         document.getElementById("province").removeAttribute("disabled"); 
-        var xhttp;
-        xhttp = new XMLHttpRequest();
+
+        var xhttp = new XMLHttpRequest();
+        var formdata = new FormData();
+        formdata.append("idregione", region.options[region.selectedIndex].value);
         xhttp.onreadystatechange = function() {
         if (xhttp.readyState == 4 && xhttp.status == 200) {
                 document.getElementById("province").innerHTML = xhttp.responseText;
                 $('select').material_select();  
             }
         };
-        xhttp.open("GET", "/getprovince.php?idregione="+region.options[region.selectedIndex].value, true);
-        xhttp.send(); 
+        xhttp.open("POST", "/getProvince");
+        xhttp.send(formdata); 
     }
 
     function provinceSelect(province) {
         document.getElementById("city").removeAttribute("disabled"); 
-        var xhttp;
-        xhttp = new XMLHttpRequest();
+
+        var xhttp = new XMLHttpRequest();
+        var formdata = new FormData();
+        formdata.append("idprovincia", province.options[province.selectedIndex].value);
         xhttp.onreadystatechange = function() {
         if (xhttp.readyState == 4 && xhttp.status == 200) {
                 document.getElementById("city").innerHTML = xhttp.responseText;
                 $('select').material_select();
             }
         };
-        xhttp.open("GET", "/getcomune.php?idprovincia="+province.options[province.selectedIndex].value, true);
-        xhttp.send();   
+        xhttp.open("POST", "/getComune");
+        xhttp.send(formdata);   
     }
 
     function showPassword() {

@@ -34,7 +34,7 @@
                             <li><a class="waves-effect" href="/account"><i class="material-icons">face</i>Profile</a></li>
                             <li><a class="waves-effect" href="/settings"><i class="material-icons">settings</i>Settings</a></li>
                             <li class="divider"></li>
-                            <form action="/form.php" method="post" enctype="multipart/form-data">
+                            <form action="/logout" method="post" enctype="multipart/form-data">
                                 <input type="hidden" value="logout" name="getpage">
                                 <li><a class="waves-effect" onclick="document.getElementById('logout').click();"><i class="material-icons">keyboard_tab</i>Logout</a></li>
                                 <button type="submit" id="logout" name="submit" style="display:none"></button>
@@ -72,7 +72,10 @@
 
                     <li class="search hoverable" style="margin:15px;">
                         <div class="input-field" style="height:45px!important; box-shadow:0 2px 2px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);">
-                            <input style="color:#444; height:45px!important; width:180px; margin:0; padding:0 15px;" type="text" placeholder="Search...">
+                            <form action="/form.php" method="post" enctype="multipart/form-data">
+                                <input type="hidden" value="search" name="getpage">
+                                <input style="color:#444; height:45px!important; width:180px; margin:0; padding:0 15px;" type="text" placeholder="Search...">
+                            </form>
                         </div>
                     </li>
                 <?php else: ?>

@@ -78,7 +78,7 @@
 		    		"COGNOME" => $riga["COGNOME"],
 		    		"DESCRIZIONE" => $riga["DESCRIZIONE"],
 		    		"EMAIL" => $riga["EMAIL"],
-		    		"PASSWORD" => $riga["PASSWORD"],
+		    		"HASH" => $riga["HASH"],
 		    		"COMUNE" => getComune($riga["FK_COMUNE"])
 				);
 				return $array;
@@ -102,7 +102,7 @@
 		    		"COGNOME" => $riga["COGNOME"],
 		    		"DESCRIZIONE" => $riga["DESCRIZIONE"],
 		    		"EMAIL" => $riga["EMAIL"],
-		    		"PASSWORD" => $riga["PASSWORD"],
+		    		"HASH" => $riga["HASH"],
 		    		"COMUNE" => getComune($riga["FK_COMUNE"])
 				);
 				return $array;
@@ -153,9 +153,6 @@
     	} else {
     		$ris=$conn->query($QUERY);
     		if ($ris) {
-    			if (isset($_REQUEST["getpage"]) && $_REQUEST["getpage"]=='register') {
-    				$_SESSION["LASTINSERTEDID"]=$conn->insert_id;
-    			}	
     			mysqli_close($conn);
     			return $ris;
     		} else {
@@ -199,7 +196,8 @@
 		}
 	}
 	function changePassword($PASSWORD) {
-		$QUERY=executeQuery("update utenti set PASSWORD = '$PASSWORD' where ID=".$_SESSION["ID"]);
+		$hash = password_hash($PASSWORD, PASSWORD_BCRYPT, array("cost" => 10));
+		$QUERY=executeQuery("update utenti set HASH = '$hash' where ID=".$_SESSION["ID"]);
 		if($QUERY) {
 			return true;
 		} else {
@@ -227,7 +225,7 @@
     	return substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, $length);
 	}
 
-	function localMail($email, $name, $surname, $randomString, $last_id) {
+	function localMail($email, $name, $surname, $hash) {
 		require 'PHPMailer/PHPMailerAutoload.php';
 		$mail = new PHPMailer;
 
@@ -245,7 +243,8 @@
         $mail->addAddress($email, $name." ".$surname);     // Add a recipient             // Name is optional
 
         $mail->Subject = 'Attivazione acount DDDParts!';
-        $mail->Body    = "Conferma il tuo account: http://localhost/activate/$randomString/$last_id";
+        $code=rawurlencode($hash);
+        $mail->Body    = "Conferma il tuo account: http://localhost/activate?hash=$code";
 
         if(!$mail->send()) {
             echo 'Message could not be sent.';
@@ -254,10 +253,11 @@
             echo 'Message has been sent';
         }
 	}
-	function altervistaMail($email, $randomString, $last_id) {
+	function altervistaMail($email, $name, $surname, $hash) {
 		$to  = $email;
+		$code=rawurlencode($hash);
         $subject = "Registrazione effettuata con successo!";
-        $message = "Conferma il tuo account: http://dddparts.altervista.org/activate/$randomString/$last_id";
+        $message = "Conferma il tuo account: http://dddparts.altervista.org/activate?hash=$code";
         $headers = 'From: DDDParts' . "\r\n" .
                    'Reply-To: info.dddparts@gmail.com' . "\r\n" .
                    'X-Mailer: PHP/' . phpversion();
@@ -317,5 +317,91 @@
 	}
 	function curPageName() {
 		return substr($_SERVER["SCRIPT_NAME"],strrpos($_SERVER["SCRIPT_NAME"],"/")+1);
+	}
+
+	function getCollections ($userId, $projectId) {
+		$COLLECTIONS = executeQuery("select * from collezioni where FK_UTENTE=".$userId." order by collezioni.ID DESC");
+		while ($collection=$COLLECTIONS->fetch_assoc()): ?>
+			<li onclick="addProjectToCollection(<?php echo $projectId.",".$collection["ID"] ?>)" class="collection-item avatar <?php $in = inCollection($collection['ID'], $projectId); if ($in) echo 'selected-collection' ?>" style="cursor:pointer" onmouseover="this.style.backgroundColor='#e0e0e0'" onmouseout="this.style.backgroundColor='white'">
+      			<?php 
+      				$QUERY = executeQuery("select * from collezioni_composte_da_progetti where FK_COLLEZIONE=".$collection['ID']);
+      				if ($QUERY) {
+						if ($QUERY->num_rows > 0) {
+							
+							$MAX = executeQuery("select DISTINCT collezioni_composte_da_progetti.ID, collezioni_composte_da_progetti.FK_PROGETTO, utenti.NOME, utenti.COGNOME, utenti.EMAIL 
+FROM collezioni, collezioni_composte_da_progetti, utenti, progetti
+WHERE collezioni_composte_da_progetti.ID=(SELECT MAX(ID) FROM collezioni_composte_da_progetti WHERE collezioni_composte_da_progetti.FK_COLLEZIONE=".$collection['ID'].") AND progetti.FK_UTENTE=utenti.ID AND progetti.ID=collezioni_composte_da_progetti.FK_PROGETTO;");
+							$ris=$MAX->fetch_assoc();
+							$backgroundUrl='/users/'.$ris["NOME"].'-'.$ris["COGNOME"].'-'.$ris["EMAIL"].'/'.$ris["FK_PROGETTO"].'/projectWallpaper.jpg';
+							echo "<div class='collection-image' style='background-image:url($backgroundUrl)'></div>";
+						} else {
+							echo "<i class='material-icons circle'>folder</i>";
+						}
+					} 
+      			?>
+      			
+      			<span class="title truncate" style='margin-right:30px; color:#444;'><b><?php echo $collection["TITOLO"]; ?></b></span>
+      			<p class='truncate' style='margin-right:30px; color:#444'><span>Projects: <b><?php echo getCollectionProjectsNumber($collection["ID"]); ?></b></span><br><?php echo $collection["DESCRIZIONE"]; ?></p>
+      			<a class="secondary-content"><i class="material-icons <?php if ($in) {echo "deep-orange-text text-accent-2";} else {echo "grey-text text-darken-3";} ?> "><?php if ($in) {echo "done";} else {echo "add";} ?></i></a>
+    		</li>
+		<?php 
+		endwhile;
+	}
+
+	function inCollection ($collectionID, $projectID) {
+		$QUERY = executeQuery("select * from collezioni_composte_da_progetti where FK_PROGETTO=".$projectID." and FK_COLLEZIONE=".$collectionID);
+		if ($QUERY) {
+			if ($QUERY->num_rows > 0) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+	}
+
+	function getCollectionProjectsNumber ($collectionID) {
+		$COLLECTIONS = executeQuery("select * from collezioni_composte_da_progetti where FK_COLLEZIONE=".$collectionID);
+		echo $COLLECTIONS->num_rows;
+	}
+
+	function addCollection ($title, $description) {
+		$userID=$_SESSION["ID"];
+		$QUERY=executeQueryAndGetLastId("insert ignore into collezioni  (FK_UTENTE, TITOLO, DESCRIZIONE) VALUES ('$userID','$title','$description')");
+		if ($QUERY) return $QUERY["id"];
+	}
+
+	function addProjectToCollection ($projectID, $collectionID) {
+		$QUERY=executeQuery("insert into collezioni_composte_da_progetti  (FK_COLLEZIONE, FK_PROGETTO) VALUES ('$collectionID','$projectID')");
+		if ($QUERY) return true;
+	}
+
+
+	function createZip ($path, $zipName) {
+		$rootPath = realpath($path);
+	    //$zipID = uniqid(time());
+	    //$zipName = $rootPath."/".$zipID.".zip";
+
+	    // Initialize archive object
+	    $zip = new ZipArchive();
+	    $zip->open($zipName, ZipArchive::CREATE | ZipArchive::OVERWRITE);
+
+	    // Create recursive directory iterator
+	    /** @var SplFileInfo[] $files */
+	    $files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($rootPath), RecursiveIteratorIterator::LEAVES_ONLY);
+
+	    foreach ($files as $name => $file) {
+	        // Skip directories (they would be added automatically)
+	        if (!$file->isDir()) {
+	            // Get real and relative path for current file
+	            $filePath = $file->getRealPath();
+	            $relativePath = substr($filePath, strlen($rootPath) + 1);
+
+	            // Add current file to archive
+	            $zip->addFile($filePath, $relativePath);
+	        }
+	    }
+
+	    // Zip archive will be created only after closing object
+	    $zip->close();
 	}
 ?>

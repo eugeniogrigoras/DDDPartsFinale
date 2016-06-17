@@ -50,9 +50,8 @@
 <?php require_once 'secondo.php'; ?>
 <main>
     <div class="container main-content row">
-        <form autocomplete="off" id="create" action="/form.php" method="post" enctype="multipart/form-data" class="col s12 z-depth-1">
+        <form autocomplete="off" id="create" action="/create" method="post" enctype="multipart/form-data" class="col s12 z-depth-1">
             <div class="row title">Project <?php if(isset($message)) echo "- ".$message ?></div>
-        	<input type="hidden" value="create" name="getpage">
             <div class="row">
                 <div class="col s12" style="padding:0!important">
                     <ul class="tabs">
@@ -83,7 +82,7 @@
                             <label data-error="Wrong!" for="title">Title</label>
                         </div>
                         <div class="input-field col s12">
-                            <textarea name="description" id="description" class="materialize-textarea" max-length="300"></textarea>
+                            <textarea name="description" id="description" class="materialize-textarea" length="300" maxlength="300"></textarea>
                             <label for="description">Description</label>
                         </div>
                         <div class="input-field col l6 m6 s12">
@@ -152,7 +151,7 @@
 
     function deleteProjectFolder () {
         var xhttp = new XMLHttpRequest();
-        xhttp.open("DELETE", "/deleteProjectFolder.php");
+        xhttp.open("POST", "/deleteProjectFolder");
         xhttp.send();
     }
 
@@ -216,7 +215,8 @@
 
     function deleteFromServer (i) {
         var ajax = new XMLHttpRequest();
-
+        var formdata = new FormData();
+        formdata.append("name", names[i]);
         ajax.addEventListener("load", function (event) {
             if (event.target.responseText) {
                 _("status"+i).value=event.target.responseText;
@@ -229,8 +229,8 @@
             _("status"+i).value="Error Occured";
         }, false);
 
-        ajax.open("DELETE", "/deleteFile.php?name='"+names[i]+"'");
-        ajax.send();
+        ajax.open("POST", "/deleteFile");
+        ajax.send(formdata);
     }
 
     function uploadFile (file, index) {
@@ -276,7 +276,7 @@
             //Materialize.toast("Upload Aborted", 2500);
         }, false);
 
-        ajax.open("POST", "/uploadFile.php");
+        ajax.open("POST", "/uploadFile");
         ajax.send(formdata);
     }
 
@@ -289,16 +289,17 @@
     function categorySelect(category) {
         document.getElementById("subcategory").innerHTML = "<option value='' disabled selected>Subcategory</option>";
         document.getElementById("subcategory").removeAttribute("disabled"); 
-        var xhttp;
-        xhttp = new XMLHttpRequest();
+        var xhttp = new XMLHttpRequest();
+        var formdata = new FormData();
+        formdata.append("idcategory", category.options[category.selectedIndex].value);
         xhttp.onreadystatechange = function() {
         if (xhttp.readyState == 4 && xhttp.status == 200) {
             document.getElementById("subcategory").innerHTML = xhttp.responseText;
             $('select').material_select();  
         }
         };
-        xhttp.open("GET", "/getsubcategory.php?idcategory="+category.options[category.selectedIndex].value, true);
-        xhttp.send(); 
+        xhttp.open("POST", "/getSubcategory");
+        xhttp.send(formdata); 
     }
 	function validate() {
         if($('#create')[0].checkValidity()) {
