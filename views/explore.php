@@ -1,25 +1,6 @@
 <?php require_once 'primo.php'; ?>
-<title>Dashboard - What's New?</title>
-<meta name="description" content="Dashboard – Look into things you're interested in">
-<?php
-	$items_per_group = 10;
-	$userID=$_SESSION["ID"];
-
-	$get_total_rows = 0;
-	$results = executeQuery("SELECT 'PROGETTO' as TYPE, progetti.ID as ID, 'NULL' as ID_COLLEZIONE, progetti.FK_UTENTE as UTENTE, progetti.DATA_CREAZIONE as DATA FROM progetti, utenti_seguono_utenti WHERE utenti_seguono_utenti.FK_UTENTE=$userID AND progetti.FK_UTENTE=utenti_seguono_utenti.FK_UTENTE_SEGUITO UNION SELECT 'COLLEZIONE' AS TYPE, collezioni.ID AS ID, 'NULL' as ID_COLLEZIONE, collezioni.FK_UTENTE as UTENTE, collezioni.DATA_CREAZIONE as DATA FROM collezioni, utenti_seguono_utenti WHERE utenti_seguono_utenti.FK_UTENTE=$userID AND collezioni.FK_UTENTE=utenti_seguono_utenti.FK_UTENTE_SEGUITO UNION SELECT 'LIKE' AS TYPE, utenti_like_progetti.FK_PROGETTO AS ID, 'NULL' as ID_COLLEZIONE, utenti_like_progetti.FK_UTENTE AS UTENTE, utenti_like_progetti.DATA AS DATA_CREAZIONE FROM utenti_like_progetti, utenti_seguono_utenti, utenti WHERE utenti_seguono_utenti.FK_UTENTE=$userID AND utenti_like_progetti.FK_UTENTE=utenti_seguono_utenti.FK_UTENTE_SEGUITO UNION SELECT 'PROGETTO_COLLEZIONE' AS TYPE, collezioni_composte_da_progetti.FK_PROGETTO AS ID, collezioni_composte_da_progetti.FK_COLLEZIONE AS ID_COLLEZIONE, utenti.ID AS UTENTE, collezioni_composte_da_progetti.DATA_AGGIUNTA AS DATA
-FROM collezioni_composte_da_progetti, utenti, collezioni
-WHERE collezioni_composte_da_progetti.FK_COLLEZIONE IN (SELECT utenti_seguono_collezioni.FK_COLLEZIONE FROM utenti_seguono_collezioni WHERE utenti_seguono_collezioni.FK_UTENTE=$userID)
-AND collezioni.FK_UTENTE=utenti.ID
-AND collezioni.ID=collezioni_composte_da_progetti.FK_COLLEZIONE
-UNION SELECT 'FOLLOW' AS TYPE, utenti_seguono_utenti.FK_UTENTE_SEGUITO AS ID, 'NULL' AS ID_COLLEZIONE, utenti_seguono_utenti.FK_UTENTE AS UTENTE, utenti_seguono_utenti.DATA AS DATA FROM utenti_seguono_utenti WHERE utenti_seguono_utenti.FK_UTENTE IN (SELECT utenti_seguono_utenti.FK_UTENTE_SEGUITO FROM utenti_seguono_utenti WHERE utenti_seguono_utenti.FK_UTENTE=$userID) UNION
-SELECT 'FOLLOW_COLLEZIONE' AS TYPE, utenti_seguono_collezioni.FK_COLLEZIONE AS ID, 'NULL' AS ID_COLLEZIONE, utenti_seguono_collezioni.FK_UTENTE AS UTENTE, utenti_seguono_collezioni.DATA AS DATA FROM utenti_seguono_utenti, utenti_seguono_collezioni WHERE utenti_seguono_utenti.FK_UTENTE=$userID AND utenti_seguono_collezioni.FK_UTENTE=utenti_seguono_utenti.FK_UTENTE_SEGUITO ORDER by DATA DESC");
-
-	if($results){
-		$get_total_rows = $results->num_rows; 
-	}
-	//break total records into pages
-	$total_groups= ceil($get_total_rows/$items_per_group);	
-?>
+<title>Explore our DDDWorld</title>
+<meta name="description" content="Explore">
 <style>
 	a {
 		color:#ff6e40;
@@ -211,104 +192,41 @@ SELECT 'FOLLOW_COLLEZIONE' AS TYPE, utenti_seguono_collezioni.FK_COLLEZIONE AS I
 </style>
 <?php require_once 'secondo.php'; ?>
 <main>
-    <div class="container main-content row">
-    	<div id="accountCardsResponse"></div>
-    	<div id="loader" class="center-align col s12" style="text-align: center; display:none">
-			<div class="preloader-wrapper active">
-			    <div class="spinner-layer spinner-blue">
-			        <div class="circle-clipper left">
-			          	<div class="circle"></div>
-			        </div>
-			        <div class="gap-patch">
-			          	<div class="circle"></div>
-			        </div>
-			        <div class="circle-clipper right">
-			          	<div class="circle"></div>
-			        </div>
-			    </div>
 
-			    <div class="spinner-layer spinner-red">
-			        <div class="circle-clipper left">
-			          	<div class="circle"></div>
-			        </div>
-			        <div class="gap-patch">
-			          	<div class="circle"></div>
-			        </div>
-			        <div class="circle-clipper right">
-			          	<div class="circle"></div>
-			        </div>
-			    </div>
-
-			    <div class="spinner-layer spinner-yellow">
-			        <div class="circle-clipper left">
-			          	<div class="circle"></div>
-			        </div>
-			        <div class="gap-patch">
-			          	<div class="circle"></div>
-			        </div>
-			        <div class="circle-clipper right">
-			          	<div class="circle"></div>
-			        </div>
-			    </div>
-
-			    <div class="spinner-layer spinner-green">
-			        <div class="circle-clipper left">
-			          	<div class="circle"></div>
-			        </div>
-			        <div class="gap-patch">
-			          	<div class="circle"></div>
-			        </div>
-			        <div class="circle-clipper right">
-			          	<div class="circle"></div>
-			        </div>
-			    </div>
-			</div>
-        </div>
+    <div class="row" style="padding:24px">
+    	<div class="col l3 m4 s12">
+		    <div class="switch center" style="margin-bottom:48px">
+		    	<label>
+		      	Projects
+		      		<input type="checkbox">
+		      		<span class="lever my-switch"></span>
+		      	Collections
+		    	</label>
+		  	</div>
+		    <!-- <div class="input-field col s12">
+		    	<select multiple>
+		      		<optgroup label="Newest">
+		        		<option value="1">Option 1</option>
+		        		<option value="2">Option 2</option>
+		      		</optgroup>
+		      		<optgroup label="team 2">
+		        		<option value="3">Option 3</option>
+		        		<option value="4">Option 4</option>
+		      		</optgroup>
+		    	</select>
+		   	 	<label>Optgroups</label>
+		  	</div> -->
+		  	<div class="input-field col s12">
+		    	<select multiple>
+			      	<option value="" disabled selected>Choose your option</option>
+			      	<option value="1">Option 1</option>
+			      	<option value="2">Option 2</option>
+			      	<option value="3">Option 3</option>
+		    	</select>
+		    	<label>Materialize Multiple Select</label>
+		  	</div>
+		</div>
     </div>
-
-    <?php if (logged()): ?>
-
-    <div id="collections" class="modal"></div>
-
-    <div id="add_to_collection" style="display:none">
-        <div class="modal-content" style="text-align: center; padding: 15px; background-color:#f6f7f9">
-            <p id="collections_title" style="margin:6px 0; font-size: 18px"></p>
-            <a style="font-size: 14px; color:#ff6e40" href="/account?fx=myCollections">Go to my Collections</a>
-        </div>
-        <ul class="modal-content collection" id="collections-container" style="padding:0; margin:0 15px">
-
-        </ul>
-        <div class="modal-content" style="text-align:center">
-            <a onCLick="newCollection()" style="font-size: 14px; color:#ff6e40; margin:6px 0; cursor:pointer">Create a new Collection</a>
-        </div>
-    </div>
-
-    <div id="new_collection" style="display:none">
-        <div class="modal-content" style="text-align: center; padding: 15px; background-color:#f6f7f9">
-            <p style="margin:6px 0; font-size: 18px">Create a new Collection</p>
-            <a style="font-size: 14px; color:#ff6e40" href="/user/<?php echo $_SESSION["ID"]; ?>?fx=myColections">Go to my Collections</a>
-        </div>
-        <div class="modal-content" style="text-align:center">
-            <div class="row">
-                <form autocomplete="off" novalidate class="col s12" id="create_collection">
-                    <div class="input-field col s12">
-                        <input required placeholder="Collection Name" id="collection_name" type="text" class="validate">
-                        <label for="collection_name">Name</label>
-                    </div>
-                    <div class="input-field col s12">
-                        <textarea placeholder="Collection Description" id="collection_description" class="materialize-textarea" length="300" maxlength="300"></textarea>
-                        <label for="collection_description">Description</label>
-                    </div>
-                </form>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <a id="save_collection_button" onClick="submitCollection()" style="margin-left:6px" class="modal-action modal-close waves-effect waves-light btn-flat grey darken-3 white-text">Save</a>
-            <a onClick="cancelCollectionCreate()" class="waves-effect btn-flat ">Cancel</a>
-        </div>
-    </div>
-
-    <?php endif; ?>
 
 </main>
 
@@ -330,48 +248,6 @@ SELECT 'FOLLOW_COLLEZIONE' AS TYPE, utenti_seguono_collezioni.FK_COLLEZIONE AS I
 	    return elementCollection;
 	}
 
-	$(document).ready(function() {
-		var track_load = 0; //total loaded record group(s)
-		var loading  = false; //to prevents multipal ajax loads
-		var total_groups = <?=$total_groups;?>; //total record group(s)
-		
-		$('#accountCardsResponse').load("/autoload_process.php", {'group_no':track_load}, function() {
-			track_load++;
-		}); //load first group
-		
-		$(window).scroll(function() { //detect page scroll
-			
-			if($(window).scrollTop() + $(window).height() == $(document).height())  //user scrolled to bottom of the page?
-			{
-				
-				if(track_load <= total_groups && loading==false) //there's more data to load
-				{
-					loading = true; //prevent further ajax loading
-					$('#loader').show(); //show loading image
-					
-					//load data from the server using a HTTP POST request
-					$.post('/autoload_process.php',{'group_no': track_load}, function(data){
-										
-						$("#accountCardsResponse").append(data); //append received data into the element
-
-						//hide loading image
-						$('#loader').hide(); //hide loading image once data is received
-						
-						track_load++; //loaded group increment
-						loading = false; 
-					
-					}).fail(function(xhr, ajaxOptions, thrownError) { //any errors?
-						
-						alert(thrownError); //alert with HTTP error
-						$('#loader').hide(); //hide loading image
-						loading = false;
-					
-					});
-					
-				}
-			}
-		});
-	});
 </script>
 
 

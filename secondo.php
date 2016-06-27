@@ -9,7 +9,7 @@
         <nav>
             <div class="nav-wrapper">
                 <a style="display:block; margin: 0 13px;" class="button-collapse" href="#" data-activates="slide-out"><i class="material-icons noselect">menu</i></a>
-                <a href="#!" style="font-weight:300; font-size:24px;" class="brand-logo"><span style="color:#ff6e40; font-weight:400">DDD</span>Parts</a>
+                <a href="/" style="font-weight:300; font-size:24px;" class="brand-logo"><span style="color:#ff6e40; font-weight:400">DDD</span>Parts</a>
                 <ul class="right hide-on-med-and-down" style="height:inherit!important; font-weight:300">
                     <?php if (isset($_SESSION["ID"])): ?>
                     <!-- <li>
@@ -35,7 +35,6 @@
                             <li><a class="waves-effect" href="/settings"><i class="material-icons">settings</i>Settings</a></li>
                             <li class="divider"></li>
                             <form action="/logout" method="post" enctype="multipart/form-data">
-                                <input type="hidden" value="logout" name="getpage">
                                 <li><a class="waves-effect" onclick="document.getElementById('logout').click();"><i class="material-icons">keyboard_tab</i>Logout</a></li>
                                 <button type="submit" id="logout" name="submit" style="display:none"></button>
                             </form>
@@ -45,6 +44,11 @@
                         <li style="margin-right: 13px"><a class="waves-effect" href="/login" style="text-align: center;"><i class="material-icons">account_circle</i>Login</a><li>
                     <?php endif; ?>
                 </ul> 
+                <!-- <div class="right hide-on-med-and-down" style="text-align:center; height:inherit!important; font-weight:300; width:500px">
+                    <div class="input-field" style="">
+                        <input style="background-color:white; border-radius:2px; color:#444; height:40px!important; width:470px; margin:0; padding:0 15px;" type="text" placeholder="Search...">
+                    </div>
+                </div> -->
             </div>
             <ul id="slide-out" class="side-nav">
                 <?php if (isset($_SESSION["ID"])): ?>
@@ -61,8 +65,7 @@
                                 <li><a class="waves-effect" href="/account"><i class="material-icons">face</i>Profile</a></li>
                                 <li><a class="waves-effect" href="/settings"><i class="material-icons">settings</i>Settings</a></li>
                                 <li class="divider"></li>
-                                <form action="/form.php" method="post" enctype="multipart/form-data">
-                                    <input type="hidden" value="logout" name="getpage">
+                                <form action="/logout" method="post" enctype="multipart/form-data">
                                     <li><a class="waves-effect" onclick="document.getElementById('logout').click();"><i class="material-icons">keyboard_tab</i>Logout</a></li>
                                     <button type="submit" id="logout" name="submit" style="display:none"></button>
                                 </form>
@@ -72,12 +75,12 @@
 
                     <li class="search hoverable" style="margin:15px;">
                         <div class="input-field" style="height:45px!important; box-shadow:0 2px 2px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);">
-                            <form action="/form.php" method="post" enctype="multipart/form-data">
-                                <input type="hidden" value="search" name="getpage">
+                            <form action="/search" method="post" enctype="multipart/form-data">
                                 <input style="color:#444; height:45px!important; width:180px; margin:0; padding:0 15px;" type="text" placeholder="Search...">
                             </form>
                         </div>
                     </li>
+                    <li><a class="waves-effect" href="/"><i class="material-icons">dashboard</i>Dashboard</a></li>
                 <?php else: ?>
                     <li class="search hoverable" style="margin:15px;">
                         <div class="input-field" style="height:45px!important; box-shadow:0 2px 2px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);">
@@ -85,11 +88,12 @@
                         </div>
                     </li>
                     <li><a class="waves-effect" href="/login"><i class="material-icons">account_circle</i>Account</a></li>
+                    <li><a class="waves-effect" href="/"><i class="material-icons">dashboard</i>Home</a></li>
                 <?php endif; ?>
                 
-                <li><a class="waves-effect" href="/"><i class="material-icons">dashboard</i>Dashboard</a></li>
-                <li><a class="waves-effect" href="#!"><i class="material-icons">explore</i>Explore</a></li>
-                <li><a class="waves-effect" href="#!"><i class="material-icons">book</i>Learn</a></li>
+                
+                <li><a class="waves-effect" href="/explore"><i class="material-icons">explore</i>Explore</a></li>
+                <!--<li><a class="waves-effect" href="#!"><i class="material-icons">book</i>Learn</a></li>-->
                 <li><a class="waves-effect" href="/create"><i class="material-icons">create</i>Create</a></li>
             </ul>
         </nav>

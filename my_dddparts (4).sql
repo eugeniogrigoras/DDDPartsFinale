@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Creato il: Giu 17, 2016 alle 17:12
+-- Creato il: Giu 27, 2016 alle 16:34
 -- Versione del server: 10.1.10-MariaDB
 -- Versione PHP: 5.6.19
 
@@ -14,7 +14,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Database: `my_dddparts`
@@ -137,7 +137,17 @@ INSERT INTO `categorie_secondarie` (`ID`, `NOME`, `FK_CATEGORIA_PRIMARIA`) VALUE
 (68, 'Playsets', 10),
 (69, 'Puzzles', 10),
 (70, 'Toy & Game Accessories', 10),
-(71, 'Other', 11);
+(71, 'Other', 11),
+(72, 'Other', 1),
+(73, 'Other', 2),
+(74, 'Other', 3),
+(75, 'Other', 4),
+(76, 'Other', 5),
+(77, 'Other', 6),
+(78, 'Other', 7),
+(79, 'Other', 8),
+(80, 'Other', 9),
+(81, 'Other', 10);
 
 -- --------------------------------------------------------
 
@@ -153,6 +163,26 @@ CREATE TABLE `collezioni` (
   `DESCRIZIONE` varchar(300) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dump dei dati per la tabella `collezioni`
+--
+
+INSERT INTO `collezioni` (`ID`, `TITOLO`, `DATA_CREAZIONE`, `FK_UTENTE`, `DESCRIZIONE`) VALUES
+(1, 'Cose belle', '2016-06-18 16:00:04', 80, 'ciaaaao'),
+(2, 'Nova collezione', '2016-06-18 16:10:01', 80, 'dfmnsd f'),
+(3, 'Eugenio collection', '2016-06-18 16:35:25', 79, 'dsfsdfsdf'),
+(4, 'prova', '2016-06-19 02:45:21', 79, 'fewf'),
+(5, 'CIaaaaao', '2016-06-19 03:43:48', 79, 'eknfwenf'),
+(6, 'CAscmasc', '2016-06-19 12:18:37', 79, ''),
+(7, 'Bella Zio', '2016-06-20 12:13:30', 79, 'Come va la vita?'),
+(8, 'Prova', '2016-06-21 20:15:51', 81, 'asds'),
+(9, 'DSF', '2016-06-21 20:53:39', 81, 'SDF'),
+(10, 'Provaaaa', '2016-06-22 11:56:58', 81, 'dfsd'),
+(11, 'Prova a caso', '2016-06-22 12:00:33', 81, 'dsflnsdf'),
+(12, 'Ciao bello', '2016-06-22 12:00:51', 81, ''),
+(13, 'Ciao ciao', '2016-06-22 12:22:31', 79, 'sdfsdfsdf'),
+(14, 'prova doppio', '2016-06-26 15:45:36', 81, '');
+
 -- --------------------------------------------------------
 
 --
@@ -165,6 +195,44 @@ CREATE TABLE `collezioni_composte_da_progetti` (
   `FK_PROGETTO` int(11) DEFAULT NULL,
   `DATA_AGGIUNTA` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dump dei dati per la tabella `collezioni_composte_da_progetti`
+--
+
+INSERT INTO `collezioni_composte_da_progetti` (`ID`, `FK_COLLEZIONE`, `FK_PROGETTO`, `DATA_AGGIUNTA`) VALUES
+(12, 1, 22, '2016-06-18 16:07:22'),
+(15, 1, 21, '2016-06-18 16:17:09'),
+(18, 1, 20, '2016-06-18 16:18:30'),
+(20, 1, 19, '2016-06-18 16:18:35'),
+(21, 1, 17, '2016-06-18 16:18:43'),
+(35, 3, 20, '2016-06-18 17:41:35'),
+(37, 3, 19, '2016-06-18 17:41:38'),
+(39, 3, 22, '2016-06-19 02:08:33'),
+(45, 3, 18, '2016-06-19 03:33:58'),
+(51, 3, 17, '2016-06-19 12:14:57'),
+(60, 5, 20, '2016-06-20 01:26:58'),
+(74, 6, 18, '2016-06-20 12:12:55'),
+(75, 6, 22, '2016-06-20 12:12:57'),
+(77, 7, 19, '2016-06-20 12:14:02'),
+(81, 7, 17, '2016-06-20 16:55:50'),
+(83, 8, 24, '2016-06-21 20:33:33'),
+(84, 8, 18, '2016-06-21 20:34:47'),
+(85, 9, 23, '2016-06-21 20:53:39'),
+(87, 8, 25, '2016-06-21 22:00:03'),
+(89, 9, 25, '2016-06-22 00:04:06'),
+(90, 6, 19, '2016-06-22 00:51:54'),
+(91, 10, 19, '2016-06-22 11:56:58'),
+(92, 11, 25, '2016-06-22 12:00:34'),
+(93, 12, 25, '2016-06-22 12:00:52'),
+(94, 13, 19, '2016-06-22 12:22:32'),
+(95, 13, 23, '2016-06-22 12:23:34'),
+(96, 13, 24, '2016-06-25 18:19:22'),
+(101, 6, 26, '2016-06-26 14:51:56'),
+(106, 7, 26, '2016-06-26 15:07:13'),
+(108, 5, 26, '2016-06-26 15:19:02'),
+(109, 12, 26, '2016-06-26 15:45:24'),
+(110, 14, 26, '2016-06-26 15:45:37');
 
 -- --------------------------------------------------------
 
@@ -8287,6 +8355,39 @@ CREATE TABLE `parti_3d` (
   `NUMERO_DOWNLOAD` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dump dei dati per la tabella `parti_3d`
+--
+
+INSERT INTO `parti_3d` (`ID`, `NOME`, `FK_PROGETTO`, `DATA_AGGIUNTA`, `NUMERO_DOWNLOAD`) VALUES
+(70, '13298168_549957728522911_1839579537_a.jpg', 17, '2016-06-17 16:40:58', 4),
+(71, 'adbcdaf080.doc.zip', 17, '2016-06-17 16:40:58', 0),
+(72, 'bg5.jpg', 17, '2016-06-17 16:40:58', 1),
+(73, 'bill-gates-foto-twitter-bg.4108f7b2.jpg', 17, '2016-06-17 16:40:58', 1),
+(74, 'button-bubble-effect-wip.zip', 17, '2016-06-17 16:40:58', 0),
+(75, 'projectWallpaper.jpg', 17, '2016-06-17 16:40:58', 0),
+(76, '12717186_10205546809176898_2255935903717045503_n.jpg', 18, '2016-06-18 15:09:48', 2),
+(77, '13062669_1149028808450231_886796845_o.jpg', 18, '2016-06-18 15:09:48', 1),
+(78, 'filedrag3.zip', 18, '2016-06-18 15:09:48', 0),
+(79, 'gdisk-windows-1.0.1.zip', 18, '2016-06-18 15:09:48', 0),
+(80, 'preview.png', 18, '2016-06-18 15:09:48', 1),
+(81, 'projectWallpaper.jpg', 18, '2016-06-18 15:09:48', 0),
+(82, '13298168_549957728522911_1839579537_a.jpg', 19, '2016-06-18 16:00:49', 1),
+(83, 'bg5.jpg', 19, '2016-06-18 16:00:49', 0),
+(84, 'bill-gates-foto-twitter-bg.4108f7b2.jpg', 19, '2016-06-18 16:00:49', 0),
+(85, 'projectWallpaper.jpg', 19, '2016-06-18 16:00:49', 0),
+(86, 'projectWallpaper.jpg', 20, '2016-06-18 16:01:20', 0),
+(87, 'projectWallpaper.jpg', 21, '2016-06-18 16:02:12', 0),
+(88, '21bS4Ldr.jpg', 22, '2016-06-18 16:03:04', 1),
+(89, 'projectWallpaper.jpg', 22, '2016-06-18 16:03:04', 0),
+(90, 'adbcdaf080.doc.zip', 23, '2016-06-20 16:29:05', 0),
+(91, 'button-bubble-effect-wip.zip', 23, '2016-06-20 16:29:05', 0),
+(92, 'projectWallpaper.jpg', 23, '2016-06-20 16:29:05', 0),
+(93, 'filedrag3.zip', 24, '2016-06-20 16:34:23', 0),
+(94, 'projectWallpaper.jpg', 24, '2016-06-20 16:34:23', 0),
+(95, 'projectWallpaper.jpg', 25, '2016-06-21 16:51:45', 0),
+(96, 'projectWallpaper.jpg', 26, '2016-06-25 13:09:09', 0);
+
 -- --------------------------------------------------------
 
 --
@@ -8296,12 +8397,28 @@ CREATE TABLE `parti_3d` (
 CREATE TABLE `progetti` (
   `ID` int(11) NOT NULL,
   `NOME` varchar(30) DEFAULT NULL,
-  `DESCRIZIONE` varchar(300) DEFAULT NULL,
+  `DESCRIZIONE` text,
   `FK_UTENTE` int(11) DEFAULT NULL,
   `FK_CATEGORIA_SECONDARIA` int(11) DEFAULT NULL,
   `DATA_CREAZIONE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `NUMERO_DOWNLOAD` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dump dei dati per la tabella `progetti`
+--
+
+INSERT INTO `progetti` (`ID`, `NOME`, `DESCRIZIONE`, `FK_UTENTE`, `FK_CATEGORIA_SECONDARIA`, `DATA_CREAZIONE`, `NUMERO_DOWNLOAD`) VALUES
+(17, 'Barchina', 'CIaaaaoooo', 79, 18, '2014-06-17 16:40:58', 3),
+(18, 'Barchin', 'jfsdfisdfidfwef', 79, 16, '2016-06-18 15:09:48', 3),
+(19, 'Zio franco', 'a ballare', 80, 9, '2016-06-18 13:00:49', 1),
+(20, 'lalalalal', 'sdlnsd', 80, 10, '2016-06-18 16:01:20', 0),
+(21, 'Remix', 'dfkndsf', 80, 21, '2016-06-18 16:02:12', 0),
+(22, 'Uno scemo a caso', 'asdsad', 80, 48, '2016-06-18 16:03:04', 1),
+(23, 'Elefante', 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, \r\ntotam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. \r\nNemo enim ipsam voluptatem quia voluptas sit aspernatu', 79, 38, '2016-06-20 16:29:05', 0),
+(24, 'South Central', 'But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter consequences that are extremely painful. Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but because occasionally circumstances occur in which toil and pain can procure him some great pleasure. To take a trivial example, which of us ever undertakes laborious physical exercise, except to obtain some advantage from it? But who has any right to find fault with a man who chooses to enjoy a pleasure that has no annoying consequences, or one who avoids a pain that produces no resultant pleasure?\r\n\r\nAt vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.', 79, 6, '2016-06-20 16:34:23', 0),
+(25, 'Elefante', 'asdkasd', 81, 8, '2016-06-21 16:51:45', 0),
+(26, 'BIRKENSTOCK', 'DFDSF', 81, 8, '2016-06-25 13:09:09', 0);
 
 -- --------------------------------------------------------
 
@@ -8314,6 +8431,31 @@ CREATE TABLE `progetti_hanno_tag` (
   `FK_PROGETTO` int(11) DEFAULT NULL,
   `FK_TAG` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dump dei dati per la tabella `progetti_hanno_tag`
+--
+
+INSERT INTO `progetti_hanno_tag` (`ID`, `FK_PROGETTO`, `FK_TAG`) VALUES
+(65, 17, 133),
+(66, 17, 134),
+(67, 17, 135),
+(68, 17, 136),
+(69, 17, 137),
+(70, 18, 138),
+(71, 18, 139),
+(72, 18, 140),
+(73, 18, 141),
+(74, 18, 142),
+(75, 19, 143),
+(76, 19, 144),
+(77, 20, 145),
+(78, 20, 146),
+(79, 23, 147),
+(80, 23, 133),
+(81, 25, 148),
+(82, 25, 149),
+(83, 25, 150);
 
 -- --------------------------------------------------------
 
@@ -8489,6 +8631,30 @@ CREATE TABLE `tag` (
   `NOME` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dump dei dati per la tabella `tag`
+--
+
+INSERT INTO `tag` (`ID`, `NOME`) VALUES
+(134, '1'),
+(135, '2'),
+(136, '3'),
+(142, 'as'),
+(143, 'asdsdf'),
+(133, 'ciao'),
+(145, 'df'),
+(141, 'djbd'),
+(149, 'dsfi'),
+(150, 'dsfjb'),
+(148, 'dshf'),
+(147, 'elefante'),
+(140, 'jsavdbas'),
+(137, 'quattro'),
+(138, 'sadjsabd'),
+(139, 'sadubsd'),
+(146, 'sdf'),
+(144, 'sdfsdf');
+
 -- --------------------------------------------------------
 
 --
@@ -8507,6 +8673,15 @@ CREATE TABLE `utenti` (
   `HASH` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dump dei dati per la tabella `utenti`
+--
+
+INSERT INTO `utenti` (`ID`, `NOME`, `COGNOME`, `EMAIL`, `DESCRIZIONE`, `ACCETTATO`, `FK_COMUNE`, `DATA_REGISTRAZIONE`, `HASH`) VALUES
+(79, 'Eugeniu', 'Grigoras', 'eugeniogrigoras@gmail.com', NULL, 1, 1614, '2016-06-17 16:39:55', '$2y$10$0zi2j5Zf5b02AvD26VLgGeR4s3Ur7oDQQ2I7La/37cyjYQTXoDLm6'),
+(80, 'Emanuele', 'Barbieri', 'barbio@gmail.com', 'dsfdsfererfgergrg', 1, 320, '2016-06-18 15:10:41', '$2y$10$NakpFyz1ExNMQ0JRhNcFHuNFCSw/8HOo/i2lbJpu6VyQKufPTQqfC'),
+(81, 'Matto', 'Imbriale', 'matteo@gmail.com', NULL, 1, 644, '2016-06-21 16:51:03', '$2y$10$QjXxF0Mp0w0clXuYh4agrOEWefvDt0lJLKdnJ6gExkWCSqFovlDfq');
+
 -- --------------------------------------------------------
 
 --
@@ -8519,6 +8694,29 @@ CREATE TABLE `utenti_like_progetti` (
   `FK_PROGETTO` int(11) DEFAULT NULL,
   `DATA` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dump dei dati per la tabella `utenti_like_progetti`
+--
+
+INSERT INTO `utenti_like_progetti` (`ID`, `FK_UTENTE`, `FK_PROGETTO`, `DATA`) VALUES
+(106, 80, 18, '2016-06-19 11:58:59'),
+(107, 80, 22, '2016-06-19 11:58:59'),
+(156, 79, 18, '2016-06-20 13:34:28'),
+(181, 81, 24, '2016-06-21 20:15:25'),
+(182, 81, 23, '2016-06-21 20:15:26'),
+(184, 81, 17, '2016-06-21 20:16:09'),
+(189, 81, 18, '2016-06-22 00:13:33'),
+(190, 81, 20, '2016-06-22 00:16:50'),
+(192, 79, 19, '2016-06-22 00:33:22'),
+(197, 81, 25, '2016-06-25 12:57:18'),
+(199, 81, 19, '2016-06-25 13:06:55'),
+(201, 81, 22, '2016-06-25 15:31:10'),
+(206, 79, 22, '2016-06-26 14:41:58'),
+(208, 79, 17, '2016-06-26 14:44:31'),
+(209, 81, 26, '2016-06-26 14:51:03'),
+(232, 79, 20, '2016-06-27 10:42:57'),
+(237, 79, 26, '2016-06-27 13:46:12');
 
 -- --------------------------------------------------------
 
@@ -8533,6 +8731,24 @@ CREATE TABLE `utenti_seguono_collezioni` (
   `DATA` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dump dei dati per la tabella `utenti_seguono_collezioni`
+--
+
+INSERT INTO `utenti_seguono_collezioni` (`ID`, `FK_COLLEZIONE`, `FK_UTENTE`, `DATA`) VALUES
+(179, 2, 81, '2016-06-21 20:50:12'),
+(180, 7, 81, '2016-06-21 21:23:27'),
+(181, 6, 81, '2016-06-21 21:23:31'),
+(191, 1, 81, '2016-06-21 22:22:39'),
+(208, 13, 81, '2016-06-22 12:23:13'),
+(220, 3, 81, '2016-06-25 13:06:32'),
+(226, 9, 79, '2016-06-26 14:43:42'),
+(227, 2, 79, '2016-06-26 14:44:22'),
+(231, 12, 79, '2016-06-26 15:17:26'),
+(233, 10, 79, '2016-06-26 15:17:41'),
+(250, 1, 79, '2016-06-27 10:42:52'),
+(251, 14, 79, '2016-06-27 10:43:31');
+
 -- --------------------------------------------------------
 
 --
@@ -8545,6 +8761,17 @@ CREATE TABLE `utenti_seguono_utenti` (
   `FK_UTENTE_SEGUITO` int(11) DEFAULT NULL,
   `DATA` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dump dei dati per la tabella `utenti_seguono_utenti`
+--
+
+INSERT INTO `utenti_seguono_utenti` (`ID`, `FK_UTENTE`, `FK_UTENTE_SEGUITO`, `DATA`) VALUES
+(4, 80, 79, '2016-06-18 16:33:17'),
+(15, 81, 79, '2016-06-21 21:22:42'),
+(22, 79, 81, '2016-06-25 12:57:24'),
+(29, 81, 80, '2016-06-26 16:35:12'),
+(31, 79, 80, '2016-06-27 13:46:07');
 
 --
 -- Indici per le tabelle scaricate
@@ -8674,17 +8901,17 @@ ALTER TABLE `categorie_primarie`
 -- AUTO_INCREMENT per la tabella `categorie_secondarie`
 --
 ALTER TABLE `categorie_secondarie`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
 --
 -- AUTO_INCREMENT per la tabella `collezioni`
 --
 ALTER TABLE `collezioni`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 --
 -- AUTO_INCREMENT per la tabella `collezioni_composte_da_progetti`
 --
 ALTER TABLE `collezioni_composte_da_progetti`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=113;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=111;
 --
 -- AUTO_INCREMENT per la tabella `comuni`
 --
@@ -8694,17 +8921,17 @@ ALTER TABLE `comuni`
 -- AUTO_INCREMENT per la tabella `parti_3d`
 --
 ALTER TABLE `parti_3d`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
 --
 -- AUTO_INCREMENT per la tabella `progetti`
 --
 ALTER TABLE `progetti`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 --
 -- AUTO_INCREMENT per la tabella `progetti_hanno_tag`
 --
 ALTER TABLE `progetti_hanno_tag`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
 --
 -- AUTO_INCREMENT per la tabella `province`
 --
@@ -8719,27 +8946,27 @@ ALTER TABLE `regioni`
 -- AUTO_INCREMENT per la tabella `tag`
 --
 ALTER TABLE `tag`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=133;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=151;
 --
 -- AUTO_INCREMENT per la tabella `utenti`
 --
 ALTER TABLE `utenti`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
 --
 -- AUTO_INCREMENT per la tabella `utenti_like_progetti`
 --
 ALTER TABLE `utenti_like_progetti`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=238;
 --
 -- AUTO_INCREMENT per la tabella `utenti_seguono_collezioni`
 --
 ALTER TABLE `utenti_seguono_collezioni`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=252;
 --
 -- AUTO_INCREMENT per la tabella `utenti_seguono_utenti`
 --
 ALTER TABLE `utenti_seguono_utenti`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=364;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 --
 -- Limiti per le tabelle scaricate
 --

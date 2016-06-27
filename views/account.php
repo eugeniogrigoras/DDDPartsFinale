@@ -1,7 +1,7 @@
 <?php require_once 'primo.php'; ?>
 <title>Account</title>
 <style>
-	div.main-content {
+    div.main-content {
         margin-top: 24px;
         margin-bottom: 24px!important;
     }
@@ -79,8 +79,8 @@
         box-shadow: 0 0 0 #fff;
         margin:0;
         moz-transition: background-color 0.25s;
-		transition: background-color 0.25s;
-		webkit-transition : background-color 0.25s;
+        transition: background-color 0.25s;
+        webkit-transition : background-color 0.25s;
     }
 
     .user-card +.user-card {
@@ -92,7 +92,7 @@
     }
 
     @media only screen and (max-width : 600px) {
-    	.user-card {
+        .user-card {
             border-right:0px solid #ddd!important;
         }
         .user-card:nth-of-type(5) {
@@ -187,24 +187,34 @@
         color:rgba(255,109,64,1)!important;
     }
 
+    i {
+        moz-transition: color 0.25s;
+        transition: color 0.25s;
+        webkit-transition : color 0.25s;
+    }
+
+    .card-reveal {
+        color:#212121;
+    }
+
 </style>
 <?php require_once 'secondo.php'; ?>
 <main>
     <div class="container main-content row z-depth-1">
-    	<div class="card col s12" style="padding:0!important; margin:0!important">
-	        <div class="title truncate"><i style="margin:0!important; cursor:pointer" class="activator material-icons right noselect">info_outline</i><?php echo $_SESSION["NOME"]." ".$_SESSION["COGNOME"]; ?></div>
-	        <div class="background" style="padding:24px; ">
-	            <div id="avatar" class="z-depth-1" style="background-image:url('<?php echo requestPath()."/profile.jpg";?>')">
-	                
-	            </div>
-	        </div>
+        <div class="card col s12" style="padding:0!important; margin:0!important">
+            <div class="title truncate"><i style="margin:0!important; cursor:pointer" class="activator material-icons right noselect">info_outline</i><?php echo $_SESSION["NOME"]." ".$_SESSION["COGNOME"]; ?></div>
+            <div class="background" style="padding:24px; ">
+                <div id="avatar" class="z-depth-1" style="background-image:url('<?php echo requestPath()."/profile.jpg";?>')">
+                    
+                </div>
+            </div>
             <?php $user=requestData(); ?>
-	        <div id="profile-card" class="card-reveal" style=" text-align:left; color:#444; width:inherit!important">
-	        	<span class="card-title"><i class="material-icons right noselect">close</i><?php echo $_SESSION["NOME"]." ".$_SESSION["COGNOME"]; ?> - Information</span>
-	        	<p class="valign-wrapper"><i class="valign material-icons noselect" style="margin-right:20px;">email</i><?php echo $user["EMAIL"];?></p>
-	        	<p class="valign-wrapper"><i class="valign material-icons noselect" style="margin-right:20px;">place</i><?php echo $user["COMUNE"];?></p>
-	        	<p class="valign-wrapper"><i class="valign material-icons noselect" style="margin-right:20px;">description</i><?php echo $user["DESCRIZIONE"];?></p>    	
-	        </div>
+            <div id="profile-card" class="card-reveal" style=" text-align:left; color:#444; width:inherit!important">
+                <span class="card-title"><i class="material-icons right noselect">close</i><?php echo $_SESSION["NOME"]." ".$_SESSION["COGNOME"]; ?> - Information</span>
+                <p class="valign-wrapper"><i class="valign material-icons noselect" style="margin-right:20px;">email</i><?php echo $user["EMAIL"];?></p>
+                <p class="valign-wrapper"><i class="valign material-icons noselect" style="margin-right:20px;">place</i><?php echo $user["COMUNE"];?></p>
+                <p class="valign-wrapper"><i class="valign material-icons noselect" style="margin-right:20px;">description</i><?php echo $user["DESCRIZIONE"];?></p>        
+            </div>
         </div>
         <div class="sections col s12" style="margin-bottom:0; padding:0!important">
             <div id="userFollowingCard" class="user-card col l2 m6 s12 waves-effect" onclick="following()">
@@ -576,6 +586,68 @@
         }, false);
         ajax.open("POST", "/addProjectToCollection");
         ajax.send(formdata);
+    }
+
+    function likeProject(index) {
+        var ajax = new XMLHttpRequest();
+        var formdata = new FormData();
+        formdata.append("projectID", index);
+        ajax.addEventListener("load", function (event) {
+            var t = event.target.responseText;
+            if (t) {
+                //alert(t);
+                var res = jQuery.parseJSON(t);
+                _("projectLikes"+index).innerHTML=res.likes;
+                if (res.like) {
+                    _("projectLikeIcon"+index).style.color="#ff6e40";
+                } else {
+                    _("projectLikeIcon"+index).style.color="#777";
+                }  
+                _("userLikesNumber").innerHTML=res.userLikes;
+            }
+        }, false);
+        ajax.addEventListener("error", function (event) {
+            Materialize.toast('Error occured!', 2000);
+        }, false);
+        ajax.open("POST", "/likeProject");
+        ajax.send(formdata);
+    }
+
+    function followCollection(collectionID) {
+        var ajax = new XMLHttpRequest();
+        var formdata = new FormData();
+        formdata.append("collectionID", collectionID);
+        ajax.addEventListener("load", function (event) {
+            var t = event.target.responseText;
+            if (t) {
+                var res = $.parseJSON(t);
+                if (res.follow) {
+                    _("followCollectionText"+collectionID).innerHTML="Unfollow";
+                    _("followCollectionIcon"+collectionID).innerHTML="clear";
+                } else {
+                    _("followCollectionText"+collectionID).innerHTML="Follow";
+                    _("followCollectionIcon"+collectionID).innerHTML="add";
+                }  
+                try {
+                    if (res.collectionFollowersNumber == 0) {
+                        _('collectionFollowersNumber'+collectionID).innerHTML="";
+                    } else {
+                        _('collectionFollowersNumber'+collectionID).innerHTML="• <b>"+res.collectionFollowersNumber+"</b> FOLLOWERS";
+                    }     
+                } catch (err) {
+                }
+                _("userFollowedCollectionsNumber").innerHTML=res.userFollows;
+            }
+        }, false);
+        ajax.addEventListener("error", function (event) {
+            Materialize.toast('Error occured!', 2000);
+        }, false);
+        ajax.open("POST", "/followCollection");
+        ajax.send(formdata);
+    }
+
+    function editCollection(id) {
+        window.location.replace("/collection/"+id+"?fx=edit");
     }
 </script>
 

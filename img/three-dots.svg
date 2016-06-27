@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 19.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="-1070 893 120 30" style="enable-background:new -1070 893 120 30;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#FF6E40;}
+	.st1{fill:#FF6E40;fill-opacity:0.3;}
+</style>
+<circle class="st0" cx="-1055" cy="908" r="15">
+<animate  fill="remove" restart="always" additive="replace" accumulate="none" repeatCount="indefinite" calcMode="linear" values="15;9;15" dur="0.8s" begin="0s" to="15" from="15" attributeName="r">
+	</animate>
+<animate  fill="remove" restart="always" additive="replace" accumulate="none" repeatCount="indefinite" calcMode="linear" values="1;.5;1" dur="0.8s" begin="0s" to="1" from="1" attributeName="fill-opacity">
+	</animate>
+</circle>
+<circle class="st1" cx="-1010" cy="908" r="9">
+<animate  fill="remove" restart="always" additive="replace" accumulate="none" repeatCount="indefinite" calcMode="linear" values="9;15;9" dur="0.8s" begin="0s" to="9" from="9" attributeName="r">
+	</animate>
+<animate  fill="remove" restart="always" additive="replace" accumulate="none" repeatCount="indefinite" calcMode="linear" values=".5;1;.5" dur="0.8s" begin="0s" to="0.5" from="0.5" attributeName="fill-opacity">
+	</animate>
+</circle>
+<circle class="st0" cx="-965" cy="908" r="15">
+<animate  fill="remove" restart="always" additive="replace" accumulate="none" repeatCount="indefinite" calcMode="linear" values="15;9;15" dur="0.8s" begin="0s" to="15" from="15" attributeName="r">
+	</animate>
+<animate  fill="remove" restart="always" additive="replace" accumulate="none" repeatCount="indefinite" calcMode="linear" values="1;.5;1" dur="0.8s" begin="0s" to="1" from="1" attributeName="fill-opacity">
+	</animate>
+</circle>
+</svg>

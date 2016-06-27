@@ -82,7 +82,7 @@
                             <label data-error="Wrong!" for="title">Title</label>
                         </div>
                         <div class="input-field col s12">
-                            <textarea name="description" id="description" class="materialize-textarea" length="300" maxlength="300"></textarea>
+                            <textarea name="description" id="description" class="materialize-textarea"></textarea>
                             <label for="description">Description</label>
                         </div>
                         <div class="input-field col l6 m6 s12">

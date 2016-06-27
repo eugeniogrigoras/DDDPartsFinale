@@ -204,11 +204,11 @@
             var formdata = new FormData();
             formdata.append("password", this.value);
             ajax.addEventListener("load", function (event) {
-                //console.log(event);
+                console.log(event);
                 var t = event.target.responseText;
                 if (t) {
                     var res = $.parseJSON(t);
-                    //console.log(res);
+                    console.log(res);
                     //alert(t);
                     if (res.status) {
                         Materialize.toast("You can now change your password", 2000);

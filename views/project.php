@@ -1,6 +1,6 @@
 <?php require_once 'primo.php'; ?>
 <?php 
-    $projects=executeQuery('select progetti.ID, progetti.NOME AS NOME_PROGETTO, progetti.DESCRIZIONE, progetti.FK_UTENTE, utenti.ID as ID_UTENTE, utenti.NOME AS NOME_UTENTE, utenti.COGNOME, utenti.EMAIL, categorie_primarie.NOME AS CATEGORIA_PRIMARIA, categorie_secondarie.NOME AS CATEGORIA_SECONDARIA, COUNT(*) AS FILES FROM progetti, utenti, categorie_primarie, categorie_secondarie, parti_3d WHERE progetti.FK_CATEGORIA_SECONDARIA=categorie_secondarie.ID AND categorie_secondarie.FK_CATEGORIA_PRIMARIA=categorie_primarie.ID AND progetti.FK_UTENTE=utenti.ID AND parti_3d.FK_PROGETTO=progetti.ID AND progetti.ID='.$id.' GROUP BY progetti.ID');
+    $projects=executeQuery('select progetti.DATA_CREAZIONE, progetti.ID, progetti.NOME AS NOME_PROGETTO, progetti.DESCRIZIONE, progetti.FK_UTENTE, utenti.ID as ID_UTENTE, utenti.NOME AS NOME_UTENTE, utenti.COGNOME, utenti.EMAIL, categorie_primarie.NOME AS CATEGORIA_PRIMARIA, categorie_secondarie.NOME AS CATEGORIA_SECONDARIA, COUNT(*) AS FILES FROM progetti, utenti, categorie_primarie, categorie_secondarie, parti_3d WHERE progetti.FK_CATEGORIA_SECONDARIA=categorie_secondarie.ID AND categorie_secondarie.FK_CATEGORIA_PRIMARIA=categorie_primarie.ID AND progetti.FK_UTENTE=utenti.ID AND parti_3d.FK_PROGETTO=progetti.ID AND progetti.ID='.$id.' GROUP BY progetti.ID');
     $project=$projects->fetch_assoc();  
     //var_dump($project);
 ?>
@@ -17,7 +17,7 @@
                 "avatar" => "http://dddparts.altervista.org".requestPath()."/profile.jpg",
                 "email" => $_SESSION["EMAIL"]
             );
-        var2console ($data);
+        //var2console ($data);
          
         function dsq_hmacsha1($data, $key) {
             $blocksize=64;
@@ -59,7 +59,7 @@
 <script src="/js/flickity.pkgd.min.js"></script>
 
 <style>
-	div.main-content {
+    div.main-content {
         padding-top: 24px;
     }
     div.title {
@@ -118,7 +118,7 @@
     .small-icon {
         font-size:1.25rem;
     }
-    b {
+    .informations b {
         margin-left: 6px;
         font-weight: 400;
     }
@@ -127,6 +127,25 @@
     }
     .informations i {
         color:#686868;
+    }
+    .collection-image {
+        position: absolute;
+        overflow: hidden;
+        border-radius: 50%;
+        
+        width: 42px;
+        height: 42px;
+        background-position: 50% 50%;
+        background-repeat:   no-repeat;
+        background-size:     cover;
+        left: 15px;
+        display: inline-block;
+        vertical-align: middle;
+    }
+    i {
+        moz-transition: color 0.25s;
+        transition: color 0.25s;
+        webkit-transition : color 0.25s;
     }
 </style>
 <?php require_once 'secondo.php'; ?>
@@ -202,7 +221,9 @@
                 <div style="background:#9e9e9e"><div class="progress-bar"></div></div>
                 <div class="col s12" style="padding:24px;">
                     <h5>Description</h5>
-                    <p><?php echo $project["DESCRIZIONE"] ?></p>
+                    <blockquote>
+                        <p><?php echo $project["DESCRIZIONE"] ?></p>
+                    </blockquote>
                     <ul style="border:0; margin:0; padding:0; display:none" class="col s12 collection">
                     
                         <?php 
@@ -227,12 +248,18 @@
             <div class="row z-depth-1" style="height:100%; background-color:white; margin:0">
                 <div class="col s12 title">
                     <p class="truncate" style="font-size:20px; margin:0;">Stats</p>
-                    <p class="truncate" style="font-size:13px; margin:0">information about - <?php echo $project["NOME_PROGETTO"] ?></p>
+                    <?php 
+                        $db = $project["DATA_CREAZIONE"];
+                        //var2console (date('l jS \of F Y h:i:s A', time()));
+                        $timestamp = strtotime($db);
+                        //var2console (date('l jS \of F Y h:i:s A', $timestamp));
+                    ?>
+                    <p class="truncate" style="font-size:13px; margin:0">Posted <?php echo time_elapsed_posted_string($timestamp); ?></p>
                 </div>
                 <div class="col s12" style="padding:12px">
                     <div id="category">
                         <p style="margin:0; margin-bottom:6px">Category:</p>
-                        <p style="font-size:13px; margin:0;" class="truncate"><a style="color:#212121" href="#"><?php echo $project["CATEGORIA_PRIMARIA"] ?></a> / <a style="color:#ff6e40" href="#"><?php echo $project["CATEGORIA_SECONDARIA"]?></a></p>
+                        <p style="font-size:13px; margin:0;" class="truncate"><a style="color:#212121" href="#"><?php echo $project["CATEGORIA_PRIMARIA"] ?></a> / <a style="color:#212121" href="#"><?php echo $project["CATEGORIA_SECONDARIA"]?></a></p>
                     </div>
                     
                     <div id="tags">
@@ -251,9 +278,16 @@
                     </div>
                     <hr>
                     <div class="informations">
-                        <div class="valign-wrapper" style="color:#444">
-                            <i class="small-icon material-icons noselect" style="margin-right:12px">favorite</i>
-                            <p class="truncate" style="margin:0;">Likes:<b>
+                        <div class="valign-wrapper" style="color:#444; cursor:pointer" onClick="likeProject()">
+                            <?php 
+                                if (logged()) $USER_LIKE = executeQuery("select * from utenti_like_progetti where FK_PROGETTO=".$id." and FK_UTENTE=".$_SESSION["ID"]);
+                            ?>
+                            <i id="projectLikeIcon" class="small-icon material-icons noselect" style="margin-right:12px;
+                            <?php 
+                                if ((logged()) && ($USER_LIKE->num_rows > 0)) echo "color:#ff6e40";
+                            ?>
+                            ">favorite</i>
+                            <p class="truncate" style="margin:0;">Likes:<b id="projectLikes">
                                 <?php 
                                     $QUERY=executeQuery("select * from utenti_like_progetti where FK_PROGETTO=$projectID"); 
                                     echo $QUERY->num_rows;
@@ -264,7 +298,7 @@
                         <hr>
                         <div class="valign-wrapper" style="color:#444">
                             <i class="small-icon material-icons noselect" style="margin-right:12px">file_download</i>
-                            <p class="truncate" style="margin:0;">Downloads:<b>
+                            <p class="truncate" style="margin:0;">Downloads:<b id="projectDownloads">
                                 <?php 
                                     $QUERY=executeQuery("select NUMERO_DOWNLOAD from progetti where ID=$projectID"); 
                                     $numeroDownload=$QUERY->fetch_assoc();
@@ -274,9 +308,9 @@
                             </p>
                         </div>
                         <hr>
-                        <div class="valign-wrapper" style="color:#444">
+                        <div class="valign-wrapper" style="color:#444; cursor:pointer" onclick="save()">
                             <i class="small-icon material-icons noselect" style="margin-right:12px">move_to_inbox</i>
-                            <p class="truncate" style="margin:0;">In collection:<b>
+                            <p class="truncate" style="margin:0;">In collection:<b id="inCollection">
                                 <?php 
                                     $COLLECTION = executeQuery("select * from collezioni_composte_da_progetti where FK_PROGETTO=".$project["ID"]); 
                                     echo $COLLECTION->num_rows; 
@@ -329,6 +363,50 @@
             </div>
         </div>
     </div>
+
+    <?php if (logged()): ?>
+
+    <div id="collections" class="modal"></div>
+
+    <div id="add_to_collection" style="display:none">
+        <div class="modal-content" style="text-align: center; padding: 15px; background-color:#f6f7f9">
+            <p id="collections_title" style="margin:6px 0; font-size: 18px"></p>
+            <a style="font-size: 14px; color:#ff6e40" href="/account?fx=myCollections">Go to my Collections</a>
+        </div>
+        <ul class="modal-content collection" id="collections-container" style="padding:0; margin:0 15px">
+
+        </ul>
+        <div class="modal-content" style="text-align:center">
+            <a onCLick="newCollection()" style="font-size: 14px; color:#ff6e40; margin:6px 0; cursor:pointer">Create a new Collection</a>
+        </div>
+    </div>
+
+    <div id="new_collection" style="display:none">
+        <div class="modal-content" style="text-align: center; padding: 15px; background-color:#f6f7f9">
+            <p style="margin:6px 0; font-size: 18px">Create a new Collection</p>
+            <a style="font-size: 14px; color:#ff6e40" href="/account?fx=myCollections">Go to my Collections</a>
+        </div>
+        <div class="modal-content" style="text-align:center">
+            <div class="row">
+                <form autocomplete="off" novalidate class="col s12" id="create_collection">
+                    <div class="input-field col s12">
+                        <input required placeholder="Collection Name" id="collection_name" type="text" class="validate">
+                        <label for="collection_name">Name</label>
+                    </div>
+                    <div class="input-field col s12">
+                        <textarea placeholder="Collection Description" id="collection_description" class="materialize-textarea" length="300" maxlength="300"></textarea>
+                        <label for="collection_description">Description</label>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a id="save_collection_button" onClick="submitCollection()" style="margin-left:6px" class="modal-action modal-close waves-effect waves-light btn-flat grey darken-3 white-text">Save</a>
+            <a onClick="cancelCollectionCreate()" class="waves-effect btn-flat ">Cancel</a>
+        </div>
+    </div>
+
+    <?php endif; ?>
 </main>
 
 <?php require_once 'terzo.php'; ?>
@@ -345,12 +423,15 @@
         formdata.append("name", names[index]);
         formdata.append("projectID", <?php echo $project["ID"] ?>);
         ajax.addEventListener("load", function (event) {
-            _("downloadNumber"+index).innerHTML=event.target.responseText;
-            //alert("bella");
+            var t = event.target.responseText;
+            if (t) {
+                var res = jQuery.parseJSON(t);
+                _("downloadNumber"+index).innerHTML=res.downloads+" Downloads";
+            }
         }, false);
 
         ajax.addEventListener("error", function (event) {
-            alert("error");
+            Materialize.toast('Error occured!', 2000);
         }, false);
 
         ajax.open("POST", "/downloadFile");
@@ -364,8 +445,13 @@
         var formdata = new FormData();
         formdata.append("projectID", <?php echo $project["ID"] ?>);
         ajax.addEventListener("load", function (event) {
-            //_("downloadNumber"+index).innerHTML=event.target.responseText;
-            //alert("bella");
+            var t = event.target.responseText;
+            //alert(t);
+            if (t) {
+                var res = jQuery.parseJSON(t);
+
+                _("projectDownloads").innerHTML=res.downloads;
+            }
         }, false);
 
         ajax.addEventListener("error", function (event) {
@@ -397,4 +483,127 @@
         progressBar.style.width = progress * 100 + '%';
     };
 </script>
+<?php if (logged()) : ?>
+    <script>
+        function likeProject() {
+            var index = <?php echo $id ?>;
+            var ajax = new XMLHttpRequest();
+            var formdata = new FormData();
+            formdata.append("projectID", index);
+            ajax.addEventListener("load", function (event) {
+                var t = event.target.responseText;
+                if (t) {
+                    var res = $.parseJSON(t);
+                    _("projectLikes").innerHTML=res.likes;
+                    if (res.like) {
+                        _("projectLikeIcon").style.color="#ff6e40";
+                    } else {
+                        _("projectLikeIcon").style.color="#777";
+                    }   
+                }
+            }, false);
+            ajax.addEventListener("error", function (event) {
+                Materialize.toast('Error occured!', 2000);
+            }, false);
+            ajax.open("POST", "/likeProject");
+            ajax.send(formdata);
+        }
+
+        function save() {
+            var id = <?php echo $id; ?>;
+            var name = "<?php echo $project["NOME_PROGETTO"]; ?>";
+            updateCollections(id);
+            //alert ($("#"+id).data('projectid'));
+            $('#collections').html('');
+            $("#collections_title").text('Add "'+name+'" to a collection');
+            $('#collections').html($('#add_to_collection').html());
+            $('#save_collection_button').attr("data-selectedproject", id);
+            
+            $('#collections').openModal();
+        }
+        function newCollection () {
+            $('#collections').html($('#new_collection').html());
+        }
+
+        function cancelCollectionCreate () {
+            updateCollections($("#save_collection_button").data('selectedproject'));
+            $('#collections').html($('#add_to_collection').html());
+        }
+
+        function submitCollection () {
+            if($('#create_collection')[0].checkValidity()) {
+                var ajax = new XMLHttpRequest();
+                var formdata = new FormData();
+                formdata.append("name", _("collection_name").value);
+                formdata.append("description", _("collection_description").value);
+                formdata.append("project_id", $("#save_collection_button").data('selectedproject'));
+                formdata.append("user_id", <?php echo $_SESSION["ID"]; ?>);
+
+                ajax.addEventListener("load", function (event) {
+                    var t = event.target.responseText;
+                    if (t) {
+                        var res = $.parseJSON(t);
+                        $('#collections').closeModal();
+                        _("inCollection").innerHTML=res.inCollection;
+                        Materialize.toast(res.message, 2000);
+                    }
+                }, false);
+                ajax.addEventListener("error", function (event) {
+                    Materialize.toast('Error occured!', 2000);
+                }, false);
+                ajax.open("POST", "/createCollection");
+                ajax.send(formdata);
+            } else {
+                Materialize.toast('Fill in all fields!', 2000)
+            }
+        }
+        function updateCollections ($projectID) {
+            var ajax = new XMLHttpRequest();
+            var formdata = new FormData();
+            formdata.append("projectID", $projectID);
+            ajax.addEventListener("load", function (event) {
+                var t = event.target.responseText;
+                if (t) {
+                    $('#collections-container').html(t);
+                }
+            }, false);
+            ajax.addEventListener("error", function (event) {
+                Materialize.toast('Error occured!', 2000);
+            }, false);
+            ajax.open("POST", "/getCollections");
+            ajax.send(formdata);
+        }
+
+        function addProjectToCollection ($projectID, $collectionID) {
+            var ajax = new XMLHttpRequest();
+            var formdata = new FormData();
+            formdata.append("projectID", $projectID);
+            formdata.append("collectionID", $collectionID);
+            ajax.addEventListener("load", function (event) {
+                var t = event.target.responseText;
+                if (t) {
+                    var res = $.parseJSON(t);
+                    $('#collections').closeModal();
+                    _("inCollection").innerHTML=res.inCollection;
+                    Materialize.toast(res.message, 2000);
+                }
+            }, false);
+            ajax.addEventListener("error", function (event) {
+                Materialize.toast('Error occured!', 2000);
+            }, false);
+            ajax.open("POST", "/addProjectToCollection");
+            ajax.send(formdata);
+        }
+    </script>
+<?php else: ?>
+    <script>
+        function save(id, name) {
+            Materialize.toast("You need to login first", 2000);
+        }
+        function likeProject(index) {
+            Materialize.toast("You need to login first", 2000);
+        }
+    </script>
+<?php endif; ?>
+
 <?php require_once 'quarto.php'; ?>

@@ -3,35 +3,46 @@
     require_once 'functions.php';
 
     if (isset($_COOKIE["ID"]) && !isset($_SESSION["ID"])) {
-    	$_SESSION["ID"]=$_COOKIE["ID"];
-		$_SESSION["NOME"]=$_COOKIE["NOME"];
-		$_SESSION["COGNOME"]=$_COOKIE["COGNOME"];
-		$_SESSION["EMAIL"]=$_COOKIE["EMAIL"];
+        $_SESSION["ID"]=$_COOKIE["ID"];
+        $_SESSION["NOME"]=$_COOKIE["NOME"];
+        $_SESSION["COGNOME"]=$_COOKIE["COGNOME"];
+        $_SESSION["EMAIL"]=$_COOKIE["EMAIL"];
     }
 
     Flight::route('GET /', function(){
-    	if (logged()) {
-    		Flight::render('dashboard');
-    	} else {
-    		Flight::render('home');
-    	}	
+        if (logged()) {
+            Flight::render('dashboard');
+        } else {
+            Flight::render('home');
+        }   
         
     });
 
+    Flight::route('GET /explore', function(){
+        Flight::render('explore');
+    });
+    Flight::route('GET /explore/collections', function(){
+        Flight::render('explore');
+    });
+
+    Flight::route('GET /explore/category(/subcategory)', function(){
+        Flight::render('explore');
+    });
+
     Flight::route('GET /register(/@message)', function($message){
-    	if (logged()) {
-    		Flight::redirect('/account');
-    	} else {
-        	Flight::render('register', array('message' =>  $message));
+        if (logged()) {
+            Flight::redirect('/account');
+        } else {
+            Flight::render('register', array('message' =>  $message));
         }
     });
 
     Flight::route('GET /login(/@message)', function($message){
-    	if (logged()) {
-    		Flight::redirect('/account');
-    	} else {
-    		Flight::render('login', array('message' =>  $message));
-    	}   
+        if (logged()) {
+            Flight::redirect('/account');
+        } else {
+            Flight::render('login', array('message' =>  $message));
+        }   
     });
 
     Flight::route('GET /account(/@message)', function($message){
@@ -57,6 +68,8 @@
             Flight::redirect('/login');
         }   
     });
+
+
 
     Flight::route('GET /search(/@message)', function($message){
             Flight::render('search', array('message' =>  $message)); 
@@ -129,7 +142,7 @@
             $riga=$ris->fetch_assoc();
             $hash=$riga['HASHCODE'];
             if (!password_verify($pass, $hash)) {
-                Flight::redirect('/login/Invalid password');
+                Flight::redirect('/login/Input Error');
                 exit();
             }
             $ris=executeQuery("select * from utenti where utenti.EMAIL='$email' AND utenti.HASH='$hash'");
@@ -150,7 +163,7 @@
                     setcookie("EMAIL", $riga['EMAIL'], time() + (86400 * 30), "/");
                     echo "true";
                 }
-                Flight::redirect('/account');
+                Flight::redirect('/');
                 exit();
             } else {
                 Flight::redirect('/login/Input error');
@@ -247,13 +260,21 @@
 
     Flight::route('POST /controlPassword', function() {
         $email=$_SESSION["EMAIL"];
+        $data=[];
         $ris=executeQuery("select HASH as HASHCODE from utenti where utenti.EMAIL='$email'");
         $riga=$ris->fetch_assoc();
         $hash=$riga['HASHCODE'];
         $pass=$_POST["password"];
         if (password_verify($pass, $hash)) {
-            echo "OK";
+            $data["status"]=true;
+            //echo "OK";
+        } else {
+            $data["status"]=false;
         }
+        $data["null"]="null";
+        $data["123"]="null";
+        echo json_encode($data, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
+        //echo "OKOKOK";
     });
 
     Flight::route('POST /settings', function() {
@@ -359,16 +380,18 @@
         $title=$_POST["name"];
         $collectionID = addCollection($title, $description);
         if ($collectionID) {
+            sleep(1);
             $addProject=addProjectToCollection($projectID, $collectionID);
             if ($addProject) $data["message"] = $title." was created";
         }
         $COLLECTION = executeQuery("select * from collezioni_composte_da_progetti where FK_PROGETTO=".$projectID); 
         $QUERY=executeQuery("select * FROM collezioni where FK_UTENTE=".$_SESSION["ID"]);
-        $data["myCollections"] = $QUERY->num_rows; 
+        $data["myCollections"] = "$QUERY->num_rows"; 
 
         $data["projectID"] = $projectID;
-        $data["inCollection"] = $COLLECTION->num_rows;
-        echo json_encode($data);
+        $data["inCollection"] = "$COLLECTION->num_rows";
+        $data["null"]="null";
+        echo json_encode($data, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
     });
 
     Flight::route('POST /getCollections', function() {
@@ -388,9 +411,13 @@
         }
         $COLLECTION = executeQuery("select * from collezioni_composte_da_progetti where FK_PROGETTO=".$projectID); 
 
+        $CollectionProjects = executeQuery("select DISTINCT COUNT(*) AS NUMERO FROM collezioni_composte_da_progetti, progetti, categorie_primarie, categorie_secondarie, utenti WHERE collezioni_composte_da_progetti.FK_PROGETTO=progetti.ID AND collezioni_composte_da_progetti.FK_COLLEZIONE=$collectionID AND categorie_secondarie.FK_CATEGORIA_PRIMARIA=categorie_primarie.ID AND utenti.ID=progetti.FK_UTENTE AND progetti.FK_CATEGORIA_SECONDARIA=categorie_secondarie.ID");
+
         $data["projectID"] = $projectID;
-        $data["inCollection"] = $COLLECTION->num_rows;
-        echo json_encode($data);
+        $data["inCollection"] = "$COLLECTION->num_rows";
+        $data["collectionProjectsNumber"] = $CollectionProjects->fetch_assoc()["NUMERO"];
+        $data["null"]="null";
+        echo json_encode($data, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
     });
 
     Flight::route('POST /follow', function() {
@@ -407,16 +434,17 @@
             $data['message']="UNFOLLOW";    
         }
         $QUERY=executeQuery("select * FROM utenti_seguono_utenti where FK_UTENTE=".$sessionID);
-        $data['userFollowingNumber'] = $QUERY->num_rows;
+        $data['userFollowingNumber'] = "$QUERY->num_rows";
         $QUERY=executeQuery("select * FROM utenti_seguono_utenti where FK_UTENTE_SEGUITO=".$sessionID);
-        $data['userFollowersNumber'] = $QUERY->num_rows;
+        $data['userFollowersNumber'] = "$QUERY->num_rows";
         $data['sessionID'] = $sessionID;
         $QUERY=executeQuery("select * FROM utenti_seguono_utenti where FK_UTENTE=".$requestID);
-        $data['usersFollowingNumber'] = $QUERY->num_rows;
+        $data['usersFollowingNumber'] = "$QUERY->num_rows";
         $QUERY=executeQuery("select * FROM utenti_seguono_utenti where FK_UTENTE_SEGUITO=".$requestID);
-        $data['usersFollowersNumber'] = $QUERY->num_rows;
-        $data['requestID'] = $requestID;
-        echo json_encode($data);
+        $data['usersFollowersNumber'] = "$QUERY->num_rows";
+        $data['requestID'] = "$requestID";
+        $data["null"]="null";
+        echo json_encode($data, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
     });
 
     Flight::route('POST /getSubcategory', function() {
@@ -445,19 +473,51 @@
 
     Flight::route('POST /downloadFile', function() {
         $name=$_POST["name"];
+        $data=[];
         $projectID=$_POST["projectID"];
         $QUERY=executeQuery("update parti_3d set NUMERO_DOWNLOAD = (NUMERO_DOWNLOAD + 1) where FK_PROGETTO=$projectID and NOME='$name'");
         $QUERY=executeQuery("select NUMERO_DOWNLOAD from  parti_3d where FK_PROGETTO=$projectID and NOME='$name'");
         $riga=$QUERY->fetch_assoc();
-        echo $riga["NUMERO_DOWNLOAD"]." Downloads";
+        $data["downloads"]=$riga["NUMERO_DOWNLOAD"];
+        $data["null"]="null";
+        $data["123"]="null";
+        echo json_encode($data, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
+    });
+
+    Flight::route('POST /likeProject', function() {
+        $data=[];
+        $projectID=$_POST["projectID"];
+        $userID=$_SESSION["ID"];
+        $QUERY=executeQuery("select * from  utenti_like_progetti where FK_PROGETTO=$projectID and FK_UTENTE=$userID");  
+        if ($QUERY->num_rows == 0) {
+            $data["like"]=true;
+            $QUERY=executeQuery("insert into utenti_like_progetti (FK_UTENTE, FK_PROGETTO) values ($userID, $projectID)");
+        } else {
+            $data["like"]=false;
+            $QUERY=executeQuery("delete from utenti_like_progetti where FK_PROGETTO=$projectID and FK_UTENTE=$userID");
+        }  
+        $QUERY=executeQuery("select * from  utenti_like_progetti where FK_PROGETTO=$projectID");
+        $data["likes"]="$QUERY->num_rows";
+        $QUERY=executeQuery("select * from  utenti_like_progetti where FK_UTENTE=$userID");
+        $data["userLikes"]="$QUERY->num_rows";
+        $data["null"]="null";
+        //var2console($data);
+        //echo var_dump(json_encode($data)), json_last_error());
+        echo json_encode($data, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
+
     });
 
     Flight::route('POST /downloadProject', function() {
         $projectID=$_POST["projectID"];
+        $data=[];
         $QUERY=executeQuery("update progetti set NUMERO_DOWNLOAD = (NUMERO_DOWNLOAD + 1) where ID=$projectID");
-        //$QUERY=executeQuery("select NUMERO_DOWNLOAD from  parti_3d where FK_PROGETTO=$projectID and NOME='$name'");
-        //$riga=$QUERY->fetch_assoc();
-        //echo $riga["NUMERO_DOWNLOAD"]." Downloads";
+        $QUERY=executeQuery("select NUMERO_DOWNLOAD from  progetti where ID=$projectID");
+        $riga=$QUERY->fetch_assoc();
+        $data["downloads"]=$riga["NUMERO_DOWNLOAD"];
+        $data["null"]="null";
+        $data["123"]="null";
+        //var2console($data);
+        echo json_encode($data, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
     });
 
     Flight::route('POST /getComune', function() {
@@ -470,6 +530,26 @@
             ."'>".$riga['nome']
             ."</option>";
         }
+    });
+
+    Flight::route('POST /followCollection', function() {
+        $data=[];
+        $collectionID=$_POST["collectionID"];
+        $userID=$_SESSION["ID"];
+        $QUERY=executeQuery("select * from  utenti_seguono_collezioni where FK_COLLEZIONE=$collectionID and FK_UTENTE=$userID");  
+        if ($QUERY->num_rows == 0) {
+            $data["follow"]=true;
+            $QUERY=executeQuery("insert into utenti_seguono_collezioni (FK_UTENTE, FK_COLLEZIONE) values ($userID, $collectionID)");
+        } else {
+            $data["follow"]=false;
+            $QUERY=executeQuery("delete from utenti_seguono_collezioni where FK_COLLEZIONE=$collectionID and FK_UTENTE=$userID");
+        }
+        $QUERY=executeQuery("select * from  utenti_seguono_collezioni where FK_UTENTE=$userID");
+        $data["userFollows"]="$QUERY->num_rows";
+        $QUERY=executeQuery("select * from  utenti_seguono_collezioni where FK_COLLEZIONE=$collectionID");
+        $data["collectionFollowersNumber"]="$QUERY->num_rows";
+        $data["null"]="null";
+        echo json_encode($data, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
     });
 
     Flight::start();

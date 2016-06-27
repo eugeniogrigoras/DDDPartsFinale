@@ -1,5 +1,6 @@
 <?php
 	session_start();
+	//date_default_timezone_set('Europe/Rome');
 
 	function logged () {
     	if (isset($_SESSION["ID"])) {
@@ -43,6 +44,16 @@
 	   } else {
 	      str2console("$type = "      .var_export($var, true).';', $now);
 	   }
+	}
+
+	function myCollection ($collectionID) {
+        $userID=$_SESSION["ID"];
+        $QUERY=executeQuery("select * from  collezioni where ID=$collectionID and FK_UTENTE=$userID");
+        if ($QUERY->num_rows > 0) {
+        	return true;
+        } else {
+        	return false;
+        }
 	}
 
 	function str2console($str, $now=true)
@@ -90,6 +101,75 @@
 		}	
 	}
 
+	function time_elapsed_posted_string($ptime) {
+		$etime = time() - $ptime;
+
+	    if ($etime < 1)
+	    {
+	        return '0 seconds';
+	    }
+
+	    $a = array( 365 * 24 * 60 * 60  =>  'year',
+	                 30 * 24 * 60 * 60  =>  'month',
+	                      24 * 60 * 60  =>  'day',
+	                           60 * 60  =>  'hour',
+	                                60  =>  'minute',
+	                                 1  =>  'second'
+	                );
+	    $a_plural = array( 'year'   => 'years',
+	                       'month'  => 'months',
+	                       'day'    => 'days',
+	                       'hour'   => 'hours',
+	                       'minute' => 'minutes',
+	                       'second' => 'seconds'
+	                );
+
+	    foreach ($a as $secs => $str)
+	    {
+	        $d = $etime / $secs;
+	        if ($d >= 1)
+	        {
+	            $r = round($d);
+	            return $r . ' ' . ($r > 1 ? $a_plural[$str] : $str). " ago";
+	        }
+	    }
+	}
+
+	function time_elapsed_string($ptime)
+	{
+	    $etime = time() - $ptime;
+
+	    if ($etime < 1)
+	    {
+	        return '0 seconds';
+	    }
+
+	    $a = array( 365 * 24 * 60 * 60  =>  'year',
+	                 30 * 24 * 60 * 60  =>  'month',
+	                      24 * 60 * 60  =>  'day',
+	                           60 * 60  =>  'hour',
+	                                60  =>  'minute',
+	                                 1  =>  'second'
+	                );
+	    $a_plural = array( 'year'   => 'years',
+	                       'month'  => 'months',
+	                       'day'    => 'days',
+	                       'hour'   => 'hours',
+	                       'minute' => 'minutes',
+	                       'second' => 'seconds'
+	                );
+
+	    foreach ($a as $secs => $str)
+	    {
+	        $d = $etime / $secs;
+	        if ($d >= 1)
+	        {
+	            $r = round($d);
+	            return $r . ' ' . ($r > 1 ? $a_plural[$str] : $str);
+	        }
+	    }
+	}
+
 	function requestDataUser($id) {
 		$data=executeQuery("select * from utenti where ID=".$id);
 		
@@ -103,6 +183,7 @@
 		    		"DESCRIZIONE" => $riga["DESCRIZIONE"],
 		    		"EMAIL" => $riga["EMAIL"],
 		    		"HASH" => $riga["HASH"],
+		    		"FK_COMUNE" => $riga["FK_COMUNE"],
 		    		"COMUNE" => getComune($riga["FK_COMUNE"])
 				);
 				return $array;
@@ -404,4 +485,28 @@ WHERE collezioni_composte_da_progetti.ID=(SELECT MAX(ID) FROM collezioni_compost
 	    // Zip archive will be created only after closing object
 	    $zip->close();
 	}
+
+
+	//....................................
+	//DASHBOARD
+	//....................................
+
+	function getProject($id) {
+		$QUERY=executeQuery("select progetti.ID, progetti.NOME AS NOME_PROGETTO, progetti.DESCRIZIONE, progetti.FK_UTENTE, categorie_primarie.NOME AS CATEGORIA_PRIMARIA, categorie_secondarie.NOME AS CATEGORIA_SECONDARIA, COUNT(*) AS FILES, progetti.NUMERO_DOWNLOAD FROM progetti, categorie_primarie, categorie_secondarie, parti_3d WHERE progetti.FK_CATEGORIA_SECONDARIA=categorie_secondarie.ID AND categorie_secondarie.FK_CATEGORIA_PRIMARIA=categorie_primarie.ID AND progetti.ID=$id AND parti_3d.FK_PROGETTO=progetti.ID GROUP BY progetti.ID");
+		if ($QUERY) {
+			$project=$QUERY->fetch_assoc();
+			return	$project;	
+		}
+		return false;
+	}
+
+	function getCollection($id) {
+		$QUERY=executeQuery("SELECT collezioni.ID, collezioni.TITOLO, collezioni.DATA_CREAZIONE, collezioni.FK_UTENTE, collezioni.DESCRIZIONE, COUNT(*) as NUMERO_PROGETTI FROM collezioni, collezioni_composte_da_progetti WHERE collezioni_composte_da_progetti.FK_COLLEZIONE=collezioni.ID AND collezioni.ID=$id");
+		if ($QUERY) {
+			$collection=$QUERY->fetch_assoc();
+			return	$collection;	
+		}
+		return false;
+	}
+
 ?>

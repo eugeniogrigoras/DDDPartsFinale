@@ -183,7 +183,15 @@
         color:rgba(255,109,64,1)!important;
     }
 
+    i {
+        moz-transition: color 0.25s;
+        transition: color 0.25s;
+        webkit-transition : color 0.25s;
+    }
 
+    .card-reveal {
+        color:#212121;
+    }
 </style>
 <?php require_once 'secondo.php'; ?>
 <main>
@@ -594,6 +602,33 @@
         ajax.open("POST", "/addProjectToCollection");
         ajax.send(formdata);
     }
+
+    function likeProject(index) {
+        var ajax = new XMLHttpRequest();
+        var formdata = new FormData();
+        formdata.append("projectID", index);
+        ajax.addEventListener("load", function (event) {
+            var t = event.target.responseText;
+            if (t) {
+                var res = $.parseJSON(t);
+                _("projectLikes"+index).innerHTML=res.likes;
+                if (res.like) {
+                    _("projectLikeIcon"+index).style.color="#ff6e40";
+                } else {
+                    _("projectLikeIcon"+index).style.color="#777";
+                }   
+            }
+        }, false);
+        ajax.addEventListener("error", function (event) {
+            Materialize.toast('Error occured!', 2000);
+        }, false);
+        ajax.open("POST", "/likeProject");
+        ajax.send(formdata);
+    }
+
+    function editCollection(id) {
+        window.location.replace("/collection/"+id+"?fx=edit");
+    }
 </script>
 
 <script>
@@ -658,11 +693,53 @@
         ajax.open("POST", "/follow");
         ajax.send(formdata);
     });
+
+    function followCollection(collectionID) {
+        var ajax = new XMLHttpRequest();
+        var formdata = new FormData();
+        formdata.append("collectionID", collectionID);
+        ajax.addEventListener("load", function (event) {
+            var t = event.target.responseText;
+            if (t) {
+                var res = $.parseJSON(t);
+                if (res.follow) {
+                    _("followCollectionText"+collectionID).innerHTML="Unfollow";
+                    _("followCollectionIcon"+collectionID).innerHTML="clear";
+                } else {
+                    _("followCollectionText"+collectionID).innerHTML="Follow";
+                    _("followCollectionIcon"+collectionID).innerHTML="add";
+                }  
+                try {
+                    if (res.collectionFollowersNumber == 0) {
+                        _('collectionFollowersNumber'+collectionID).innerHTML="";
+                    } else {
+                        _('collectionFollowersNumber'+collectionID).innerHTML="• <b>"+res.collectionFollowersNumber+"</b> FOLLOWERS";
+                    }     
+                } catch (err) {
+                }
+                //_("userFollowedCollectionsNumber").innerHTML=res.userFollows;
+            }
+        }, false);
+        ajax.addEventListener("error", function (event) {
+            Materialize.toast('Error occured!', 2000);
+        }, false);
+        ajax.open("POST", "/followCollection");
+        ajax.send(formdata);
+    }
 </script>
 
 <?php else: ?>
 <script>
     function save(id, name) {
+        Materialize.toast("You need to login first", 2000);
+    }
+    function likeProject(index) {
+        Materialize.toast("You need to login first", 2000);
+    }
+    function followCollection(collectionID) {
+        Materialize.toast("You need to login first", 2000);
+    }
+    function editCollection(id) {
         Materialize.toast("You need to login first", 2000);
     }
 </script>
