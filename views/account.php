@@ -1,5 +1,6 @@
 <?php require_once 'primo.php'; ?>
 <title>Account</title>
+<meta name="description" content="All about you!">
 <style>
     div.main-content {
         margin-top: 24px;

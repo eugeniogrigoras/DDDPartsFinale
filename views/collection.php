@@ -288,7 +288,7 @@
                                     </p>
                                 </div>
                                 <div class="col s4 truncate" style="padding:0;">
-                                    <?php $link= 'http://dddparts.altervista.org/project/'.$project["ID_PROGETTO"]."#disqus_thread" ?>
+                                    <?php $link= 'http://localhost/project/'.$project["ID_PROGETTO"]."#disqus_thread" ?>
                                     <p class="center-align valign-wrapper fit-content no_style" style="cursor:pointer; color:#777; margin:auto" onClick="location.href='<?php echo $link ?>'">
                                         <i class="material-icons noselect valign" style="margin-right:5px; font-size:15px">comment</i>
                                         <a class="" href="<?php echo $link; ?>" style="font-size:13px">0</a>
