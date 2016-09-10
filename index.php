@@ -15,18 +15,21 @@
         } else {
             Flight::render('home');
         }   
-        
+        exit();
     });
 
     Flight::route('GET /explore', function(){
         Flight::render('explore');
+        exit();
     });
     Flight::route('GET /explore/collections', function(){
         Flight::render('explore');
+        exit();
     });
 
     Flight::route('GET /explore/category(/subcategory)', function(){
         Flight::render('explore');
+        exit();
     });
 
     Flight::route('GET /register(/@message)', function($message){
@@ -35,6 +38,7 @@
         } else {
             Flight::render('register', array('message' =>  $message));
         }
+        exit();
     });
 
     Flight::route('GET /login(/@message)', function($message){
@@ -42,7 +46,8 @@
             Flight::redirect('/account');
         } else {
             Flight::render('login', array('message' =>  $message));
-        }   
+        }  
+        exit(); 
     });
 
     Flight::route('GET /account(/@message)', function($message){
@@ -50,7 +55,8 @@
             Flight::render('account', array('message' =>  $message));
         } else {
             Flight::redirect('/login');
-        }   
+        }  
+        exit(); 
     });
 
     Flight::route('GET /create(/@message)', function($message){
@@ -59,6 +65,7 @@
         } else {
             Flight::redirect('/login');
         }   
+        exit();
     });
 
     Flight::route('GET /settings(/@message)', function($message){
@@ -67,19 +74,27 @@
         } else {
             Flight::redirect('/login');
         }   
+        exit();
     });
 
 
 
     Flight::route('GET /search(/@message)', function($message){
             Flight::render('search', array('message' =>  $message)); 
+            exit();
     });
 
-    Flight::route('GET /project/@id', function($id){
-            Flight::render('project', array('id' =>  $id)); 
+    Flight::route('GET /project/@id(/thingview/@thingName)', function($id, $thingName){
+            if (isset($thingName)) {
+                Flight::render('thingview', array('projectID' =>  $id, 'thingName' => $thingName));
+            } else {
+                Flight::render('project', array('id' =>  $id));
+            }   
+            exit();     
     });
     Flight::route('GET /collection/@id', function($id){
             Flight::render('collection', array('id' =>  $id)); 
+            exit();
     });
 
     Flight::route('GET /user/@id(/@message)', function($id, $message){
@@ -101,7 +116,8 @@
                 }              
             } else {
                 echo "NO USER IN DATABASE;";
-            }        
+            }   
+            exit();     
     });
 
     Flight::route('GET /activate', function() {
@@ -124,6 +140,7 @@
         } else {
             Flight::redirect('/login/Invalid Link');
         }
+        exit();
            
     });
 
@@ -170,6 +187,7 @@
                 exit();
             }
         }
+        exit();
     });
 
     Flight::route('POST /create', function() {
@@ -247,8 +265,8 @@
                     copy('img/default.jpg', "users/".$name."-".$surname."-".$email."/profile.jpg");
                 }
 
-                localMail($email, $name, $surname, $hash);
-                //altervistaMail($email, $name, $surname, $hash);
+                //localMail($email, $name, $surname, $hash);
+                altervistaMail($email, $name, $surname, $hash);
 
                 imageUpload("users/".$name."-".$surname."-".$email."/profile.jpg");
 
@@ -256,6 +274,7 @@
                 exit();
             }
         }
+        exit();
     });
 
     Flight::route('POST /controlPassword', function() {
@@ -271,10 +290,9 @@
         } else {
             $data["status"]=false;
         }
-        $data["null"]="null";
-        $data["123"]="null";
         echo json_encode($data, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
         //echo "OKOKOK";
+        exit();
     });
 
     Flight::route('POST /settings', function() {
@@ -363,6 +381,7 @@
         } else {
             echo ("Deleted");
         }
+        exit();
     });
 
     Flight::route('POST /deleteProjectFolder', function() {
@@ -370,6 +389,7 @@
         if (file_exists($destinationPath)) {
             deleteDir($destinationPath);
         }
+        exit();
     });
 
     Flight::route('POST /createCollection', function() {
@@ -390,12 +410,13 @@
 
         $data["projectID"] = $projectID;
         $data["inCollection"] = "$COLLECTION->num_rows";
-        $data["null"]="null";
         echo json_encode($data, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
+        exit();
     });
 
     Flight::route('POST /getCollections', function() {
         echo getCollections($_SESSION["ID"], $_POST["projectID"]);
+        exit();
     });
 
     Flight::route('POST /addProjectToCollection', function() {
@@ -416,8 +437,8 @@
         $data["projectID"] = $projectID;
         $data["inCollection"] = "$COLLECTION->num_rows";
         $data["collectionProjectsNumber"] = $CollectionProjects->fetch_assoc()["NUMERO"];
-        $data["null"]="null";
         echo json_encode($data, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
+        exit();
     });
 
     Flight::route('POST /follow', function() {
@@ -443,8 +464,8 @@
         $QUERY=executeQuery("select * FROM utenti_seguono_utenti where FK_UTENTE_SEGUITO=".$requestID);
         $data['usersFollowersNumber'] = "$QUERY->num_rows";
         $data['requestID'] = "$requestID";
-        $data["null"]="null";
         echo json_encode($data, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
+        exit();
     });
 
     Flight::route('POST /getSubcategory', function() {
@@ -457,6 +478,7 @@
             ."'>".$riga['NOME']
             ."</option>";
         }
+        exit();
     });
 
     Flight::route('POST /getProvince', function() {
@@ -469,6 +491,7 @@
             ."'>".$riga['nomeprovincia']
             ."</option>";
         }
+        exit();
     });
 
     Flight::route('POST /downloadFile', function() {
@@ -479,9 +502,8 @@
         $QUERY=executeQuery("select NUMERO_DOWNLOAD from  parti_3d where FK_PROGETTO=$projectID and NOME='$name'");
         $riga=$QUERY->fetch_assoc();
         $data["downloads"]=$riga["NUMERO_DOWNLOAD"];
-        $data["null"]="null";
-        $data["123"]="null";
         echo json_encode($data, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
+        exit();
     });
 
     Flight::route('POST /likeProject', function() {
@@ -500,11 +522,10 @@
         $data["likes"]="$QUERY->num_rows";
         $QUERY=executeQuery("select * from  utenti_like_progetti where FK_UTENTE=$userID");
         $data["userLikes"]="$QUERY->num_rows";
-        $data["null"]="null";
         //var2console($data);
         //echo var_dump(json_encode($data)), json_last_error());
         echo json_encode($data, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
-
+        exit();
     });
 
     Flight::route('POST /downloadProject', function() {
@@ -514,10 +535,9 @@
         $QUERY=executeQuery("select NUMERO_DOWNLOAD from  progetti where ID=$projectID");
         $riga=$QUERY->fetch_assoc();
         $data["downloads"]=$riga["NUMERO_DOWNLOAD"];
-        $data["null"]="null";
-        $data["123"]="null";
         //var2console($data);
         echo json_encode($data, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
+        exit();
     });
 
     Flight::route('POST /getComune', function() {
@@ -530,6 +550,7 @@
             ."'>".$riga['nome']
             ."</option>";
         }
+        exit();
     });
 
     Flight::route('POST /followCollection', function() {
@@ -548,8 +569,8 @@
         $data["userFollows"]="$QUERY->num_rows";
         $QUERY=executeQuery("select * from  utenti_seguono_collezioni where FK_COLLEZIONE=$collectionID");
         $data["collectionFollowersNumber"]="$QUERY->num_rows";
-        $data["null"]="null";
         echo json_encode($data, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
+        exit();
     });
 
     Flight::start();

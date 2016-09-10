@@ -172,6 +172,7 @@
                     echo "<script>var names = []; </script>";
                     $j=0;
                     $files = array_slice(scandir($projectPath), 2);
+                    $stl=false;
                     foreach ($files as $file) {
                         echo "<script> names[$j]='$file'; </script>";
                         //var2console($file);
@@ -183,6 +184,11 @@
                         $size = number_format(filesize($projectPath."/".$file)/(1024*1024), 4, '.', '');
                         //var2console($size);
                         $extension = substr($file, strrpos($file, '.')+1);
+
+
+                        if ($extension=="stl") $stl=true;
+                        var2console($extension);
+                        var2console($stl);
                         //var2console ($extension);
                         //$sizeInMB = ($file.size / (1024*1024)).toFixed(4);
                         //echo '<li style="padding:24px 0;" class="download">'.$file.'</li>';
@@ -214,7 +220,7 @@
                 </div>
                 <div class="gallery carousel">
                     <?php 
-                        foreach (glob($projectPath."/*.{jpg,png,gif}", GLOB_BRACE) as $filename) : ?>
+                        foreach (glob($projectPath."/*.{jpg,png,gif,JPG}", GLOB_BRACE) as $filename) : ?>
                           <img src="<?php echo "/".$filename; ?>" alt="">
                     <?php endforeach; ?>
                 </div>
@@ -224,23 +230,6 @@
                     <blockquote>
                         <p><?php echo $project["DESCRIZIONE"] ?></p>
                     </blockquote>
-                    <ul style="border:0; margin:0; padding:0; display:none" class="col s12 collection">
-                    
-                        <?php 
-
-                            $files = array_slice(scandir($projectPath), 2);
-                        
-                            foreach ($files as $file) {
-                                echo $file;
-                                echo "<br>";
-                            }
-                            foreach (glob($projectPath."/*.jpg") as $filename) {
-                                //var2console($filename);
-                                echo "/$filename size " . (filesize($filename) / (1024*1024));
-                                echo "<br>";
-                            }   
-                        ?>
-                    </ul>
                 </div>
             </div>
         </div>
@@ -329,6 +318,21 @@
                                 </b>
                             </p>
                         </div>
+                        <?php if ($stl): ?>
+                        <hr>
+                        <div class="valign-wrapper" style="color:#444;">
+                            <a style="width:100%; color:#fff; padding:0 12px" class='deep-orange accent-2 dropdown-button waves-effect btn-flat' href='#' data-activates='thingview'><i style="color:#fff" class="material-icons right">arrow_drop_down</i>3D Viewer</a>
+                            <ul id='thingview' class='dropdown-content'>
+                                <?php 
+                                    foreach (glob($projectPath."/*.stl") as $filename) {
+                                        //var2console($filename);
+                                        $file = str_replace($projectPath."/", "", $filename);
+                                        echo "<li><a class='truncate' href='/project/$id/thingview/$file'>$file</a></li>";
+                                    }
+                                ?>
+                            </ul>
+                        </div>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
